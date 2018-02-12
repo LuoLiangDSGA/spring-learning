@@ -1,5 +1,5 @@
 ## Vue+SpringBoot实现前后端分离的文件上传
-这篇文章需要一定Vue和SpringBoot的知识，分为两个项目，一个是前端Vue项目，一个是后端SpringBoot项目。
+这篇文章需要一定Vue和SpringBoot的知识，分为两个项目，一个是前端Vue项目，一个是后端SpringBoot项目。
 
 ### 后端项目搭建
 我使用的是SpringBoot1.5.10+JDK8+IDEA
@@ -133,10 +133,10 @@ public class UploadController {
   }
 </script>
 ```
-使用Axios向后端发送Ajax请求，使用H5的FormData对象封装图片数据
+使用Axios向后端发送Ajax请求，使用H5的FormData对象封装图片数据
 
 ### 测试
-启动服务端，直接运行BootApplication类的main方法，端口8082
+启动服务端，直接运行BootApplication类的main方法，端口8082
 ![](http://p41b81jeu.bkt.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-02-12%2020.07.49.png)
 
 启动前端，端口默认8080，cd到前端目录下，分别执行：
