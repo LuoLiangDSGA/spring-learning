@@ -78,7 +78,8 @@ public class UploadController {
 #### 后端至此已经做完了，很简单。
 
 ### 前端项目搭建
-我使用的是Node8+Webpack3+Vue2+WebStorm
+我使用的是Node8+Webpack3+Vue2
+
 本地需要安装node环境，且安装Vue-cli，使用Vue-cli生成一个Vue项目。
 
 ![](http://p41b81jeu.bkt.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-02-12%2019.58.34.png)
