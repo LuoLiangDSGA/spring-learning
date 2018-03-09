@@ -24,7 +24,3 @@ spring:
 ```
 更多配置参考org.springframework.boot.autoconfigure.kafka.KafkaProperties这个类
 
-
-
-
-

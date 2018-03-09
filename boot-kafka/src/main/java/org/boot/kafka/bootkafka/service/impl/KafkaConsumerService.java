@@ -20,5 +20,6 @@ public class KafkaConsumerService {
     public void receiveMsg(ConsumerRecord<?, ?> cr) {
         logger.info("收到一条消息...");
         logger.info("{} : {}", cr.topic(), cr.value());
+        logger.info("---------------------------------");
     }
 }

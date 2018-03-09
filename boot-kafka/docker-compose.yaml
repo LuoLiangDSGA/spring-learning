@@ -5,9 +5,9 @@ services:
     ports:
       - "2181:2181"
   kafka:
-    build: .
+    image: wurstmeister/kafka
     ports:
-      - "9092"
+      - "9092:9092"
     environment:
       KAFKA_ADVERTISED_HOST_NAME: 127.0.0.1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181

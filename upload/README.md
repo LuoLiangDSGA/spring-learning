@@ -114,7 +114,7 @@ public class UploadController {
         console.log(this.file);
       },
       submit: function (event) {
-        //组织元素发生默认的行为
+        //阻止元素发生默认的行为
         event.preventDefault();
         let formData = new FormData();
         formData.append("file", this.file);

@@ -25,5 +25,6 @@ public class KafkaProviderServiceImpl implements KafkaProviderService {
         logger.info("开始发送消息...");
         template.send("myKafka", content);
         logger.info("消息发送完成");
+        logger.info("---------------------------------");
     }
 }

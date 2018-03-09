@@ -3,7 +3,7 @@ spring:
   kafka:
     consumer:
       group-id: foo
-      auto-offset-reset: earliest
+      auto-offset-reset: latest
     bootstrap-servers: localhost:9092
 logging:
   level:
