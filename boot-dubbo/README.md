@@ -1,4 +1,4 @@
-## SpringBoot整合Dubbo2.5.10
+## SpringBoot整合Dubbo2.5.10，使用官方最新spring-boot-starter
 ### 开始
 Dubbo已经进入了Apache孵化器，并且发布了官方的spring-boot-starter0.1.0，用于简化dubbo应用的配置，主要包括了autoconfigure(自动装配)，externalized-configuration(外部化配置)，actuator(生产准备)等，可参考官方github  [dubbo-spring-boot-starter](https://github.com/apache/incubator-dubbo-spring-boot-project/releases/tag/0.1.0).
 ### 准备工作
