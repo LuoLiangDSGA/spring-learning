@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.5.8.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.boot.dubbo</groupId>
+    <artifactId>boot-dubbo</artifactId>
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
+
+    <name>springboot-dubbo</name>
+    <description>Dubbo project for Spring Boot</description>
+
+    <modules>
+        <module>dubbo-provider</module>
+        <module>dubbo-consumer</module>
+    </modules>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+        <dubbo-spring-boot-starter.version>0.1.0</dubbo-spring-boot-starter.version>
+        <fastjson_version>1.2.31</fastjson_version>
+        <dubbo-provider.version>1.0.0-SNAPSHOT</dubbo-provider.version>
+        <zk-client.version>0.2</zk-client.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.alibaba.boot</groupId>
+                <artifactId>dubbo-spring-boot-starter</artifactId>
+                <version>${dubbo-spring-boot-starter.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.boot.dubbo</groupId>
+                <artifactId>dubbo-provider</artifactId>
+                <version>${dubbo-provider.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.101tec</groupId>
+                <artifactId>zkclient</artifactId>
+                <version>${zk-client.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+</project>
