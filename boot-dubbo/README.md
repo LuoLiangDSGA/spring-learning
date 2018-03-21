@@ -296,7 +296,7 @@ public class DefaultController {
 
 ![](https://ws1.sinaimg.cn/large/006tKfTcgy1fpkgcg2ykuj30cm037dg5.jpg)
 
-需要源码请移步
+需要源码请移步本人github，如果能顺手star就更好啦! [boot-dubbo](https://github.com/LuoLiangDSGA/SpringBoot-Learning/tree/master/boot-dubbo)
 
 ### 参考
 * https://github.com/apache/incubator-dubbo-spring-boot-project
