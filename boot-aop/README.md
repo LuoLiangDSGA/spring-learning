@@ -1,26 +1,15 @@
-### 安装kafka和zookeeper
-确保本地已经安装kafka，如果安装之后跳过这一步
-这里使用的是[wurstmeister/zookeeper](https://github.com/wurstmeister/zookeeper-docker)和[wurstmeister/kafka](https://github.com/wurstmeister/kafka-docker)
+### Spring AOP知识复习
 
-步骤参考这个博客[docker运行kafka](http://blog.csdn.net/snowcity1231/article/details/54946857)
+#### AOP概念
+AOP（Aspect-Oriented-Programming），面向切面编程，是OOP的补充和完善。OOP允许定义从上到下的关系，但并不适合从左到右的关系。比如日志功能，日志的记录往往散步在系统的各个地方，如果用OOP来实现，就会出现大量重复的代码，而这些记录日志的动作和核心业务没有直接的关系，这时候就需要AOP，对所有记录日志的动作进行一种称为“横切”的操作。
+> 下面以几张图来说明AOP的作用：
 
-### 集成步骤
-在pom中添加以下依赖
-```
-<dependency>
-    <groupId>org.springframework.kafka</groupId>
-    <artifactId>spring-kafka</artifactId>
-    <version>1.2.2.RELEASE</version>
-</dependency>
-``` 
-在application.yml中进行配置
-```
-spring:
-  kafka:
-    bootstrap-servers: localhost:9092   #kafka地址，可以配置多个
-    consumer:
-      group-id: boot-kafka
-      auto-offset-reset: earliest
-```
-更多配置参考org.springframework.boot.autoconfigure.kafka.KafkaProperties这个类
+在日常的开发中，多个业务逻辑会存在相同代码的情况，这时候屌丝程序员就会进行一个操作-复制->粘贴->大功告成！
+![](https://s1.ax1x.com/2018/03/28/9jVLDg.png)
+这样就会存在一个问题，如果这些相同的代码块需要修改，如果只有两三个业务逻辑使用的话还好，如果有成千上万个需要改，那这种做法是很难维护的。
 
+这时候普通程序员出来了，觉得这样相同的代码逻辑可以提出来，单独写在一个方法里面，这样每一个需要使用这个代码块的业务直接调用方法就好了，就算以后要修改，也只需要改一个方法。
+![](https://s1.ax1x.com/2018/03/28/9jZmP1.png)
+这样的方法极大地提高了系统的可维护性，但是也存在一个问题，每个业务逻辑调用这个方法，那么这些业务逻辑就和这个方法以硬编码的方式强耦合了。
+
+这时候文艺程序员站了出来，他觉得我们可以使用AOP来达到一种效果，这些业务逻辑不需要自己去调用这个方法，它们只需要执行自己主要的业务，而相同的这部分代码块，通过AOP动态的织入业务中，起到一种对原有业务增强的作用。
