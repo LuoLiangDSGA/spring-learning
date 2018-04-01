@@ -1,6 +1,5 @@
 package org.boot.kafka.bootkafka.controller;
 
-import org.boot.kafka.bootkafka.model.A;
 import org.boot.kafka.bootkafka.service.KafkaProviderService;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,8 +26,7 @@ public class MsgController {
     }
 
     @PostMapping("/test")
-    public String test(@RequestBody A a) {
-        System.out.println(a.toString());
+    public String test() {
         return "success";
     }
 }

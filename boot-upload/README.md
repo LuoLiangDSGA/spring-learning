@@ -5,7 +5,7 @@
 我使用的是SpringBoot1.5.10+JDK8+IDEA
 使用IDEA新建一个SpringBoot项目，一直点next即可
 
-![](http://p41b81jeu.bkt.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-02-12%2019.15.01.png)
+![](http://p41b81jeu.bkt.clouddn.com/屏幕快照%202018-02-12%2019.15.01.png)
 
 项目创建成功后，maven的pom配置如下
 

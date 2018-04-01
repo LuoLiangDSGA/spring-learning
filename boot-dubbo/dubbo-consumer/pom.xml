@@ -8,7 +8,7 @@
     <packaging>jar</packaging>
 
     <parent>
-        <artifactId>springboot-dubbo</artifactId>
+        <artifactId>boot-dubbo</artifactId>
         <groupId>org.boot.dubbo</groupId>
         <version>1.0.0</version>
         <relativePath>../pom.xml</relativePath>
