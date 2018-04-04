@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
  **/
 @Service
 public class DatabaseService {
+
     public void update() {
         System.out.println("执行更新操作...");
     }

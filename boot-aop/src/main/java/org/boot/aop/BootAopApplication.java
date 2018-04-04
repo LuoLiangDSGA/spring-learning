@@ -13,12 +13,12 @@ import javax.annotation.Resource;
  */
 @SpringBootApplication
 @EnableAspectJAutoProxy
-public class BootKafkaApplication implements CommandLineRunner{
+public class BootAopApplication implements CommandLineRunner{
     @Resource
     private DatabaseService databaseService;
 
     public static void main(String[] args) {
-        SpringApplication.run(BootKafkaApplication.class, args);
+        SpringApplication.run(BootAopApplication.class, args);
     }
 
     @Override
