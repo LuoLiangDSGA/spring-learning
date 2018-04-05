@@ -42,7 +42,7 @@ AOP（Aspect-Oriented Programming），面向切面编程，是OOP的补充和�
 - 权限验证，方法执行前验证是否有权限执行当前方法，没有则抛出没有权限执行异常，由业务代码捕捉。
 
 #### Spring AOP重要概念
-- 术语
+- 名词
 1. Aspect（切面）：一个关注点的模块化，这个关注点会横切多个对象。
 2. Joinpoint（连接点）：在程序执行过程中某个特定的点，比如某方法调用的时候。
 3. Pointcut（切入点）：匹配连接点的断言，Advice和一个Pointcut表达式关联，并在满足这个Pointcut的Jointpoint上运行。
@@ -57,3 +57,111 @@ AOP（Aspect-Oriented Programming），面向切面编程，是OOP的补充和�
 3. After throw advice（异常通知）：在方法抛出异常时执行的通知。
 4. After advice（最终通知）：当某连接点退出的时候执行的通知，不论是正常返回还是异常退出。
 5. Around advice（环绕通知）：包围一个连接点的通知，如方法调用。环绕通知可以在方法调用前后完成自定义的行为。他也可以选择是否执行连接点或直接返回他自己的返回值或抛出异常来结束执行。
+
+#### 实例
+- AOP事务的实现
+
+接下来通过注解的方式来使用Spring AOP，模拟在Service层数据库操作前后事务以及日志记录的执行。
+
+1. 新建一个SpringBoot的项目，并且在pom中引入AOP需要的依赖
+
+```
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-aop</artifactId>
+		</dependency>
+```
+
+2. 定义一个切面类，用于在方法前后进行记录日志和事务的操作
+
+```
+@Aspect
+@Component
+public class TransactionAspect {
+    /**
+     * 切入点
+     * execution表达式匹配org.boot.aop.service包下所有类的所有方法，包括任意参数
+     */
+    @Pointcut("execution(* org.boot.aop.service..*(..))")
+    public void pointcut() {
+    }
+
+    /**
+     * 前置通知
+     */
+    @Before("pointcut()")
+    public void before() {
+        System.out.println("前置通知---->开始事务");
+    }
+
+    /**
+     * 后置通知
+     */
+    @AfterReturning("pointcut()")
+    public void afterReturning() {
+        System.out.println("后置通知---->提交事务");
+    }
+
+    /**
+     * 环绕通知
+     *
+     * @param joinPoint
+     * @throws Throwable
+     */
+    @Around("pointcut()")
+    public void around(ProceedingJoinPoint joinPoint) throws Throwable {
+        System.out.println("环绕通知---->开始事务");
+        joinPoint.proceed();
+        System.out.println("环绕通知---->提交事务");
+    }
+}
+```
+3. 切面类写好之后，在对应的service包下建一个DataServic，变编写一个测试方法
+
+```
+@Service
+public class DatabaseService {
+
+    /**
+     * 模拟数据库的添加操作
+     */
+    public void add() {
+        System.out.println("执行添加操作...");
+    }
+}
+```
+4. 执行
+
+这里需要加上一个EnableAspectJAutoProxy注解，用于开启AOP代理自动配置
+```
+@SpringBootApplication
+@EnableAspectJAutoProxy
+public class BootAopApplication implements CommandLineRunner{
+    @Resource
+    private DatabaseService databaseService;
+
+    public static void main(String[] args) {
+        SpringApplication.run(BootAopApplication.class, args);
+    }
+
+    @Override
+    public void run(String... strings) throws Exception {
+        databaseService.add();
+    }
+}
+
+```
+输出结果如下：
+
+```
+环绕通知---->开始事务
+前置通知---->记录方法开始日志
+执行添加操作...
+环绕通知---->提交事务
+后置通知---->记录方法结束日志
+```
+可以看出来在Spring中使用AOP，在简化了我们重复编写事务和日志代码的同时，也大大降低了代码的耦合度，我们的service层中并没有编写任何事务和日志有关的代码，通过动态切入，就完成了这两个功能，如果是日后需要重构，也只需要修改切面类的代码，维护起来也很容易。
+
+#### 原理
+
+

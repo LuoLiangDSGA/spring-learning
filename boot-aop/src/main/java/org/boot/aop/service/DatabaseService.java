@@ -11,10 +11,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class DatabaseService {
 
-    public void update() {
-        System.out.println("执行更新操作...");
-    }
-
+    /**
+     * 模拟数据库的添加操作
+     */
     public void add() {
         System.out.println("执行添加操作...");
     }

@@ -13,6 +13,10 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 public class TransactionAspect {
+    /**
+     * 切入点
+     * execution表达式匹配org.boot.aop.service包下所有类的所有方法，包括任意参数
+     */
     @Pointcut("execution(* org.boot.aop.service..*(..))")
     public void pointcut() {
     }
@@ -22,7 +26,7 @@ public class TransactionAspect {
      */
     @Before("pointcut()")
     public void before() {
-        System.out.println("前置通知---->开始事务");
+        System.out.println("前置通知---->记录方法开始日志");
     }
 
     /**
@@ -30,7 +34,7 @@ public class TransactionAspect {
      */
     @AfterReturning("pointcut()")
     public void afterReturning() {
-        System.out.println("后置通知---->提交事务");
+        System.out.println("后置通知---->记录方法结束日志");
     }
 
     /**
