@@ -1,5 +1,7 @@
 package org.boot.aop;
 
+import org.boot.aop.proxy.CglibAopProxy;
+import org.boot.aop.proxy.service.CglibService;
 import org.boot.aop.service.DatabaseService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -13,9 +15,11 @@ import javax.annotation.Resource;
  */
 @SpringBootApplication
 @EnableAspectJAutoProxy
-public class BootAopApplication implements CommandLineRunner{
+public class BootAopApplication implements CommandLineRunner {
     @Resource
     private DatabaseService databaseService;
+    @Resource
+    private CglibService cglibService;
 
     public static void main(String[] args) {
         SpringApplication.run(BootAopApplication.class, args);
@@ -23,6 +27,13 @@ public class BootAopApplication implements CommandLineRunner{
 
     @Override
     public void run(String... strings) throws Exception {
-        databaseService.add();
+//        databaseService.add();
+        cglib();
+    }
+
+    public void cglib() {
+        cglibService = (CglibService) new CglibAopProxy(cglibService).getProxyInstance();
+
+        cglibService.add();
     }
 }
