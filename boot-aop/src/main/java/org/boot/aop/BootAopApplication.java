@@ -1,7 +1,7 @@
 package org.boot.aop;
 
 import org.boot.aop.proxy.CglibAopProxy;
-import org.boot.aop.proxy.service.CglibService;
+import org.boot.aop.proxy.service.CglibDataService;
 import org.boot.aop.service.DatabaseService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -19,7 +19,7 @@ public class BootAopApplication implements CommandLineRunner {
     @Resource
     private DatabaseService databaseService;
     @Resource
-    private CglibService cglibService;
+    private CglibDataService cglibService;
 
     public static void main(String[] args) {
         SpringApplication.run(BootAopApplication.class, args);
@@ -32,7 +32,7 @@ public class BootAopApplication implements CommandLineRunner {
     }
 
     public void cglib() {
-        cglibService = (CglibService) new CglibAopProxy(cglibService).getProxyInstance();
+        cglibService = (CglibDataService) new CglibAopProxy(cglibService).getProxyInstance();
 
         cglibService.add();
     }

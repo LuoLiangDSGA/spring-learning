@@ -164,4 +164,8 @@ public class BootAopApplication implements CommandLineRunner{
 
 #### 原理
 Spring的AOP主要实现原理其实就是动态代理，通过代理对目标类的指定方法进行增强处理。Spring主要使用了两种动态代理，一种是JDK动态代理，另一种是Cglib动态代理。Spring默认的策略是JDK动态代理，这时目标类必须是接口或接口的实现类，否则Spring将使用Cglib进行动态代理，上面的例子中，Spring就是通过Cglib为DataService生成的动态代理。
-
+##### JDK动态代理
+- JDK动态代理主要涉及到java.lang.reflect包中的Proxy和InvocationHandler两个类。InvocationHandler是一个接口，通过实现该接口定义横切逻辑，并通过反射机制调用目标类的代码，动态将横切逻辑和业务逻辑编织在一起。
+- Proxy利用InvocationHandler动态创建一个符合某一接口的实例，生成目标类的增强代理对象。
+##### Cglib动态代理
+- CGLib全称为Code Generation Library，是一个强大的高性能，高质量的代码生成类库，可以在运行期扩展Java类与实现Java接口，CGLib封装了asm，可以再运行期动态生成新的class。和JDK动态代理相比较：JDK创建代理有一个限制，就是只能为接口创建代理实例，而对于没有通过接口定义业务方法的类，则可以通过CGLib创建动态代理，但是目标类不能为final，因为final修饰的类不允许继承。

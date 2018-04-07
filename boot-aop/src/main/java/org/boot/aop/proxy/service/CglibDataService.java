@@ -9,9 +9,8 @@ import org.springframework.stereotype.Component;
  * @date 2018/4/6
  **/
 @Component
-public class CglibService {
+public class CglibDataService {
     public void add() {
         System.out.println("添加操作...");
     }
-
 }
