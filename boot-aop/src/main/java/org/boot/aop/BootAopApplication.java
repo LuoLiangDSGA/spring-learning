@@ -19,7 +19,7 @@ public class BootAopApplication implements CommandLineRunner {
     @Resource
     private DatabaseService databaseService;
     @Resource
-    private CglibDataService cglibService;
+    private CglibDataService cglibDataService;
 
     public static void main(String[] args) {
         SpringApplication.run(BootAopApplication.class, args);
@@ -32,8 +32,7 @@ public class BootAopApplication implements CommandLineRunner {
     }
 
     public void cglib() {
-        cglibService = (CglibDataService) new CglibAopProxy(cglibService).getProxyInstance();
-
-        cglibService.add();
+        cglibDataService = (CglibDataService) new CglibAopProxy(cglibDataService).getProxyInstance();
+        cglibDataService.add();
     }
 }
