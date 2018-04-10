@@ -1,7 +1,7 @@
 package org.boot.elasticjob.test;
 
 import org.boot.elasticjob.dao.TaskRepository;
-import org.boot.elasticjob.job.JobTask;
+import org.boot.elasticjob.entity.JobTask;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,8 +23,18 @@ public class JobTaskTest {
 
     @Test
     public void add() {
-        JobTask task = JobTask.builder().content("测试消息1").status(0).sendTime(System.currentTimeMillis()).build();
+        //生成几个任务，第一任务在三分钟之后
+        Long unixTime = System.currentTimeMillis() + 60000;
+        JobTask task = new JobTask("test-msg-1", 0, unixTime);
         taskRepository.save(task);
-
+        unixTime += 60000;
+        task = new JobTask("test-msg-2", 0, unixTime);
+        taskRepository.save(task);
+        unixTime += 60000;
+        task = new JobTask("test-msg-3", 0, unixTime);
+        taskRepository.save(task);
+        unixTime += 60000;
+        task = new JobTask("test-msg-4", 0, unixTime);
+        taskRepository.save(task);
     }
 }

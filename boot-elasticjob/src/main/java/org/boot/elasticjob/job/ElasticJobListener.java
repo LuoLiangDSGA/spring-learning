@@ -3,6 +3,10 @@ package org.boot.elasticjob.job;
 import com.dangdang.ddframe.job.executor.ShardingContexts;
 import com.dangdang.ddframe.job.lite.api.listener.AbstractDistributeOnceElasticJobListener;
 import org.apache.log4j.Logger;
+import org.boot.elasticjob.dao.TaskRepository;
+import org.boot.elasticjob.entity.JobTask;
+
+import javax.annotation.Resource;
 
 
 /**
@@ -13,22 +17,21 @@ import org.apache.log4j.Logger;
  **/
 public class ElasticJobListener extends AbstractDistributeOnceElasticJobListener {
     private static final Logger logger = Logger.getLogger(ElasticJobListener.class);
+    @Resource
+    private TaskRepository taskRepository;
 
-    /**
-     * @param startedTimeoutMilliseconds
-     * @param completedTimeoutMilliseconds
-     */
     public ElasticJobListener(long startedTimeoutMilliseconds, long completedTimeoutMilliseconds) {
         super(startedTimeoutMilliseconds, completedTimeoutMilliseconds);
     }
 
     @Override
     public void doBeforeJobExecutedAtLastStarted(ShardingContexts shardingContexts) {
-//        logger.info("分布式监听器开始……");
     }
 
     @Override
     public void doAfterJobExecutedAtLastCompleted(ShardingContexts shardingContexts) {
-//        logger.info("分布式监听器结束……");
+        JobTask jobTask = taskRepository.findOne(Long.valueOf(shardingContexts.getJobParameter()));
+        jobTask.setStatus(1);
+        taskRepository.save(jobTask);
     }
 }

@@ -1,14 +1,10 @@
-package org.boot.elasticjob.job;
+package org.boot.elasticjob.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -16,9 +12,10 @@ import javax.persistence.Id;
  * @author luoliang
  * @date 2018/4/10
  **/
-@Entity(name = "JOB_TASK")
+@Entity
+@Table(name = "JOB_TASK")
 @Data
-@Builder
+@NoArgsConstructor
 public class JobTask {
     @Id
     @GeneratedValue
@@ -27,6 +24,12 @@ public class JobTask {
     private String content;
     @Column
     private Integer status;
-    @Column(table = "send_time")
+    @Column(name = "send_time")
     private Long sendTime;
+
+    public JobTask(String content, Integer status, Long sendTime) {
+        this.content = content;
+        this.status = status;
+        this.sendTime = sendTime;
+    }
 }
