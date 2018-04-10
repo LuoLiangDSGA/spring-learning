@@ -24,11 +24,11 @@ public class ElasticJobListener extends AbstractDistributeOnceElasticJobListener
 
     @Override
     public void doBeforeJobExecutedAtLastStarted(ShardingContexts shardingContexts) {
-        logger.info("分布式监听器开始……");
+//        logger.info("分布式监听器开始……");
     }
 
     @Override
     public void doAfterJobExecutedAtLastCompleted(ShardingContexts shardingContexts) {
-        logger.info("分布式监听器结束……");
+//        logger.info("分布式监听器结束……");
     }
 }

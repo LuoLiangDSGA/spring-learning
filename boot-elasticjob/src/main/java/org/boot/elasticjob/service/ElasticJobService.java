@@ -12,7 +12,6 @@ import org.boot.elasticjob.job.MyElasticJob;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.security.PrivateKey;
 
 /**
  * Created by IntelliJ IDEA.
@@ -24,16 +23,15 @@ import java.security.PrivateKey;
 public class ElasticJobService {
     @Resource
     private ZookeeperRegistryCenter registryCenter;
-//    @Resource
-//    private JobEventConfiguration jobEventConfiguration;
+    @Resource
+    private JobEventConfiguration jobEventConfiguration;
     @Resource
     private ElasticJobListener elasticJobListener;
 
-    private static LiteJobConfiguration.Builder simpleJobConfigBuilder(
-            final String jobName,
-            final Class<? extends SimpleJob> jobClass,
-            final int shardingTotalCount,
-            final String cron) {
+    private static LiteJobConfiguration.Builder simpleJobConfigBuilder(String jobName,
+                                                                       Class<? extends SimpleJob> jobClass,
+                                                                       int shardingTotalCount,
+                                                                       String cron) {
         return LiteJobConfiguration.newBuilder(new SimpleJobConfiguration(
                 JobCoreConfiguration.newBuilder(jobName, cron, shardingTotalCount).build(), jobClass.getCanonicalName()));
     }
@@ -41,6 +39,6 @@ public class ElasticJobService {
     public void addJob(String cron) {
         LiteJobConfiguration jobConfig = simpleJobConfigBuilder("boot-job",
                 MyElasticJob.class, 1, cron).overwrite(true).build();
-        new SpringJobScheduler(new MyElasticJob(), registryCenter, jobConfig, elasticJobListener).init();
+        new SpringJobScheduler(new MyElasticJob(), registryCenter, jobConfig, jobEventConfiguration, elasticJobListener).init();
     }
 }

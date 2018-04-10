@@ -4,6 +4,7 @@ import com.dangdang.ddframe.job.event.JobEventConfiguration;
 import com.dangdang.ddframe.job.event.rdb.JobEventRdbConfiguration;
 import com.dangdang.ddframe.job.reg.zookeeper.ZookeeperConfiguration;
 import com.dangdang.ddframe.job.reg.zookeeper.ZookeeperRegistryCenter;
+import com.zaxxer.hikari.HikariDataSource;
 import lombok.Data;
 import org.boot.elasticjob.job.ElasticJobListener;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -11,7 +12,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.Resource;
-import javax.sql.DataSource;
 
 /**
  * Created by IntelliJ IDEA.
@@ -25,8 +25,8 @@ import javax.sql.DataSource;
 public class ElasticJobConfig {
     private String serverlists;
     private String namespace;
-//    @Resource
-//    private DataSource dataSource;
+    @Resource
+    private HikariDataSource dataSource;
 
     @Bean
     public ZookeeperConfiguration zkConfig() {
@@ -43,10 +43,10 @@ public class ElasticJobConfig {
      *
      * @return
      */
-//    @Bean
-//    public JobEventConfiguration jobEventConfiguration() {
-//        return new JobEventRdbConfiguration(dataSource);
-//    }
+    @Bean
+    public JobEventConfiguration jobEventConfiguration() {
+        return new JobEventRdbConfiguration(dataSource);
+    }
 
     @Bean
     public ElasticJobListener elasticJobListener() {
