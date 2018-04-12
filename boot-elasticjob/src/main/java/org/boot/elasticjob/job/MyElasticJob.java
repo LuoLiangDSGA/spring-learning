@@ -12,6 +12,6 @@ import com.dangdang.ddframe.job.api.simple.SimpleJob;
 public class MyElasticJob implements SimpleJob {
     @Override
     public void execute(ShardingContext shardingContext) {
-        System.out.println("任务名：" + shardingContext.getJobName() + "，分片数：" + shardingContext.getShardingTotalCount());
+        System.out.println("任务名：" + shardingContext.getJobName() + "，分片数：" + shardingContext.getShardingTotalCount() + ",id=" + shardingContext.getJobParameter());
     }
 }

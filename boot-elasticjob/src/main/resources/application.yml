@@ -2,7 +2,7 @@ logging:
   level: debug
 
 elasticjob:
-  serverlists: localhost:2181
+  serverlists: 172.31.31.48:2181
   namespace: boot-job
 
 spring:

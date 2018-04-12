@@ -1,6 +1,5 @@
 package org.boot.elasticjob.entity;
 
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -22,6 +21,10 @@ public class JobTask {
     private Long id;
     @Column
     private String content;
+    /**
+     * 0-未执行
+     * 1-已执行
+     */
     @Column
     private Integer status;
     @Column(name = "send_time")

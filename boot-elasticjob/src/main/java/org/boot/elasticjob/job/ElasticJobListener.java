@@ -30,6 +30,7 @@ public class ElasticJobListener extends AbstractDistributeOnceElasticJobListener
 
     @Override
     public void doAfterJobExecutedAtLastCompleted(ShardingContexts shardingContexts) {
+        //任务执行完成后更新状态为已执行
         JobTask jobTask = taskRepository.findOne(Long.valueOf(shardingContexts.getJobParameter()));
         jobTask.setStatus(1);
         taskRepository.save(jobTask);
