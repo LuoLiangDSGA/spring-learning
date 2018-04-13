@@ -50,6 +50,6 @@ public class ElasticJobConfig {
 
     @Bean
     public ElasticJobListener elasticJobListener() {
-        return new ElasticJobListener(System.currentTimeMillis(), System.currentTimeMillis());
+        return new ElasticJobListener(100, 100);
     }
 }
