@@ -18,7 +18,6 @@ import javax.annotation.Resource;
  * 如果任务有分片，分布式监听器会在总的任务开始前执行一次，结束时执行一次
  **/
 public class ElasticJobListener extends AbstractDistributeOnceElasticJobListener {
-    private static final Logger logger = Logger.getLogger(ElasticJobListener.class);
     @Resource
     private TaskRepository taskRepository;
 
