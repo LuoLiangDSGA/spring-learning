@@ -15,8 +15,6 @@ import javax.annotation.Resource;
 public class ElasticJobApplication implements CommandLineRunner {
     @Resource
     private ElasticJobService elasticJobService;
-    @Resource
-    private ElasticJobHandler jobHandler;
 
     public static void main(String[] args) {
         SpringApplication.run(ElasticJobApplication.class, args);
@@ -25,6 +23,5 @@ public class ElasticJobApplication implements CommandLineRunner {
     @Override
     public void run(String... strings) throws Exception {
         elasticJobService.scanAddJob();
-//        jobHandler.addJob("test-job", "0/3 * * * * ?", 1, "sss");
     }
 }
