@@ -52,7 +52,8 @@ Elastic-Job-Lite定位为轻量级无中心化解决方案，使用jar包的形�
 ### 配置
 使用yaml进行相关属性的配置，主要配置的是数据库连接池，jpa
 
-```elasticjob:
+```
+elasticjob:
      serverlists: 172.31.31.48:2181
      namespace: boot-job
 

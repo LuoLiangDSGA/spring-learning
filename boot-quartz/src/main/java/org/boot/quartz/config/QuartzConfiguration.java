@@ -15,7 +15,7 @@ public class QuartzConfiguration {
     /**
      * 配置Scheduler
      */
-    @Bean(name = "schedulerFactory")
+    @Bean
     public SchedulerFactoryBean schedulerFactory() {
         SchedulerFactoryBean schedulerFactoryBean = new SchedulerFactoryBean();
         //Scheduler自动开始
