@@ -277,4 +277,4 @@ public class ElasticJobApplication implements CommandLineRunner {
 ### 总结
 至此，整个流程就已经走完了，整个demo中主要用到了Elastic-job和spring-data-jpa相关的技术，作为demo，肯定会有一些缺陷，没考虑到的地方，可以根据自己的业务场景进行改进。
 
-最后，附上github源码，欢迎star，一起交流。[源码地址](https://github.com/LuoLiangDSGA/SpringBoot-Learning/tree/master/boot-elasticjob)
+最后，附上github源码，欢迎star，一起交流。上面涉及到的数据库，请自行创建，表会自动生成。[源码地址](https://github.com/LuoLiangDSGA/SpringBoot-Learning/tree/master/boot-elasticjob)
