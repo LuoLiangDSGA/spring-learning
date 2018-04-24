@@ -5,6 +5,6 @@
 1. [Vue+SpringBoot前后端分离上传文件](https://github.com/LuoLiangDSGA/SpringBoot-Learning/tree/master/boot-upload)
 2. [SpringBoot+kafka](https://github.com/LuoLiangDSGA/SpringBoot-Learning/tree/master/boot-kafka)
 3. [SpringBoot+Dubbo2.5.10 使用官方最新spring-boot-starter](https://github.com/LuoLiangDSGA/SpringBoot-Learning/tree/master/boot-dubbo)
-4. [Spring AOP其实很简单，AOP的总结，基础和使用](https://github.com/LuoLiangDSGA/SpringBoot-Learning/tree/master/boot-aop)
+4. [Spring AOP其实很简单，AOP的总结，基础和使用](https://luoliangdsga.github.io/2018/04/24/Spring-AOP其实很简单/)
 5. [SpringBoot使用quartz实现定时任务的动态增、删、改](https://github.com/LuoLiangDSGA/SpringBoot-Learning/tree/master/boot-quartz)
 6. [SpringBoot使用Elastic-Job，实现动态创建定时任务，任务持久化](https://github.com/LuoLiangDSGA/SpringBoot-Learning/tree/master/boot-elasticjob)
