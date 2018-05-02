@@ -1,5 +1,6 @@
 package org.boot.protostuff.entity;
 
+import lombok.Builder;
 import lombok.Data;
 
 /**
@@ -9,6 +10,7 @@ import lombok.Data;
  * @date 2018/5/2
  **/
 @Data
+@Builder
 public class Group {
     private String id;
 
