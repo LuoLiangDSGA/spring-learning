@@ -8,3 +8,4 @@
 4. [Spring AOP其实很简单，AOP的总结，基础和使用](https://luoliangdsga.github.io/2018/04/24/Spring-AOP其实很简单/)
 5. [SpringBoot使用quartz实现定时任务的动态增、删、改](https://github.com/LuoLiangDSGA/SpringBoot-Learning/tree/master/boot-quartz)
 6. [SpringBoot使用Elastic-Job，实现动态创建定时任务，任务持久化](https://luoliangdsga.github.io/2018/04/17/SpringBoot-ElasticJob/)
+7. [Spring之IOC的注入方式](https://luoliangdsga.github.io/2018/05/09/Spring之IOC的注入方式/)
