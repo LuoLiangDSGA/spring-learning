@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--setter注入-->
+    <bean id="blog" class="org.spring.ioc.entity.Blog">
+        <property name="name" value="spring-ioc"/>
+        <property name="content" value="spring"/>
+        <property name="date" value="1520232449944"/>
+        <property name="author" ref="author"/>
+    </bean>
+
+    <bean id="author" class="org.spring.ioc.entity.Author">
+        <property name="name" value="luoliang"/>
+        <property name="age" value="18"/>
+        <property name="url" value="https://luoliangdsga.github.io"/>
+    </bean>
+</beans>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--构造方法注入-->
+    <!--使用index属性来显式指定构造参数的索引-->
+    <bean id="user1" class="org.spring.ioc.entity.User">
+        <constructor-arg index="0" value="1234"/>
+        <constructor-arg index="1" value="spring"/>
+    </bean>
+
+    <!--使用type属性显式指定简单类型的构造器参数类型，这里对应的是User类中传入name,age的构造器-->
+    <bean id="user2" class="org.spring.ioc.entity.User">
+        <constructor-arg type="java.lang.String" value="spring"/>
+        <constructor-arg type="java.lang.Integer" value="20"/>
+    </bean>
+
+    <!--也可以使用构造器参数命名来指定值的类型-->
+    <bean id="user3" class="org.spring.ioc.entity.User">
+        <constructor-arg name="id" value="1234"/>
+        <constructor-arg name="name" value="spring"/>
+    </bean>
+</beans>
