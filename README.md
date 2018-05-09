@@ -1,6 +1,6 @@
-# SpringBoot-Learning
-### SpringBoot杂记
-记录本人平时各种瞎搞的SpringBoot项目，其中既有工作过程中解决问题的方法，也有基础知识的复习，以及对一些新技术的折腾，欢迎star，一起交流学习
+# Spring-Learning
+### Spring杂记
+记录本人平时各种瞎搞的Spring项目，其中既有工作过程中解决问题的方法，也有基础知识的复习，以及对一些新技术的折腾，欢迎star，一起交流学习
 
 1. [Vue+SpringBoot前后端分离上传文件](https://luoliangdsga.github.io/2018/04/18/Vue-SpringBoot实现前后端分离的文件上传/)
 2. [SpringBoot+kafka](https://github.com/LuoLiangDSGA/SpringBoot-Learning/tree/master/boot-kafka)
