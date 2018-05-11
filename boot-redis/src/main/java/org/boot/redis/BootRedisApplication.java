@@ -1,10 +1,13 @@
 package org.boot.redis;
 
+import net.coobird.thumbnailator.Thumbnails;
+import net.coobird.thumbnailator.geometry.Positions;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -18,7 +21,8 @@ public class BootRedisApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(BootRedisApplication.class, args);
-        processImg("/Users/luoliang/Movies/JUFD-409.mp4/JUFD-409.mp4", "/Users/luoliang/Downloads/ffmpeg-20180508-293a6e8-macos64-static/bin/ffmpeg");
+//        processImg("/Users/luoliang/Movies/", "/Users/luoliang/Downloads/ffmpeg-20180508-293a6e8-macos64-static/bin/ffmpeg");
+        generateFixedSizeImage();
     }
 
     private static void processImg(String vodFilePath, String ffmpegPath) {
@@ -50,6 +54,21 @@ public class BootRedisApplication {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    /**
+     * 使用给定的图片生成指定大小的图片
+     */
+    private static void generateFixedSizeImage(){
+        try {
+            Thumbnails.of("/Users/luoliang/Pictures/壁纸/02786_lakefornight_2560x1600.jpg")
+                    .sourceRegion(Positions.CENTER,500,500)
+                    .size(478,500)
+                    .keepAspectRatio(false)
+                    .toFile("/Users/luoliang/Downloads/newmeinv.jpg");
+        } catch (IOException e) {
+            System.out.println("原因: " + e.getMessage());
         }
     }
 }
