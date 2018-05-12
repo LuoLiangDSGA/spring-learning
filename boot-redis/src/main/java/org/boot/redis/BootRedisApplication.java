@@ -6,8 +6,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -19,13 +23,13 @@ import java.util.UUID;
 @EnableAspectJAutoProxy
 public class BootRedisApplication {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         SpringApplication.run(BootRedisApplication.class, args);
-//        processImg("/Users/luoliang/Movies/", "/Users/luoliang/Downloads/ffmpeg-20180508-293a6e8-macos64-static/bin/ffmpeg");
+//        processImg("/Users/luoliang/Downloads/[王牌对王牌]0202期：经典西游记剧组重聚_bd.mp4", "/Users/luoliang/Downloads/ffmpeg-20180508-293a6e8-macos64-static/bin/ffmpeg");
         generateFixedSizeImage();
     }
 
-    private static void processImg(String vodFilePath, String ffmpegPath) {
+    private static void processImg(String vodFilePath, String ffmpegPath) throws InterruptedException, IOException {
         File file = new File(vodFilePath);
         if (!file.exists()) {
             System.err.println("路径[" + vodFilePath + "]对应的视频文件不存在!");
@@ -44,7 +48,8 @@ public class BootRedisApplication {
             commands.add(String.valueOf(d * i));
             commands.add("-aspect");
             commands.add("16:9");
-            commands.add(System.getProperty("user.dir") + "/" + UUID.randomUUID() + ".jpg");
+            String path = System.getProperty("user.dir") + "/" + UUID.randomUUID() + ".jpg";
+            commands.add(path);
             System.out.println(commands.toString().replaceAll(",", " "));
             try {
                 ProcessBuilder builder = new ProcessBuilder();
@@ -54,21 +59,50 @@ public class BootRedisApplication {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            Thread.sleep(2000);
+            System.out.println(getBytes(path));
+            System.out.println("删除文件");
+            Files.delete(Paths.get(path));
         }
+    }
+
+    /**
+     * 获得指定文件的byte数组
+     */
+    public static byte[] getBytes(String filePath) {
+        byte[] buffer = null;
+        try {
+            File file = new File(filePath);
+            FileInputStream fis = new FileInputStream(file);
+            ByteArrayOutputStream bos = new ByteArrayOutputStream(1000);
+            byte[] b = new byte[1000];
+            int n;
+            while ((n = fis.read(b)) != -1) {
+                bos.write(b, 0, n);
+            }
+            fis.close();
+            bos.close();
+            buffer = bos.toByteArray();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return buffer;
     }
 
     /**
      * 使用给定的图片生成指定大小的图片
      */
-    private static void generateFixedSizeImage(){
+    private static void generateFixedSizeImage() {
         try {
             Thumbnails.of("/Users/luoliang/Pictures/壁纸/02786_lakefornight_2560x1600.jpg")
-                    .sourceRegion(Positions.CENTER,500,500)
-                    .size(478,500)
+                    .sourceRegion(Positions.CENTER, 500, 500)
+                    .size(478, 500)
                     .keepAspectRatio(false)
-                    .toFile("/Users/luoliang/Downloads/newmeinv.jpg");
+                    .toFile("/Users/luoliang/Downloads/ssss.jpg");
         } catch (IOException e) {
             System.out.println("原因: " + e.getMessage());
         }
+        System.out.println(getBytes("/Users/luoliang/Downloads/ssss.jpg"));
     }
 }
