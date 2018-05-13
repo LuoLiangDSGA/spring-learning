@@ -25,7 +25,7 @@ public class BootRedisApplication {
 
     public static void main(String[] args) throws Exception {
         SpringApplication.run(BootRedisApplication.class, args);
-//        processImg("/Users/luoliang/Downloads/[王牌对王牌]0202期：经典西游记剧组重聚_bd.mp4", "/Users/luoliang/Downloads/ffmpeg-20180508-293a6e8-macos64-static/bin/ffmpeg");
+//        processImg("/Users/luoliang/Downloads/[王牌对王牌]0202期：经典西游记剧组重聚_bd.mp4", "/Users/luoliang/Downloads/ffmpeg-macos/bin/ffmpeg");
         generateFixedSizeImage();
     }
 
