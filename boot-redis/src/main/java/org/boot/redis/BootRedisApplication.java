@@ -25,8 +25,8 @@ public class BootRedisApplication {
 
     public static void main(String[] args) throws Exception {
         SpringApplication.run(BootRedisApplication.class, args);
-//        processImg("/Users/luoliang/Downloads/[王牌对王牌]0202期：经典西游记剧组重聚_bd.mp4", "/Users/luoliang/Downloads/ffmpeg-macos/bin/ffmpeg");
-        generateFixedSizeImage();
+        processImg("/Users/luoliang/Downloads/视频/35w888piCxTA.mp4", "/Users/luoliang/Downloads/ffmpeg-macos/bin/ffmpeg");
+//        generateFixedSizeImage();
     }
 
     private static void processImg(String vodFilePath, String ffmpegPath) throws InterruptedException, IOException {
@@ -34,7 +34,7 @@ public class BootRedisApplication {
         if (!file.exists()) {
             System.err.println("路径[" + vodFilePath + "]对应的视频文件不存在!");
         }
-        int d = 5;
+        int d = 1;
         for (int i = 1; i <= 6; i++) {
             List<String> commands = new ArrayList<>();
             commands.add(ffmpegPath);
@@ -48,7 +48,7 @@ public class BootRedisApplication {
             commands.add(String.valueOf(d * i));
             commands.add("-aspect");
             commands.add("16:9");
-            String path = System.getProperty("user.dir") + "/" + UUID.randomUUID() + ".jpg";
+            String path = "/Users/luoliang/Downloads/screenshot/" + UUID.randomUUID() + ".jpg";
             commands.add(path);
             System.out.println(commands.toString().replaceAll(",", " "));
             try {
@@ -59,10 +59,10 @@ public class BootRedisApplication {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            Thread.sleep(2000);
-            System.out.println(getBytes(path));
-            System.out.println("删除文件");
-            Files.delete(Paths.get(path));
+            Thread.sleep(1000);
+//            System.out.println(getBytes(path));
+//            System.out.println("删除文件");
+//            Files.delete(Paths.get(path));
         }
     }
 
