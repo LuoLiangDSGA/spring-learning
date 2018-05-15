@@ -10,8 +10,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -25,8 +23,8 @@ public class BootRedisApplication {
 
     public static void main(String[] args) throws Exception {
         SpringApplication.run(BootRedisApplication.class, args);
-        processImg("/Users/luoliang/Downloads/视频/35w888piCxTA.mp4", "/Users/luoliang/Downloads/ffmpeg-macos/bin/ffmpeg");
-//        generateFixedSizeImage();
+//        processImg("/Users/luoliang/Downloads/视频/35w888piCxTA.mp4", "/Users/luoliang/Downloads/ffmpeg-macos/bin/ffmpeg");
+        generateFixedSizeImage();
     }
 
     private static void processImg(String vodFilePath, String ffmpegPath) throws InterruptedException, IOException {
@@ -95,14 +93,13 @@ public class BootRedisApplication {
      */
     private static void generateFixedSizeImage() {
         try {
-            Thumbnails.of("/Users/luoliang/Pictures/壁纸/02786_lakefornight_2560x1600.jpg")
-                    .sourceRegion(Positions.CENTER, 500, 500)
-                    .size(478, 500)
-                    .keepAspectRatio(false)
+            Thumbnails.of("/Users/luoliang/Downloads/a904f707ea56f9135d6b2a2b1ea9338c.jpg")
+                    .sourceRegion(Positions.CENTER, 342, 478)
+                    .size(342, 478)
+                    .keepAspectRatio(true)
                     .toFile("/Users/luoliang/Downloads/ssss.jpg");
         } catch (IOException e) {
             System.out.println("原因: " + e.getMessage());
         }
-        System.out.println(getBytes("/Users/luoliang/Downloads/ssss.jpg"));
     }
 }
