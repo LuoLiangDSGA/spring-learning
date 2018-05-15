@@ -18,7 +18,6 @@ import java.util.UUID;
  * @author luoliang
  */
 @SpringBootApplication
-@EnableAspectJAutoProxy
 public class BootRedisApplication {
 
     public static void main(String[] args) throws Exception {
