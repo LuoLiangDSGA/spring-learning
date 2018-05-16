@@ -4,7 +4,7 @@ spring:
     consumer:
       group-id: foo
       auto-offset-reset: latest
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: 172.31.31.252:9092
 logging:
   level:
     org.boot.kafka.bootkafka: debug

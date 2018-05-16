@@ -64,38 +64,14 @@ public class BootRedisApplication {
     }
 
     /**
-     * 获得指定文件的byte数组
-     */
-    public static byte[] getBytes(String filePath) {
-        byte[] buffer = null;
-        try {
-            File file = new File(filePath);
-            FileInputStream fis = new FileInputStream(file);
-            ByteArrayOutputStream bos = new ByteArrayOutputStream(1000);
-            byte[] b = new byte[1000];
-            int n;
-            while ((n = fis.read(b)) != -1) {
-                bos.write(b, 0, n);
-            }
-            fis.close();
-            bos.close();
-            buffer = bos.toByteArray();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return buffer;
-    }
-
-    /**
      * 使用给定的图片生成指定大小的图片
      */
     private static void generateFixedSizeImage() {
         try {
-            Thumbnails.of("/Users/luoliang/Downloads/a904f707ea56f9135d6b2a2b1ea9338c.jpg")
+            Thumbnails.of("/Users/luoliang/Downloads/955ad5af26c5c743b3d208435fb0f3ca.jpg")
                     .sourceRegion(Positions.CENTER, 342, 478)
                     .size(342, 478)
-                    .keepAspectRatio(true)
+                    .keepAspectRatio(false)
                     .toFile("/Users/luoliang/Downloads/ssss.jpg");
         } catch (IOException e) {
             System.out.println("原因: " + e.getMessage());
