@@ -1,80 +1,38 @@
 package org.boot.redis;
 
-import net.coobird.thumbnailator.Thumbnails;
-import net.coobird.thumbnailator.geometry.Positions;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.data.redis.core.StringRedisTemplate;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import javax.annotation.Resource;
 
 /**
  * @author luoliang
  */
 @SpringBootApplication
-public class BootRedisApplication {
+@Slf4j
+public class BootRedisApplication implements CommandLineRunner {
+    @Resource
+    private StringRedisTemplate stringRedisTemplate;
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         SpringApplication.run(BootRedisApplication.class, args);
-//        processImg("/Users/luoliang/Downloads/视频/35w888piCxTA.mp4", "/Users/luoliang/Downloads/ffmpeg-macos/bin/ffmpeg");
-        generateFixedSizeImage();
     }
 
-    private static void processImg(String vodFilePath, String ffmpegPath) throws InterruptedException, IOException {
-        File file = new File(vodFilePath);
-        if (!file.exists()) {
-            System.err.println("路径[" + vodFilePath + "]对应的视频文件不存在!");
-        }
-        int d = 1;
-        for (int i = 1; i <= 6; i++) {
-            List<String> commands = new ArrayList<>();
-            commands.add(ffmpegPath);
-            commands.add("-i");
-            commands.add(vodFilePath);
-            commands.add("-y");
-            commands.add("-f");
-            commands.add("image2");
-            commands.add("-ss");
-            // 这个参数是设置截取视频多少秒时的画面
-            commands.add(String.valueOf(d * i));
-            commands.add("-aspect");
-            commands.add("16:9");
-            String path = "/Users/luoliang/Downloads/screenshot/" + UUID.randomUUID() + ".jpg";
-            commands.add(path);
-            System.out.println(commands.toString().replaceAll(",", " "));
-            try {
-                ProcessBuilder builder = new ProcessBuilder();
-                builder.command(commands);
-                builder.start();
-                System.out.println("截取成功");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            Thread.sleep(1000);
-//            System.out.println(getBytes(path));
-//            System.out.println("删除文件");
-//            Files.delete(Paths.get(path));
-        }
+    @Override
+    public void run(String... strings) throws Exception {
+        log.info("----------操作字符串----------");
+        operateString();
     }
 
     /**
-     * 使用给定的图片生成指定大小的图片
+     * 操作字符串
      */
-    private static void generateFixedSizeImage() {
-        try {
-            Thumbnails.of("/Users/luoliang/Downloads/955ad5af26c5c743b3d208435fb0f3ca.jpg")
-                    .sourceRegion(Positions.CENTER, 342, 478)
-                    .size(342, 478)
-                    .keepAspectRatio(false)
-                    .toFile("/Users/luoliang/Downloads/ssss.jpg");
-        } catch (IOException e) {
-            System.out.println("原因: " + e.getMessage());
-        }
+    private void operateString() {
+        stringRedisTemplate.opsForValue().set("author", "luoliang");
+        String value = stringRedisTemplate.opsForValue().get("author");
+        log.info("stringRedisTemplate输出值：{}", value);
     }
 }

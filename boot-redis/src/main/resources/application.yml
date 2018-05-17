@@ -1,2 +1,17 @@
-logging:
-  level: debug
+spring:
+  redis:
+    #Redis服务器地址，默认localhost
+    host: localhost
+    #Redis服务器端口，默认6379
+    port: 6379
+    pool:
+      #连接池最大连接数
+      max-active: 8
+      #最大阻塞等待时间，-1表示没有限制
+      max-wait: -1
+      #最大空闲连接
+      max-idle: 8
+      #最小空闲连接
+      min-idle: 0
+    #连接超时时间
+    timeout: 0
