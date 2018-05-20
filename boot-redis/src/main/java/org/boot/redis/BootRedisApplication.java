@@ -1,14 +1,18 @@
 package org.boot.redis;
 
 import lombok.extern.slf4j.Slf4j;
+import org.boot.redis.entity.User;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.ListOperations;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author luoliang
@@ -18,6 +22,8 @@ import java.util.List;
 public class BootRedisApplication implements CommandLineRunner {
     @Resource(name = "stringRedisTemplate")
     private StringRedisTemplate redisTemplate;
+    @Resource
+    private RedisTemplate<String, Object> objRedisTemplate;
 
     public static void main(String[] args) {
         SpringApplication.run(BootRedisApplication.class, args);
@@ -29,6 +35,8 @@ public class BootRedisApplication implements CommandLineRunner {
         operateString();
         log.info("----------Operate List----------");
         operateList();
+        log.info("----------Operate Hash----------");
+        operateHash();
     }
 
     /**
@@ -46,10 +54,34 @@ public class BootRedisApplication implements CommandLineRunner {
     private void operateList() {
         String key = "website";
         ListOperations<String, String> listOperations = redisTemplate.opsForList();
+        //从左压入栈
         listOperations.leftPush(key, "Github");
         listOperations.leftPush(key, "CSDN");
-        listOperations.leftPush(key, "SegmentFault");
+        //从右压入栈
+        listOperations.rightPush(key, "SegmentFault");
+        log.info("list size:{}", listOperations.size(key));
         List<String> list = listOperations.range(key, 0, 2);
         list.forEach(log::info);
+    }
+
+    /**
+     *
+     */
+    private void operateHash() {
+        String key = "user";
+        HashOperations<String, String, User> hashOperations = objRedisTemplate.opsForHash();
+        hashOperations.put(key, "user1", User.builder().name("Hulk").age(50).build());
+        hashOperations.put(key, "user2", User.builder().name("Thor").age(1500).build());
+        hashOperations.put(key, "user3", User.builder().name("Rogers").age(150).build());
+        log.info("hash size:{}", hashOperations.size(key));
+        log.info("--------拿到Map的key集合--------");
+        Set<String> keys = hashOperations.keys(key);
+        keys.forEach(log::info);
+        log.info("--------拿到Map的value集合--------");
+        List<User> users = hashOperations.values(key);
+        users.forEach(user -> log.info(user.toString()));
+        log.info("--------拿到user1的value--------");
+        User user = hashOperations.get(key, "user1");
+        log.info(user.toString());
     }
 }

@@ -1,6 +1,9 @@
 package org.boot.redis.entity;
 
+import lombok.Builder;
 import lombok.Data;
+
+import java.io.Serializable;
 
 /**
  * Created by IntelliJ IDEA.
@@ -10,7 +13,8 @@ import lombok.Data;
  * 要存储的对象
  **/
 @Data
-public class User {
+@Builder
+public class User implements Serializable {
     private String name;
 
     private Integer age;
