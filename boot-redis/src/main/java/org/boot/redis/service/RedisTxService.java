@@ -7,11 +7,6 @@ package org.boot.redis.service;
  * @date 2018/5/21
  **/
 public interface RedisTxService {
-    /**
-     * 存储String
-     *
-     * @return
-     */
     void save(String key, String value);
 
     String get(String key);
