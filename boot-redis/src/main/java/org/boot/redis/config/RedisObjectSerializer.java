@@ -13,8 +13,7 @@ import org.springframework.data.redis.serializer.SerializationException;
  * @date 2018/5/20
  **/
 public class RedisObjectSerializer implements RedisSerializer<Object> {
-
-    static final byte[] EMPTY_ARRAY = new byte[0];
+    private static final byte[] EMPTY_ARRAY = new byte[0];
     private Converter<Object, byte[]> serializer = new SerializingConverter();
     private Converter<byte[], Object> deserializer = new DeserializingConverter();
 

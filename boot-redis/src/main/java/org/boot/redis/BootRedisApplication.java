@@ -65,7 +65,7 @@ public class BootRedisApplication implements CommandLineRunner {
     }
 
     /**
-     *
+     * 操作hash，存放User对象
      */
     private void operateHash() {
         String key = "user";
