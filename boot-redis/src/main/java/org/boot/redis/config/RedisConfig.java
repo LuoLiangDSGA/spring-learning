@@ -20,7 +20,7 @@ public class RedisConfig {
     private JedisConnectionFactory jedisConnectionFactory;
 
     @Bean
-    public RedisTemplate<String, Object> redisTemplate() {
+    public RedisTemplate<String, Object> objRedisTemplate() {
         RedisTemplate<String, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(jedisConnectionFactory);
         template.setKeySerializer(new StringRedisSerializer());

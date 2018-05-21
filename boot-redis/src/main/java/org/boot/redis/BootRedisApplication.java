@@ -2,6 +2,7 @@ package org.boot.redis;
 
 import lombok.extern.slf4j.Slf4j;
 import org.boot.redis.entity.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -20,8 +21,8 @@ import java.util.Set;
 @SpringBootApplication
 @Slf4j
 public class BootRedisApplication implements CommandLineRunner {
-    @Resource(name = "stringRedisTemplate")
-    private StringRedisTemplate redisTemplate;
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
     @Resource
     private RedisTemplate<String, Object> objRedisTemplate;
 
@@ -31,20 +32,20 @@ public class BootRedisApplication implements CommandLineRunner {
 
     @Override
     public void run(String... strings) throws Exception {
-        log.info("----------Operate String----------");
-        operateString();
-        log.info("----------Operate List----------");
-        operateList();
-        log.info("----------Operate Hash----------");
-        operateHash();
+//        log.info("----------Operate String----------");
+//        operateString();
+//        log.info("----------Operate List----------");
+//        operateList();
+//        log.info("----------Operate Hash----------");
+//        operateHash();
     }
 
     /**
      * 操作字符串
      */
     private void operateString() {
-        redisTemplate.opsForValue().set("author", "luoliang");
-        String value = redisTemplate.opsForValue().get("author");
+        stringRedisTemplate.opsForValue().set("author", "luoliang");
+        String value = stringRedisTemplate.opsForValue().get("author");
         log.info("stringRedisTemplate输出值：{}", value);
     }
 
@@ -53,7 +54,7 @@ public class BootRedisApplication implements CommandLineRunner {
      */
     private void operateList() {
         String key = "website";
-        ListOperations<String, String> listOperations = redisTemplate.opsForList();
+        ListOperations<String, String> listOperations = stringRedisTemplate.opsForList();
         //从左压入栈
         listOperations.leftPush(key, "Github");
         listOperations.leftPush(key, "CSDN");
