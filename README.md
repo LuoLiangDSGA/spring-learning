@@ -1,6 +1,6 @@
 # Spring-Learning
-### Spring杂记
-记录本人平时各种瞎搞的Spring项目，其中既有工作过程中解决问题的方法，也有基础知识的复习，以及对一些新技术的折腾，欢迎star，一起交流学习
+### Spring学习
+记录平时学习的Spring项目，其中既有工作过程中解决问题的方法，也有基础知识的复习，以及对一些新技术的折腾，欢迎star，一起交流学习
 
 1. [Vue+SpringBoot前后端分离上传文件](https://luoliangdsga.github.io/2018/04/18/Vue-SpringBoot实现前后端分离的文件上传/)
 2. [SpringBoot+kafka](https://github.com/LuoLiangDSGA/SpringBoot-Learning/tree/master/boot-kafka)
@@ -9,3 +9,4 @@
 5. [SpringBoot使用quartz实现定时任务的动态增、删、改](https://github.com/LuoLiangDSGA/SpringBoot-Learning/tree/master/boot-quartz)
 6. [SpringBoot使用Elastic-Job，实现动态创建定时任务，任务持久化](https://luoliangdsga.github.io/2018/04/17/SpringBoot-ElasticJob/)
 7. [Spring之IOC的注入方式](https://luoliangdsga.github.io/2018/05/09/Spring之IOC的注入方式/)
+7. [SpringBoot中使用Redis的实践](https://luoliangdsga.github.io/2018/05/22/SpringBoot中使用Redis的实践/)
