@@ -208,8 +208,8 @@ public class RedisConfig {
 - @CachePut：配置于函数上，能够根据参数定义条件来进行缓存，它与@Cacheable不同的是，它每次都会真实调用函数，所以主要用于数据新增和修改操作上
 。它的参数与@Cacheable类似，具体功能可参考上面对@Cacheable参数的解析。
 - @CacheEvict：配置于函数上，通常用在删除方法上，用来从缓存中移除相应数据。除了同@Cacheable一样的参数之外，它还有下面两个参数：
-1. allEntries：非必需，默认为false。当为true时，会移除所有数据
-2. beforeInvocation：非必需，默认为false，会在调用方法之后移除数据。当为true时，会在调用方法之前移除数据。
+  1. allEntries：非必需，默认为false。当为true时，会移除所有数据
+  2. beforeInvocation：非必需，默认为false，会在调用方法之后移除数据。当为true时，会在调用方法之前移除数据。
 
 由于本项目没有涉及到数据库的链接，下面，我们来模拟数据库的操作，并把结果缓存到Redis中
 ```java
