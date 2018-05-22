@@ -14,6 +14,7 @@ Redis为这些数据结构提供了丰富的原子性操作。弥补了其他NoS
 ### 开始
 环境：JDK1.8，Maven3+，Redis3  
 需要预先安装好Redis，也可以使用Docker快速部署一个Redis，可以参考我之前的[文章](https://luoliangdsga.github.io/2018/04/26/使用Docker部署Redis/)  
+<!-- more -->
 
 新建一个SpringBoot项目，引入需要用到的相关maven依赖
 ```xml
