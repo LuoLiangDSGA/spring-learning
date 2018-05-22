@@ -34,12 +34,12 @@ public class BootRedisApplication implements CommandLineRunner {
 
     @Override
     public void run(String... strings) throws Exception {
-//        log.info("----------Operate String----------");
-//        operateString();
-//        log.info("----------Operate List----------");
-//        operateList();
-//        log.info("----------Operate Hash----------");
-//        operateHash();
+        log.info("----------Operate String----------");
+        operateString();
+        log.info("----------Operate List----------");
+        operateList();
+        log.info("----------Operate Hash----------");
+        operateHash();
     }
 
     /**
