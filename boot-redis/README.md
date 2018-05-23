@@ -285,6 +285,6 @@ public class RedisCacheServiceTest {
 再调用save方法，会把缓存中ID为1111111的User年龄更新为20，调用delete方法会删除缓存，和预期的结果一致，这里就不贴结果了，感兴趣的同学可以自行验证。
 
 ### 总结
-至此，整篇文章就结束了，文章包含了RedisTemplate的使用，以及Spring提供的@Cacheable等注解的使用，都是日常开发中常常用到的东西。
+至此，整篇文章就结束了，文章包含了RedisTemplate的使用，以及Spring @Cacheable等注解的使用，都是日常开发中常常用到的东西。
 
 最后，附上github源码，欢迎star，一起交流。[boot-redis](https://github.com/LuoLiangDSGA/Spring-Learning/tree/master/boot-redis)
