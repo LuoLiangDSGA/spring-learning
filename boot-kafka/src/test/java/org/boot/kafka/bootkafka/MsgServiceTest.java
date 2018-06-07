@@ -22,6 +22,6 @@ public class MsgServiceTest {
 
     @Test
     public void testSend() {
-        kafkaProviderService.sendMsg("fooooooooooooo");
+        kafkaProviderService.sendMsg("fooooooooooo");
     }
 }
