@@ -13,6 +13,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -22,7 +23,7 @@ import java.util.Set;
 @SpringBootApplication
 @EnableCaching
 @Slf4j
-public class BootRedisApplication implements CommandLineRunner {
+public class BootRedisApplication extends ArrayList implements CommandLineRunner {
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
     @Resource

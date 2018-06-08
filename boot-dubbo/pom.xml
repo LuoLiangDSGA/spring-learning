@@ -26,7 +26,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
         <dubbo-spring-boot-starter.version>0.1.0</dubbo-spring-boot-starter.version>
-        <fastjson_version>1.2.31</fastjson_version>
+        <fastjson-version>1.2.31</fastjson-version>
         <dubbo-provider.version>1.0.0-SNAPSHOT</dubbo-provider.version>
         <zk-client.version>0.2</zk-client.version>
     </properties>

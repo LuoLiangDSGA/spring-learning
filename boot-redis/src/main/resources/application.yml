@@ -15,3 +15,5 @@ spring:
       min-idle: 0
     #连接超时时间
     timeout: 0
+
+debug: true
