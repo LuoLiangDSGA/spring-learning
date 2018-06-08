@@ -1,4 +1,4 @@
-FROM openjdk:8-jre
+FROM openjdk:8-jdk-alpine
 
 MAINTAINER luoliang ll9420416@icloud.com
 ADD target/dubbo-provider-1.0.0.jar app.jar
