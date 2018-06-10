@@ -1,32 +1,43 @@
+---
+title: SpringBoot整合Dubbo2.5.10
+date: 2018-04-18 11:18:13
+categories: "SpringBoot"
+tags:
+     - SpringBoot
+     - Dubbo
+comments: true
+---
 ## SpringBoot整合Dubbo2.5.10，使用官方最新spring-boot-starter
 ### 开始
 Dubbo已经进入了Apache孵化器，并且发布了官方的spring-boot-starter0.1.0，用于简化dubbo应用的配置，主要包括了autoconfigure(自动装配)，externalized-configuration(外部化配置)，actuator(生产准备)等，可参考官方github  [dubbo-spring-boot-starter](https://github.com/apache/incubator-dubbo-spring-boot-project/releases/tag/0.1.0).
 ### 准备工作
-需要提前安装好JDK1.8，Maven，Zookeeper，Docker。
+需要提前安装好JDK1.8，Maven，Zookeeper。
 ### 初始化Maven项目
-为了整个项目结构清晰，使用模块化的maven项目。pom文件如下：
-``` 
+为了整个项目结构清晰，使用模块化的maven项目。pom文件如下：<!-- more -->
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.3.7.RELEASE</version>
+        <version>1.5.8.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
+
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.boot.dubbo</groupId>
-    <artifactId>springboot-dubbo</artifactId>
+    <artifactId>boot-dubbo</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>springboot-dubbo</name>
+    <name>boot-dubbo</name>
     <description>Dubbo project for Spring Boot</description>
 
     <modules>
         <module>dubbo-provider</module>
         <module>dubbo-consumer</module>
+        <module>dubbo-api</module>
     </modules>
 
     <properties>
@@ -34,9 +45,10 @@ Dubbo已经进入了Apache孵化器，并且发布了官方的spring-boot-starte
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
         <dubbo-spring-boot-starter.version>0.1.0</dubbo-spring-boot-starter.version>
-        <fastjson_version>1.2.31</fastjson_version>
-        <dubbo-provider.version>1.0.0-SNAPSHOT</dubbo-provider.version>
+        <springboot.version>1.5.8.RELEASE</springboot.version>
+        <fastjson-version>1.2.31</fastjson-version>
         <zk-client.version>0.2</zk-client.version>
+        <dockerfile-maven.version>1.4.3</dockerfile-maven.version>
     </properties>
 
     <dependencyManagement>
@@ -48,9 +60,9 @@ Dubbo已经进入了Apache孵化器，并且发布了官方的spring-boot-starte
             </dependency>
 
             <dependency>
-                <groupId>org.boot.dubbo</groupId>
-                <artifactId>dubbo-provider</artifactId>
-                <version>${dubbo-provider.version}</version>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-logging</artifactId>
+                <version>${springboot.version}</version>
             </dependency>
 
             <dependency>
@@ -60,11 +72,12 @@ Dubbo已经进入了Apache孵化器，并且发布了官方的spring-boot-starte
             </dependency>
         </dependencies>
     </dependencyManagement>
+
 </project>
 
-``` 
-主要分为两个模块，一个provider，一个consumer
 
+```
+主要分为三个模块，api，provider和consumer
 ![](https://ws4.sinaimg.cn/large/006tKfTcgy1fpkfm3haphj3097091aam.jpg)
 
 ### 创建生产者
@@ -72,25 +85,25 @@ Dubbo已经进入了Apache孵化器，并且发布了官方的spring-boot-starte
 
 1. 先配置生产者的pom.xml
 
-```
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.boot.dubbo</groupId>
     <artifactId>dubbo-provider</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>${parent.version}</version>
     <packaging>jar</packaging>
 
     <parent>
-        <artifactId>springboot-dubbo</artifactId>
+        <artifactId>boot-dubbo</artifactId>
         <groupId>org.boot.dubbo</groupId>
         <version>1.0.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <name>dubbo-provider</name>
-    <description>Dubbo project for Spring Boot:provider</description>
+    <description>Dubbo project for Spring Boot:Provider</description>
 
     <dependencies>
         <!-- Spring Boot dependencies -->
@@ -106,17 +119,39 @@ Dubbo已经进入了Apache孵化器，并且发布了官方的spring-boot-starte
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-logging</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
         </dependency>
 
         <dependency>
             <groupId>com.alibaba.boot</groupId>
             <artifactId>dubbo-spring-boot-starter</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>zookeeper</artifactId>
+                    <groupId>org.apache.zookeeper</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
             <groupId>com.101tec</groupId>
             <artifactId>zkclient</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.boot.dubbo</groupId>
+            <artifactId>dubbo-api</artifactId>
+            <version>${parent.version}</version>
         </dependency>
     </dependencies>
 
@@ -129,10 +164,12 @@ Dubbo已经进入了Apache孵化器，并且发布了官方的spring-boot-starte
         </plugins>
     </build>
 </project>
+
 ```
 
 2. 接着使用properties进行SpringBoot和Dubbo的配置，配置如下：
-```spring.application.name=springboot-dubbo-provider
+```yml
+   spring.application.name=springboot-dubbo-provider
    server.port=9090
    #dubbo配置
    dubbo.application.id=springboot-dubbo-provider
@@ -155,19 +192,19 @@ Dubbo已经进入了Apache孵化器，并且发布了官方的spring-boot-starte
    management.port=9091
  ```
  3. 进行了上面两步之后，Dubbo已经集成好了，接下来就可以直接开始撸服务代码了，可以直接使用注解来暴露服务接口
-* 先写一个interface
- ```
-public interface DubboService {
+* 先在api中写一个interface
+ ```java
+public interface HelloService {
     String sayHello(String name);
 }
 ```
 * 实现接口，加上自己的业务逻辑
-```
+```java
 @Service(version = "1.0.0",
         application = "${dubbo.application.id}",
         protocol = "${dubbo.protocol.id}",
         registry = "${dubbo.registry.id}")
-public class DubboServiceImpl implements DubboService {
+public class HelloServiceImpl implements HelloService {
 
     @Override
     public String sayHello(String name) {
@@ -181,25 +218,25 @@ public class DubboServiceImpl implements DubboService {
 
 1. 配置消费者者的pom.xml
 
-```
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.boot.dubbo</groupId>
     <artifactId>dubbo-consumer</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>${parent.version}</version>
     <packaging>jar</packaging>
 
     <parent>
-        <artifactId>springboot-dubbo</artifactId>
+        <artifactId>boot-dubbo</artifactId>
         <groupId>org.boot.dubbo</groupId>
         <version>1.0.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <name>dubbo-consumer</name>
-    <description>Dubbo project for Spring Boot:consumer</description>
+    <description>Dubbo project for Spring Boot:Consumer</description>
 
     <dependencies>
         <!-- Spring Boot dependencies -->
@@ -219,18 +256,29 @@ public class DubboServiceImpl implements DubboService {
         </dependency>
 
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-logging</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>com.alibaba.boot</groupId>
             <artifactId>dubbo-spring-boot-starter</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>org.boot.dubbo</groupId>
-            <artifactId>dubbo-provider</artifactId>
+            <groupId>com.101tec</groupId>
+            <artifactId>zkclient</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.101tec</groupId>
-            <artifactId>zkclient</artifactId>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.boot.dubbo</groupId>
+            <artifactId>dubbo-api</artifactId>
+            <version>${parent.version}</version>
         </dependency>
     </dependencies>
 
@@ -242,12 +290,11 @@ public class DubboServiceImpl implements DubboService {
             </plugin>
         </plugins>
     </build>
-
 </project>
 
 ```
 2. application.properties配置如下:
-```
+```yml
 spring.application.name=springboot-dubbo-consumer
 server.port=8081
 #dubbo配置
@@ -260,21 +307,21 @@ dubbo.registry.address=zookeeper://localhost:2181
 management.port=8082
 ```
 3. 编写service来消费dubbo的服务，主要代码如下：
-```
+```java
 @Service
 public class ConsumerServiceImpl implements ConsumerService {
     @Reference(version = "1.0.0",
             application = "${dubbo.application.id}")
-    private DubboService dubboService;
+    private HelloService helloService;
 
     @Override
     public String sayHello(String name) {
-        return dubboService.sayHello(name);
+        return helloService.sayHello(name);
     }
 }
 ```
-在mvc的controller中注入此服务
-```
+    在mvc的controller中注入此服务
+```java
 @RestController
 @RequestMapping("/user")
 public class DefaultController {
@@ -290,14 +337,13 @@ public class DefaultController {
 ```
 ##### 到这里，整个项目基本结构已经搭建完成，consumer已经能够消费provider提供的服务。
 
-现在来测试一下，分别启动provider和consumer，打开浏览器，输入http://localhost:8081/user/sayHello?name=dubbo
+> 现在来测试一下，分别启动provider和consumer，打开浏览器，输入http://localhost:8081/user/sayHello?name=dubbo
 
 可以看到，返回的结果和预期一样，说明项目已经成功集成
 
 ![](https://ws1.sinaimg.cn/large/006tKfTcgy1fpkgcg2ykuj30cm037dg5.jpg)
 
-需要源码请移步本人github，如果能顺手star就更好啦! [boot-dubbo](https://github.com/LuoLiangDSGA/SpringBoot-Learning/tree/master/boot-dubbo)
+需要源码请移步本人github，如果能顺手star就更好啦! [boot-dubbo](https://github.com/LuoLiangDSGA/SpringBoot-Learning/tree/master/boot-dubbo)，[下一篇](https://luoliangdsga.github.io/2018/06/10/使用Docker容器化SpringBoot-Dubbo应用的实践/)博客接这篇博客，学习使用Docker容器化SpringBoot+Dubbo应用。
 
 ### 参考
 * https://github.com/apache/incubator-dubbo-spring-boot-project
-
