@@ -78,7 +78,7 @@ Dubbo已经进入了Apache孵化器，并且发布了官方的spring-boot-starte
 
 ```
 主要分为三个模块，api，provider和consumer
-![](https://ws4.sinaimg.cn/large/006tKfTcgy1fpkfm3haphj3097091aam.jpg)
+![](https://ws4.sinaimg.cn/large/006tKfTcgy1fs6hxodvrjj30dw05gmxf.jpg)
 
 ### 创建生产者
 有了spring-boot-starter，dubbo的配置变得非常简单，再也不用像以前一样配置一大堆xml文件，只需要几个简单的配置，就可以做到开箱即用。
