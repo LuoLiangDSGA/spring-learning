@@ -2,6 +2,7 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <groupId>org.boot.dubbo</groupId>
     <artifactId>dubbo-provider</artifactId>
     <version>${parent.version}</version>
     <packaging>jar</packaging>
@@ -14,7 +15,7 @@
     </parent>
 
     <name>dubbo-provider</name>
-    <description>Dubbo project for Spring Boot:provider</description>
+    <description>Dubbo project for Spring Boot:Provider</description>
 
     <dependencies>
         <!-- Spring Boot dependencies -->
@@ -57,6 +58,12 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.boot.dubbo</groupId>
+            <artifactId>dubbo-api</artifactId>
+            <version>${parent.version}</version>
         </dependency>
     </dependencies>
 

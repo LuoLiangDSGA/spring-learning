@@ -3,7 +3,7 @@ package org.boot.dubbo.consumer.service.impl;
 import com.alibaba.dubbo.config.annotation.Reference;
 import lombok.extern.slf4j.Slf4j;
 import org.boot.dubbo.consumer.service.ConsumerService;
-import org.boot.dubbo.provider.service.DubboService;
+import org.boot.dubbo.consumer.service.HelloService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -17,11 +17,11 @@ import org.springframework.stereotype.Service;
 public class ConsumerServiceImpl implements ConsumerService {
     @Reference(version = "1.0.0",
             application = "${dubbo.application.id}")
-    private DubboService dubboService;
+    private HelloService helloService;
 
     @Override
     public String sayHello(String name) {
-        log.debug("invoke service {}", dubboService.getClass());
-        return dubboService.sayHello(name);
+        log.debug("invoke service {}", helloService.getClass());
+        return helloService.sayHello(name);
     }
 }

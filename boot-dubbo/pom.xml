@@ -20,6 +20,7 @@
     <modules>
         <module>dubbo-provider</module>
         <module>dubbo-consumer</module>
+        <module>dubbo-api</module>
     </modules>
 
     <properties>
@@ -28,7 +29,6 @@
         <java.version>1.8</java.version>
         <dubbo-spring-boot-starter.version>0.1.0</dubbo-spring-boot-starter.version>
         <fastjson-version>1.2.31</fastjson-version>
-        <dubbo-provider.version>1.0.0-SNAPSHOT</dubbo-provider.version>
         <zk-client.version>0.2</zk-client.version>
         <dockerfile-maven.version>1.4.3</dockerfile-maven.version>
     </properties>
@@ -39,12 +39,6 @@
                 <groupId>com.alibaba.boot</groupId>
                 <artifactId>dubbo-spring-boot-starter</artifactId>
                 <version>${dubbo-spring-boot-starter.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.boot.dubbo</groupId>
-                <artifactId>dubbo-provider</artifactId>
-                <version>${dubbo-provider.version}</version>
             </dependency>
 
             <dependency>

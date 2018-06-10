@@ -1,8 +1,8 @@
-package org.boot.dubbo.provider.service.impl;
+package org.boot.dubbo.provider.service;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import lombok.extern.slf4j.Slf4j;
-import org.boot.dubbo.provider.service.DubboService;
+import org.boot.dubbo.consumer.service.HelloService;
 
 /**
  * Created by IntelliJ IDEA.
@@ -15,7 +15,7 @@ import org.boot.dubbo.provider.service.DubboService;
         protocol = "${dubbo.protocol.id}",
         registry = "${dubbo.registry.id}")
 @Slf4j
-public class DubboServiceImpl implements DubboService {
+public class HelloServiceImpl implements HelloService {
 
     @Override
     public String sayHello(String name) {
