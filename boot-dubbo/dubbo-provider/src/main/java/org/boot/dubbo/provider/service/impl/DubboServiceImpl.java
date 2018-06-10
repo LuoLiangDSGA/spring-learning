@@ -1,6 +1,7 @@
 package org.boot.dubbo.provider.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Service;
+import lombok.extern.slf4j.Slf4j;
 import org.boot.dubbo.provider.service.DubboService;
 
 /**
@@ -13,10 +14,12 @@ import org.boot.dubbo.provider.service.DubboService;
         application = "${dubbo.application.id}",
         protocol = "${dubbo.protocol.id}",
         registry = "${dubbo.registry.id}")
+@Slf4j
 public class DubboServiceImpl implements DubboService {
 
     @Override
     public String sayHello(String name) {
+        log.debug("DubboService被调用，传入：{}", name);
         return "Hello, " + name + " (from Spring Boot)";
     }
 }

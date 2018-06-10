@@ -7,13 +7,14 @@
         <version>1.5.8.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
+
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.boot.dubbo</groupId>
     <artifactId>boot-dubbo</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>springboot-dubbo</name>
+    <name>boot-dubbo</name>
     <description>Dubbo project for Spring Boot</description>
 
     <modules>
@@ -29,6 +30,7 @@
         <fastjson-version>1.2.31</fastjson-version>
         <dubbo-provider.version>1.0.0-SNAPSHOT</dubbo-provider.version>
         <zk-client.version>0.2</zk-client.version>
+        <dockerfile-maven.version>1.4.3</dockerfile-maven.version>
     </properties>
 
     <dependencyManagement>
@@ -46,11 +48,33 @@
             </dependency>
 
             <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-logging</artifactId>
+                <version>1.5.8.RELEASE</version>
+            </dependency>
+
+            <dependency>
                 <groupId>com.101tec</groupId>
                 <artifactId>zkclient</artifactId>
                 <version>${zk-client.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                </plugin>
+                <plugin>
+                    <groupId>com.spotify</groupId>
+                    <artifactId>dockerfile-maven-plugin</artifactId>
+                    <version>${dockerfile-maven.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
 
 </project>
