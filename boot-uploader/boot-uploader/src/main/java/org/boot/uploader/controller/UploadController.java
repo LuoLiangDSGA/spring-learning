@@ -28,10 +28,6 @@ public class UploadController {
     public String chunk(UploadParam uploadParam) {
         log.debug(uploadParam.toString());
         MultipartFile file = uploadParam.getFile();
-        if (Objects.isNull(file) || file.isEmpty()) {
-            log.error("文件为空");
-            return "文件为空，请重新上传";
-        }
 
         try {
             byte[] bytes = file.getBytes();
@@ -43,6 +39,7 @@ public class UploadController {
             //文件写入指定路径
             Files.write(path, bytes);
             log.debug("文件写入成功...");
+
             return "文件上传成功";
         } catch (IOException e) {
             e.printStackTrace();
