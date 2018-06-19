@@ -5,12 +5,13 @@
 
 <script>
   export default {
-    data () {
+    data() {
       return {
         options: {
           target: '/boot/uploader/chunk',
           testChunks: false,
-          simultaneousUploads: 1
+          simultaneousUploads: 1,
+          chunkSize: 10 * 1024 * 1024
         },
         attrs: {
           accept: 'image/*'
@@ -25,14 +26,16 @@
       }
     },
     methods: {
-      complete () {
+      // 上传完成
+      complete() {
         console.log('complete', arguments)
       },
-      fileComplete () {
+      // 一个根文件（文件夹）成功上传完成。
+      fileComplete() {
         console.log('file complete', arguments)
       }
     },
-    mounted () {
+    mounted() {
       this.$nextTick(() => {
         window.uploader = this.$refs.uploader.uploader
       })
