@@ -1,0 +1,17 @@
+server:
+  port: 8081
+  servlet:
+    path: /boot
+
+prop:
+  upload-folder: files/
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: 10Mb
+
+logging:
+  level:
+    org.boot.uploader.*: debug
+
