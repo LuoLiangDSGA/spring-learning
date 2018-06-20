@@ -4,6 +4,9 @@
 </template>
 
 <script>
+  import axios from 'axios'
+  import qs from 'qs'
+
   export default {
     data() {
       return {
@@ -11,7 +14,20 @@
           target: '/boot/uploader/chunk',
           testChunks: true,
           simultaneousUploads: 1,
-          chunkSize: 10 * 1024 * 1024
+          chunkSize: 10 * 1024 * 1024,
+          generateUniqueIdentifier: function () {
+            let s = [];
+            let hexDigits = "0123456789abcdef";
+            for (let i = 0; i < 36; i++) {
+              s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
+            }
+            s[14] = "4";
+            s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1);
+            s[8] = s[13] = s[18] = s[23] = "-";
+            const uuid = s.join("");
+
+            return uuid;
+          }
         },
         attrs: {
           accept: 'image/*'
@@ -33,7 +49,17 @@
       // 一个根文件（文件夹）成功上传完成。
       fileComplete() {
         console.log('file complete', arguments)
-
+        const file = arguments[0].file;
+        axios.post('/boot/uploader/mergeFile', qs.stringify({
+          filename: file.name,
+          identifier: arguments[0].uniqueIdentifier,
+          totalSize: file.size,
+          type: file.type
+        })).then(function (response) {
+          console.log(response);
+        }).catch(function (error) {
+          console.log(error);
+        });
       }
     },
     mounted() {

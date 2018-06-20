@@ -43,6 +43,10 @@ public class UploadParam implements Serializable {
      * 总块数
      */
     private Integer totalChunks;
+    /**
+     * 文件类型
+     */
+    private String type;
 
     private MultipartFile file;
 }

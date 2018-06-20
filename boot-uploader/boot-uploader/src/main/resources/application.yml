@@ -3,16 +3,27 @@ server:
   servlet:
     path: /boot
 
-prop:
-  upload-folder: files/
-
 spring:
   servlet:
     multipart:
       max-file-size: 20MB
       max-request-size: 20MB
+  datasource:
+    url: jdbc:mysql://localhost:3306/test?characterEncoding=utf-8&useSSL=false
+    username: root
+    password: root
+    driver-class-name: com.mysql.jdbc.Driver
+  jpa:
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: create-drop
+    show-sql: true
 
 logging:
   level:
     org.boot.uploader.*: debug
+
+prop:
+  upload-folder: files
 
