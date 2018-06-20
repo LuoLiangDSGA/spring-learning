@@ -9,7 +9,7 @@
       return {
         options: {
           target: '/boot/uploader/chunk',
-          testChunks: false,
+          testChunks: true,
           simultaneousUploads: 1,
           chunkSize: 10 * 1024 * 1024
         },
@@ -33,6 +33,7 @@
       // 一个根文件（文件夹）成功上传完成。
       fileComplete() {
         console.log('file complete', arguments)
+
       }
     },
     mounted() {

@@ -3,6 +3,7 @@ target/
 logs/
 .DS_Store
 output/
+files/
 
 ### STS ###
 .apt_generated

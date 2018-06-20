@@ -1,6 +1,7 @@
 package org.boot.uploader.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.boot.uploader.model.FileInfo;
 import org.boot.uploader.model.UploadParam;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -50,7 +51,7 @@ public class UploadController {
     }
 
     @PostMapping("/mergeFile")
-    public String mergeFile() {
+    public String mergeFile(FileInfo fileInfo) {
 
 
         return "";
@@ -61,12 +62,7 @@ public class UploadController {
         Path destFile = Paths.get(destName);
         Files.createFile(destFile);
         Files.list(Paths.get("files/"))
-                .filter(path -> {
-                    if (path.getFileName().toString().contains("-")) {
-                        return true;
-                    }
-                    return false;
-                })
+                .filter(path -> path.getFileName().toString().contains("-"))
                 .sorted((o1, o2) -> {
                     String p1 = o1.getFileName().toString();
                     String p2 = o2.getFileName().toString();
