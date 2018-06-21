@@ -84,6 +84,8 @@ public class UploadController {
                     .forEach(path -> {
                         try {
                             Files.write(targetPath, Files.readAllBytes(path), StandardOpenOption.APPEND);
+                            //合并后删除该块
+                            Files.delete(path);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
