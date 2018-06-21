@@ -15,19 +15,30 @@
           testChunks: true,
           simultaneousUploads: 1,
           chunkSize: 10 * 1024 * 1024,
-          generateUniqueIdentifier: function () {
-            let s = [];
-            let hexDigits = "0123456789abcdef";
-            for (let i = 0; i < 36; i++) {
-              s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
-            }
-            s[14] = "4";
-            s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1);
-            // s[8] = s[13] = s[18] = s[23] = "-";
-            const uuid = s.join("");
-
-            return uuid;
-          }
+          // checkChunkUploadedByResponse: function (chunk, message) {
+          //   let objMessage = {}
+          //   try {
+          //     objMessage = JSON.parse(message)
+          //   } catch (e) {
+          //   }
+          //   // fake response
+          //   // objMessage.uploaded_chunks = [2, 3, 4, 5, 6, 8, 10, 11, 12, 13, 17, 20, 21]
+          //   // check the chunk is uploaded
+          //   return (objMessage.uploaded_chunks || []).indexOf(chunk.offset + 1) >= 0
+          // },
+          // generateUniqueIdentifier: function () {
+          //   let s = [];
+          //   let hexDigits = "0123456789abcdef";
+          //   for (let i = 0; i < 36; i++) {
+          //     s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
+          //   }
+          //   s[14] = "4";
+          //   s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1);
+          //   // s[8] = s[13] = s[18] = s[23] = "-";
+          //   const uuid = s.join("");
+          //
+          //   return uuid;
+          // }
         },
         attrs: {
           accept: 'image/*'
