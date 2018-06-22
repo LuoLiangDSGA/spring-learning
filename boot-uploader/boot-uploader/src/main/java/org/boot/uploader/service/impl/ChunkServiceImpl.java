@@ -29,7 +29,7 @@ public class ChunkServiceImpl implements ChunkService {
     }
 
     @Override
-    public Chunk getChunk(String identifier, Integer chunkNumber) {
+    public Chunk checkChunk(String identifier, Integer chunkNumber) {
         Specification<Chunk> specification = (Specification<Chunk>) (root, criteriaQuery, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
             predicates.add(criteriaBuilder.equal(root.get("identifier"), identifier));
