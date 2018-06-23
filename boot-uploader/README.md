@@ -30,7 +30,7 @@ tags:
 
 > 准备好这些之后，就可以往下看了。
 
-### 后端
+### 后端
 > 新建一个SpringBoot项目，我这里使用的是SpringBoot2，引入mvc，jpa，mysql相关的依赖。
 ```java
 <dependencies>
@@ -400,3 +400,17 @@ dev: {
   }
 ```
 proxyTable表示代理配置表，将特定的请求代理到指定的API接口，这里是将'localhost:8080/boot/xxx'代理到'http://localhost:8081/boot/xxx'。
+
+> 现在可以开始验证了，分别启动前后端的项目
+- 前端
+```
+npm install
+npm run dev
+```
+- 后端
+可以通过command line，也可以直接运行BootUploaderApplication的main()方法
+
+运行效果就像最开始的那张图，上传暂停之后更换浏览器，选择同一个文件可以实现继续上传的效果，大家可以自行进行尝试:blush:，代码会在我的[GitHub](https://github.com/LuoLiangDSGA/spring-learning/tree/master/boot-uploader)上进行更新。
+
+### 最后
+整篇文章到这里差不多就结束了，这个项目主要作用也是作为demo用来学习，肯定会有不完善的地方，有更好的方法也希望能指出，共同交流学习:smiley:。
