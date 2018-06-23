@@ -99,7 +99,7 @@ prop:
   upload-folder: files
 ```
 
-> 定义文件上传相关的类，一个是FileInfo，代表文件的基础信息；一个是Chunk，代表文件块。
+> 定义文件上传相关的类，一个是FileInfo，代表文件的基础信息；一个是Chunk，代表文件块。
 
 > FileInfo.java
 ```java
@@ -184,7 +184,7 @@ public class Chunk implements Serializable {
 }
 ```
 
-> 编写文件块相关的业务操作
+> 编写文件块相关的业务操作
 ```java
 @Service
 public class ChunkServiceImpl implements ChunkService {
@@ -268,9 +268,9 @@ public class UploadController {
     }
 }
 ```
-1. 文章开头就提到了前后端分离，既然是前后端分离，肯定会涉及到跨域问题，在上一篇文章中是通过springMVC的@CrossOrigin注解来解决跨域问题，这里并没有使用这个注解，在下面的前端项目中会使用一个node的中间件来做代理，解决跨域的问题。
-2. 可以看到有两个/chunk路由，第一个是post方法，用于上传并存储文件块，需要对文件块名进行编号，再存储在指定路径下；第二个是get方法，前端上传之前会先进行检测，如果此文件块已经上传过，就可以实现断点和快传。
-3. /mergeFile用于合并文件，在所有块上传完毕后，前端会调用此接口进行制定文件的合并。其中的merge方法是会遍历指定路径下的文件块，并且按照文件名中的数字进行排序后，再合并成一个文件，否则合并后的文件会无法使用，代码如下：
+1. 文章开头就提到了前后端分离，既然是前后端分离，肯定会涉及到跨域问题，在上一篇文章中是通过springMVC的@CrossOrigin注解来解决跨域问题，这里并没有使用这个注解，在下面的前端项目中会使用一个node的中间件来做代理，解决跨域的问题。
+2. 可以看到有两个/chunk路由，第一个是post方法，用于上传并存储文件块，需要对文件块名进行编号，再存储在指定路径下；第二个是get方法，前端上传之前会先进行检测，如果此文件块已经上传过，就可以实现断点和快传。
+3. /mergeFile用于合并文件，在所有块上传完毕后，前端会调用此接口进行制定文件的合并。其中的merge方法是会遍历指定路径下的文件块，并且按照文件名中的数字进行排序后，再合并成一个文件，否则合并后的文件会无法使用，代码如下：
 ```java
 public static void merge(String targetFile, String folder) {
         try {
@@ -373,7 +373,7 @@ public static void merge(String targetFile, String folder) {
 
 **更多说明请直接参考[vue-uploader](https://github.com/simple-uploader/vue-uploader)**
 
-> 解决跨域问题
+> 解决跨域问题
 
 这里使用了http-proxy-middleware这个node中间件，可以对前端的请求进行转发，转发到指定的路由。
 #### 在index.js中进行配置，如下：
@@ -407,9 +407,9 @@ npm install
 npm run dev
 ```
 - 后端
-可以通过command line，也可以直接运行BootUploaderApplication的main()方法
+可以通过command line，也可以直接运行BootUploaderApplication的main()方法
 
-运行效果就像最开始的那张图，上传暂停之后更换浏览器，选择同一个文件可以实现继续上传的效果，大家可以自行进行尝试:blush:，代码会在我的[GitHub](https://github.com/LuoLiangDSGA/spring-learning/tree/master/boot-uploader)上进行更新。
+运行效果就像最开始的那张图，上传暂停之后更换浏览器，选择同一个文件可以实现继续上传的效果，大家可以自行进行尝试:blush:，代码会在我的[GitHub](https://github.com/LuoLiangDSGA/spring-learning/tree/master/boot-uploader)上进行更新。
 
 ### 最后
 整篇文章到这里差不多就结束了，这个项目主要作用也是作为demo用来学习，有很多可以扩展的地方，肯定也会有不完善的地方，有更好的方法也希望能指出，共同交流学习:smiley:。
