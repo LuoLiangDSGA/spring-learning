@@ -25,19 +25,6 @@
           //   // objMessage.uploaded_chunks = [2, 3, 4, 5, 6, 8, 10, 11, 12, 13, 17, 20, 21]
           //   // check the chunk is uploaded
           //   return (objMessage.uploaded_chunks || []).indexOf(chunk.offset + 1) >= 0
-          // },
-          // generateUniqueIdentifier: function () {
-          //   let s = [];
-          //   let hexDigits = "0123456789abcdef";
-          //   for (let i = 0; i < 36; i++) {
-          //     s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
-          //   }
-          //   s[14] = "4";
-          //   s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1);
-          //   // s[8] = s[13] = s[18] = s[23] = "-";
-          //   const uuid = s.join("");
-          //
-          //   return uuid;
           // }
         },
         attrs: {
@@ -83,11 +70,11 @@
 
 <style>
   .uploader-example {
-    width: 880px;
+    width: 1000px;
     padding: 15px;
     margin: 40px auto 0;
     font-size: 12px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, .4);
+    box-shadow: 0 0 10px rgba(62, 146, 203, 0.4);
   }
 
   .uploader-example .uploader-btn {

@@ -45,8 +45,7 @@ public class UploadController {
 
         try {
             byte[] bytes = file.getBytes();
-            Path path = Paths.get(generatePath(uploadFolder, chunk.getIdentifier(), chunk.getFilename(),
-                    chunk.getChunkNumber()));
+            Path path = Paths.get(generatePath(uploadFolder, chunk));
             //文件写入指定路径
             Files.write(path, bytes);
             log.debug("文件 {} 写入成功, uuid:{}", chunk.getFilename(), chunk.getIdentifier());

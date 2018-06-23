@@ -1,5 +1,7 @@
 package org.boot.uploader.util;
 
+import org.boot.uploader.model.Chunk;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -11,9 +13,9 @@ import java.nio.file.StandardOpenOption;
  */
 public class FileUtils {
 
-    public static String generatePath(String uploadFolder, String identifier, String originalFilename, Integer chunkNumber) {
+    public static String generatePath(String uploadFolder, Chunk chunk) {
         StringBuilder sb = new StringBuilder();
-        sb.append(uploadFolder).append("/").append(identifier);
+        sb.append(uploadFolder).append("/").append(chunk.getIdentifier());
         //判断uploadFolder/identifier 路径是否存在，不存在则创建
         if (!Files.isWritable(Paths.get(sb.toString()))) {
             try {
@@ -24,9 +26,9 @@ public class FileUtils {
         }
 
         return sb.append("/")
-                .append(originalFilename)
+                .append(chunk.getFilename())
                 .append("-")
-                .append(chunkNumber).toString();
+                .append(chunk.getChunkNumber()).toString();
     }
 
     /**
