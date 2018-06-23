@@ -21,5 +21,5 @@ public interface ChunkService {
      * @param chunkNumber
      * @return
      */
-    Chunk checkChunk(String identifier, Integer chunkNumber);
+    boolean checkChunk(String identifier, Integer chunkNumber);
 }

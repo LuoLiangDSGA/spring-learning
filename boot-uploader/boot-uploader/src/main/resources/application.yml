@@ -17,7 +17,7 @@ spring:
     properties:
       hibernate:
         hbm2ddl:
-          auto: create-drop
+          auto: update
     show-sql: true
 
 logging:

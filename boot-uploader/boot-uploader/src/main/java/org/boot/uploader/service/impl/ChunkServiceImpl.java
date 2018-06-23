@@ -7,10 +7,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +26,7 @@ public class ChunkServiceImpl implements ChunkService {
     }
 
     @Override
-    public Chunk checkChunk(String identifier, Integer chunkNumber) {
+    public boolean checkChunk(String identifier, Integer chunkNumber) {
         Specification<Chunk> specification = (Specification<Chunk>) (root, criteriaQuery, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
             predicates.add(criteriaBuilder.equal(root.get("identifier"), identifier));
@@ -38,7 +35,7 @@ public class ChunkServiceImpl implements ChunkService {
             return criteriaQuery.where(predicates.toArray(new Predicate[predicates.size()])).getRestriction();
         };
 
-        return chunkRepository.findOne(specification).orElse(null);
+        return chunkRepository.findOne(specification).orElse(null) == null;
     }
 
 }

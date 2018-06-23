@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Objects;
 
 import static org.boot.uploader.util.FileUtils.generatePath;
 import static org.boot.uploader.util.FileUtils.merge;
@@ -60,7 +59,7 @@ public class UploadController {
 
     @GetMapping("/chunk")
     public Object checkChunk(Chunk chunk, HttpServletResponse response) {
-        if (Objects.isNull(chunkService.checkChunk(chunk.getIdentifier(), chunk.getChunkNumber()))) {
+        if (chunkService.checkChunk(chunk.getIdentifier(), chunk.getChunkNumber())) {
             response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
         }
 
