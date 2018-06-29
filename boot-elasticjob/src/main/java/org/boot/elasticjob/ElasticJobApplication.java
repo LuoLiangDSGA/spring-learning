@@ -1,6 +1,5 @@
 package org.boot.elasticjob;
 
-import org.boot.elasticjob.job.ElasticJobHandler;
 import org.boot.elasticjob.service.ElasticJobService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
