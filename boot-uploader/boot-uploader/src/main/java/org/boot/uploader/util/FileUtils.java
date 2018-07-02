@@ -1,6 +1,8 @@
 package org.boot.uploader.util;
 
+import lombok.extern.slf4j.Slf4j;
 import org.boot.uploader.model.Chunk;
+import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -11,6 +13,7 @@ import java.nio.file.StandardOpenOption;
  * @author luoliang
  * @date 2018/6/20
  */
+@Slf4j
 public class FileUtils {
 
     public static String generatePath(String uploadFolder, Chunk chunk) {
@@ -18,10 +21,11 @@ public class FileUtils {
         sb.append(uploadFolder).append("/").append(chunk.getIdentifier());
         //判断uploadFolder/identifier 路径是否存在，不存在则创建
         if (!Files.isWritable(Paths.get(sb.toString()))) {
+            log.info("path not exist,create path: {}", sb.toString());
             try {
                 Files.createDirectories(Paths.get(sb.toString()));
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error(e.getMessage(), e);
             }
         }
 
@@ -56,11 +60,11 @@ public class FileUtils {
                             //合并后删除该块
                             Files.delete(path);
                         } catch (IOException e) {
-                            e.printStackTrace();
+                            log.error(e.getMessage(), e);
                         }
                     });
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
         }
     }
 }

@@ -17,13 +17,13 @@ spring:
     properties:
       hibernate:
         hbm2ddl:
-          auto: update
-    show-sql: true
+          auto: create-drop
+    show-sql: false
 
 logging:
   level:
     org.boot.uploader.*: debug
 
 prop:
-  upload-folder: files
+  upload-folder: ./files
 
