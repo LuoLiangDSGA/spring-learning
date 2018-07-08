@@ -24,3 +24,6 @@ header
   "typ": "JWT"
 }
 ```
+
+> Spring Security
+GrantedAuthority  所有的Authentication实现类都保存了一个GrantedAuthority列表，其表示用户所具有的权限。
