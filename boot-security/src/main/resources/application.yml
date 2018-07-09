@@ -4,13 +4,11 @@ server:
 logging:
   level:
     root: WARN
-    org.springframework.web: INFO
-    org.springframework.security: INFO
+    org.springframework.web: DEBUG
+    org.springframework.security: DEBUG
     org.boot.security: DEBUG
 
 spring:
-  thymeleaf:
-    cache: false
   datasource:
       url: jdbc:mysql://localhost:3306/test?characterEncoding=utf-8&useSSL=false
       username: root
