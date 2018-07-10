@@ -21,3 +21,4 @@ spring:
 
 jwt:
   secret: sign
+  expire: 3000
