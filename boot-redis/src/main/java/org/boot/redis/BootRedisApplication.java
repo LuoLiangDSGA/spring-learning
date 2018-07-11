@@ -34,7 +34,7 @@ public class BootRedisApplication extends ArrayList implements CommandLineRunner
     }
 
     @Override
-    public void run(String... strings) throws Exception {
+    public void run(String... strings) {
         log.info("----------Operate String----------");
         operateString();
         log.info("----------Operate List----------");
