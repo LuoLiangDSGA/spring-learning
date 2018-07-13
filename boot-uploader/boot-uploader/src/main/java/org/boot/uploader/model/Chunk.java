@@ -61,6 +61,7 @@ public class Chunk implements Serializable {
      */
     @Column
     private String type;
+
     @Transient
     private MultipartFile file;
 }
