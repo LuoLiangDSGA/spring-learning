@@ -17,11 +17,11 @@ public class User {
     @GeneratedValue
     private Integer id;
 
-    @Size(min = 4, max = 32, message = "Minimum username length: 4 characters，the maximum 32 characters ")
+    @Size(min = 1, max = 32, message = "Minimum username length: 4 characters，the maximum 32 characters ")
     @Column(unique = true, nullable = false)
     private String username;
 
-    @Size(min = 8, message = "Minimum password length: 8 characters")
+    @Size(min = 6, message = "Minimum password length: 8 characters")
     @Column(nullable = false)
     private String password;
 

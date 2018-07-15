@@ -38,7 +38,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public void handleException(HttpServletResponse res) throws IOException {
-        res.sendError(HttpStatus.BAD_REQUEST.value(), "System internal error");
+    public void handleException(HttpServletResponse res, Exception e) throws IOException {
+        res.sendError(HttpStatus.BAD_REQUEST.value(), e.getMessage());
     }
 }

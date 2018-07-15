@@ -10,7 +10,7 @@ public enum Role implements GrantedAuthority {
     /**
      * 管理员
      */
-    ROLE_ROOT,
+    ROLE_ADMIN,
     /**
      * 用户
      */
