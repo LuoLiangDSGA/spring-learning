@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/main")
-@PreAuthorize("hasRole('ROOT')")
+@PreAuthorize("hasRole('ADMIN')")
 public class MainController {
 
 }
