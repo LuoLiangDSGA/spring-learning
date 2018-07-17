@@ -68,9 +68,10 @@ public class UploadController {
 
     @PostMapping("/mergeFile")
     public String mergeFile(FileInfo fileInfo) {
-        String file = uploadFolder + "/" + fileInfo.getIdentifier() + "/" + fileInfo.getFilename();
+        String filename = fileInfo.getFilename();
+        String file = uploadFolder + "/" + fileInfo.getIdentifier() + "/" + filename;
         String folder = uploadFolder + "/" + fileInfo.getIdentifier();
-        merge(file, folder);
+        merge(file, folder, filename);
         fileInfo.setLocation(file);
         fileInfoService.addFileInfo(fileInfo);
 

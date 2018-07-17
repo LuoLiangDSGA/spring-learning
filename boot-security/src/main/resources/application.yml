@@ -21,4 +21,4 @@ spring:
 
 jwt:
   secret: sign
-  expire: 30 #second
+  expire: 300 #second

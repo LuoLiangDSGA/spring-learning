@@ -41,11 +41,11 @@ public class FileUtils {
      * @param targetFile
      * @param folder
      */
-    public static void merge(String targetFile, String folder) {
+    public static void merge(String targetFile, String folder, String filename) {
         try {
             Files.createFile(Paths.get(targetFile));
             Files.list(Paths.get(folder))
-                    .filter(path -> path.getFileName().toString().contains("-"))
+                    .filter(path -> !path.getFileName().toString().equals(filename))
                     .sorted((o1, o2) -> {
                         String p1 = o1.getFileName().toString();
                         String p2 = o2.getFileName().toString();

@@ -73,6 +73,12 @@ public class JwtTokenHandler {
     }
 
     private Claims getClaimsFromToken(String token) {
-        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+        Claims claims = null;
+        try {
+            claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+        } catch (JwtException e) {
+            log.error(e.getMessage(), e);
+        }
+        return claims;
     }
 }
