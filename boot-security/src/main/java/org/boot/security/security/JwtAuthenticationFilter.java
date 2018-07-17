@@ -15,6 +15,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * @author luoliang
@@ -31,10 +32,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
         String jwt = request.getHeader("token");
-        if (!StringUtils.isEmpty(jwt) && jwtTokenHandler.validateToken(jwt)) {
+        if (!StringUtils.isEmpty(jwt) && Objects.isNull(SecurityContextHolder.getContext().getAuthentication())) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(jwtTokenHandler.getUsernameByToken(jwt));
-            Authentication auth = new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(auth);
+            if (jwtTokenHandler.validateToken(jwt, userDetails)) {
+                Authentication auth = new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+                SecurityContextHolder.getContext().setAuthentication(auth);
+            }
         }
         filterChain.doFilter(request, response);
     }
