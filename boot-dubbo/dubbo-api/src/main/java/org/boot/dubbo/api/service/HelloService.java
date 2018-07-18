@@ -1,4 +1,4 @@
-package org.boot.dubbo.consumer.service;
+package org.boot.dubbo.api.service;
 
 /**
  * Created by IntelliJ IDEA.
