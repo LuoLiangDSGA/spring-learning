@@ -6,10 +6,6 @@ import org.boot.dubbo.api.service.HelloService;
 import org.boot.dubbo.consumer.service.ConsumerService;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-
 /**
  * Created by IntelliJ IDEA.
  *

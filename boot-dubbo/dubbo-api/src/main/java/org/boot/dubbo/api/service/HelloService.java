@@ -1,7 +1,5 @@
 package org.boot.dubbo.api.service;
 
-import java.io.InputStream;
-
 /**
  * Created by IntelliJ IDEA.
  *
