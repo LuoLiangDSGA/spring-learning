@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: springboot-dubbo-provider
+server:
+  port: 9090
+dubbo:
+  scan:
+    basePackages: org.boot.dubbo.provider.service
+  application:
+    id: springboot-dubbo-provider
+    name: springboot-dubbo-provider
+    owner: LuoLiang
+  registry:
+    id: zk-registry
+    address: zookeeper://192.168.95.100:2181
+  protocol:
+    id: dubbo
+    name: dubbo
+    port: 20880
+    serialization: kryo
+management:
+  endpoints:
+    dubbo:
+      enabled: true
+  health:
+    dubbo:
+      status:
+        defaults: memory
+        extras: load,threadpool
+logging:
+  level:
+    org.boot.dubbo.provider: debug

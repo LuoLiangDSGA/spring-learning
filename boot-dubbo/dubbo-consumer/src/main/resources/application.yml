@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: springboot-dubbo-consumer
+server:
+  port: 8081
+management:
+  server:
+    port: 9999
+#dubbo配置
+dubbo:
+  application:
+    id: springboot-dubbo-consumer
+    name: springboot-dubbo-consumer
+    owner: FrankLo
+  consumer:
+    check: false
+  #服务注册配置
+  registry:
+      id: zk-registry
+      address: zookeeper://192.168.95.100:2181
+logging:
+  level:
+    org.boot.dubbo.consumer: debug

@@ -2,9 +2,13 @@ package org.boot.dubbo.consumer.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import lombok.extern.slf4j.Slf4j;
+import org.boot.dubbo.api.service.HelloService;
 import org.boot.dubbo.consumer.service.ConsumerService;
-import org.boot.dubbo.consumer.service.HelloService;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 /**
  * Created by IntelliJ IDEA.
@@ -22,6 +26,7 @@ public class ConsumerServiceImpl implements ConsumerService {
     @Override
     public String sayHello(String name) {
         log.debug("invoke service {}", helloService.getClass());
+
         return helloService.sayHello(name);
     }
 }

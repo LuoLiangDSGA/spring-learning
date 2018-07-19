@@ -30,8 +30,8 @@
         <dubbo-spring-boot-starter.version>0.2.0</dubbo-spring-boot-starter.version>
         <springboot.version>2.0.3.RELEASE</springboot.version>
         <fastjson-version>1.2.31</fastjson-version>
-        <zk-client.version>0.10</zk-client.version>
         <dockerfile-maven.version>1.4.3</dockerfile-maven.version>
+        <dubbo.version>2.6.2</dubbo.version>
     </properties>
 
     <dependencyManagement>
@@ -50,6 +50,11 @@
                 <groupId>com.alibaba.boot</groupId>
                 <artifactId>dubbo-spring-boot-actuator</artifactId>
                 <version>${dubbo-spring-boot-starter.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>dubbo-serialization-kryo</artifactId>
+                <version>${dubbo.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

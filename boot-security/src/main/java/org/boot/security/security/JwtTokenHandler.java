@@ -59,7 +59,7 @@ public class JwtTokenHandler {
 
     public Date getCreatedDateFromToken(String token) {
         Claims claims = getClaimsFromToken(token);
-        Date created = new Date((String) claims.get("created"));
+        Date created = new Date((Long) claims.get("created"));
 
         return created;
     }

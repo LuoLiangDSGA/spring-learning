@@ -6,7 +6,6 @@ import org.boot.security.model.User;
 import org.boot.security.repository.UserRepository;
 import org.boot.security.security.JwtTokenHandler;
 import org.boot.security.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

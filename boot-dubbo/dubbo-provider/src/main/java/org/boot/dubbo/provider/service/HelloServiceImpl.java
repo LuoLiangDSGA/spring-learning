@@ -2,7 +2,9 @@ package org.boot.dubbo.provider.service;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import lombok.extern.slf4j.Slf4j;
-import org.boot.dubbo.consumer.service.HelloService;
+import org.boot.dubbo.api.service.HelloService;
+
+import java.io.InputStream;
 
 /**
  * Created by IntelliJ IDEA.
