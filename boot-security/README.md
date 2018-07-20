@@ -9,7 +9,6 @@
 - ![](https://img.shields.io/badge/redis-✓-blue.svg)
 ### 开始
 
-
 > JWT  
 
 构成  
