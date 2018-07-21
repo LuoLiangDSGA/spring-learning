@@ -17,7 +17,7 @@ header.payload.signature
 header
 - 声明类型 jwt
 - 声明加密的算法 hs256
-```json
+```
 {
   "alg": "HS256",
   "typ": "JWT"
@@ -25,4 +25,6 @@ header
 ```
 
 > Spring Security
-GrantedAuthority  所有的Authentication实现类都保存了一个GrantedAuthority列表，其表示用户所具有的权限。
+- GrantedAuthority  所有的Authentication实现类都保存了一个GrantedAuthority列表，其表示用户所具有的权限。
+- UserDetailsService
+- AuthenticationManager 
