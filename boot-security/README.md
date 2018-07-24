@@ -1,4 +1,4 @@
-## SpringBoot通过Spring security和JWT来控制权限的实践
+## SpringBoot使用Spring Security和JWT控制访问权限
 > 在项目开发中，我们要保证API只能被授权用户访问，所以安全问题是至关重要的。所以我们需要对API划分权限，当接收到用户的API请求时，需要做鉴权处理。目前实现鉴权的方案也有很多，常见的有Session保存用户信息鉴权，Oauth鉴权，Token鉴权。Session在分布式应用下比较无力，Oauth多用于开放平台，比如微信，所以本文使用JWT进行鉴权。Java主流安全认证的框架有Spring Security和Apache Shiro，本文会使用Spring Security做安全认证框架，搭建一个基础安全认证的框架，对不同用户角色的访问权限进行控制。
 
 ### 准备
@@ -7,7 +7,7 @@
 - ![](https://img.shields.io/badge/spring_boot-✓-blue.svg)
 - ![](https://img.shields.io/badge/mysql-✓-blue.svg)
 - ![](https://img.shields.io/badge/redis-✓-blue.svg)
-### 开始
+### 前言
 
 > JWT  
 
@@ -60,9 +60,92 @@ HMACSHA256(
   secret)
 ```
 
-最后把三段用`.`拼接起来，一个JWT就完成了。
+最后把三段用`.`拼接起来，一个JWT就完成了。JWT的基础知识就介绍这么多，更多的资料可以自行谷歌。
 
-> Spring Security
+> Spring Security     
+
+Spring Security是Spring提供的一个功能强大，可以高度自定义的身份验证和访问控制框架，它以Spring应用为基础，为Spring应用提供安全服务。所以相比于其他安全控制框架（Apache Shiro），Spring Security和Spring应用的集成将会更加的简单和方便，如果熟悉Spring应用的开发者，Spring Security也可以很快地上手。
+
+主要特性：
+- 可扩展且全面地支持身份验证和授权。
+- 有效防止session fixation（会话固定），clickjacking（点击劫持），CSRF（跨站请求伪造）等攻击。
+- 可以与Servlet API进行集成。
+- 可以选择和Spring Web MVC集成。
+
+更多请参考[Spring Security Reference](https://spring.io/projects/spring-security#overview)
+
+
+### 开始
+使用[Spring Initializr](https://start.spring.io/) 新建一个SpringBoot工程，在pom.xml中加入基础依赖。
+```java
+  <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>${jjwt.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 - GrantedAuthority  所有的Authentication实现类都保存了一个GrantedAuthority列表，其表示用户所具有的权限。
 - UserDetailsService
 - AuthenticationManager 
