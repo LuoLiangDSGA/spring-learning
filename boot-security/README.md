@@ -23,6 +23,7 @@ header.payload.signature
 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
 ```
 1. header（头部）  
+
   头部通常由两部分组成，一个是令牌的类型，即JWT，以及使用的散列算法，例如HS256.例如上面的JWT例子，第一段进行base64解码之后变成了如下的json.
 ```
 {
@@ -30,7 +31,8 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4
   "typ": "JWT"
 }
 ```
-2. 负载
+2. 负载  
+  
   负载中包含的是用户的相关数据，比如名称，过期时间等，也可以是开发者自定义的字段。同时，官方提供了一些建议使用的字段。
   ```
   - iss（发行人）
@@ -52,6 +54,7 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4
 乍眼一看可能这串base64字符我们看不懂，但是进行解码之后这些信息完全是公开的，所以切记不能把敏感信息放在这个地方。
 
 3. 签名  
+   
 要创建签名，需要使用header和payload，指定的密钥(secret)，以及header中指定的算法，按照下面的方式来生成签名
 ```
 HMACSHA256(
@@ -76,6 +79,7 @@ Spring Security是Spring提供的一个功能强大，可以高度自定义的�
 
 
 ### 开始
+
 使用[Spring Initializr](https://start.spring.io/) 新建一个SpringBoot工程，在pom.xml中加入基础依赖。
 ```java
   <dependency>
@@ -117,9 +121,68 @@ Spring Security是Spring提供的一个功能强大，可以高度自定义的�
 ```
 
 
+> 数据模型  
+
+首先，我们要有用户和角色，用户表应该是下面这样的：
+| ID | USERNAME | PASSWORD | 
+| - | :-: | :-: | 
+| 1 | Gryffindor| AjWICTKOPtSeZu1PGmoMsbPm | 
+
+不同的用户有不同的角色，所以需要一张如下的角色表：
+| ID | ROLENAME  
+| - | :-: 
+| 1 | USER
+
+用户和角色需要建立关联，所以需要一张用户角色关系表：
+| USER_ID | ROLE_ID  
+| - | :-: 
+| 1 | 1
+
+编写一个User类：
+```java
+
+@Entity
+@Data
+public class User {
+    @Id
+    @GeneratedValue
+    private Integer id;
+
+    @Size(min = 1, max = 32, message = "Minimum username length: 4 characters，the maximum 32 characters ")
+    @Column(unique = true, nullable = false)
+    private String username;
+
+    @Size(min = 6, message = "Minimum password length: 8 characters")
+    @Column(nullable = false)
+    private String password;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<Role> roles;
+}
+```
+这里使用了lombok提供的@Data注解自动生成Getter，Settter。以及spring-data-jpa的注解来做实体和数据库的映射。
+
+再编写一个Role类，定义两个角色：
+```java
+public enum Role implements GrantedAuthority {
+    /**
+     * 管理员
+     */
+    ROLE_ADMIN,
+    /**
+     * 用户
+     */
+    ROLE_USER;
+
+    @Override
+    public String getAuthority() {
+        return name();
+    }
+}
+```
 
 
-
+
 
 
 
