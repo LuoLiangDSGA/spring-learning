@@ -22,6 +22,11 @@ public class JwtTokenHandler {
     @Value("${jwt.expire}")
     private Long expire;
 
+    /**
+     * 生成JWT
+     * @param userDetails
+     * @return
+     */
     public String generateToken(UserDetails userDetails) {
         return Jwts.builder()
                 .setSubject(userDetails.getUsername())
@@ -31,6 +36,12 @@ public class JwtTokenHandler {
                 .compact();
     }
 
+    /**
+     * 验证JWT是否合法
+     * @param token
+     * @param user
+     * @return
+     */
     public boolean validateToken(String token, UserDetails user) {
         try {
             String username = getUsernameByToken(token);
@@ -42,12 +53,11 @@ public class JwtTokenHandler {
         }
     }
 
-    private boolean isTokenExpired(String token) {
-        Date expiredDate = getExpiredDateFromToken(token);
-
-        return expiredDate.before(new Date());
-    }
-
+    /**
+     * 刷新JWT
+     * @param userDetails
+     * @return
+     */
     public String refreshToken(UserDetails userDetails) {
 
         return generateToken(userDetails);
@@ -55,6 +65,12 @@ public class JwtTokenHandler {
 
     public String getUsernameByToken(String token) {
         return getClaimsFromToken(token).getSubject();
+    }
+
+    private boolean isTokenExpired(String token) {
+        Date expiredDate = getExpiredDateFromToken(token);
+
+        return expiredDate.before(new Date());
     }
 
     public Date getCreatedDateFromToken(String token) {

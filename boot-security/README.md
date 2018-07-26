@@ -120,13 +120,33 @@ Spring Security是Spring提供的一个功能强大，可以高度自定义的�
         </dependency>
 ```
 
+项目中需要使用数据库存储用户相关信息，所以需要进行一些数据库相关的配置：
+
+application.yml
+```
+...
+spring:
+  datasource:
+      url: jdbc:mysql://localhost:3306/test?characterEncoding=utf-8&useSSL=false
+      username: root
+      password: root
+      driver-class-name: com.mysql.jdbc.Driver
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+jwt:
+  secret: sign
+  expire: 300 #second
+```
 
 > 数据模型  
 
 首先，我们要有用户和角色，用户表应该是下面这样的：
 | ID | USERNAME | PASSWORD | 
 | - | :-: | :-: | 
-| 1 | Gryffindor| AjWICTKOPtSeZu1PGmoMsbPm | 
+| 1 | John Doe| AjWICTKOPtSeZu1PGmoMsbPm | 
 
 不同的用户有不同的角色，所以需要一张如下的角色表：
 | ID | ROLENAME  
@@ -138,7 +158,7 @@ Spring Security是Spring提供的一个功能强大，可以高度自定义的�
 | - | :-: 
 | 1 | 1
 
-编写一个User类：
+有了一个简单的数据模型之后，就可以开始编码了，编写一个User.java类：
 ```java
 
 @Entity
@@ -162,7 +182,7 @@ public class User {
 ```
 这里使用了lombok提供的@Data注解自动生成Getter，Settter。以及spring-data-jpa的注解来做实体和数据库的映射。
 
-再编写一个Role类，定义两个角色：
+再编写一个Role.java类，定义两个角色：
 ```java
 public enum Role implements GrantedAuthority {
     /**
@@ -181,34 +201,180 @@ public enum Role implements GrantedAuthority {
 }
 ```
 
+使用Java Config配置Spring Security，定义WebSecurityConfig.java类，继承WebSecurityConfigurerAdapter
 
-
+```java
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+    @Resource
+    private UserDetailsService userDetailsService;
+    @Resource
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.csrf().disable()   //Disable CSRF (cross site request forgery)
+                //Spring Security will never create an {@link HttpSession} and it will never use it
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authorizeRequests()
+                .antMatchers("/auth/**").permitAll()
+                .anyRequest().authenticated();
+
+        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
+        http.headers().cacheControl();
+    }
+
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+}
+
+```
+
+编写`JwtUserDetailsServiceImpl.java`实现`UserDetailsService`类
+```java
+@Service
+public class JwtUserDetailsServiceImpl implements UserDetailsService {
+    private final static Logger log = LoggerFactory.getLogger(JwtUserDetailsServiceImpl.class);
+    @Resource
+    private UserRepository userRepository;
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findUserByUsername(s);
+        if (Objects.isNull(user)) {
+            log.error("loadUserByUsername failed, user: {} not found", s);
+            throw new BusinessException("user: " + s + " not found", HttpStatus.FORBIDDEN);
+        }
+
+        return org.springframework.security.core.userdetails.User
+                .withUsername(s)
+                .password(user.getPassword())
+                .authorities(user.getRoles())
+                .accountExpired(false)
+                .accountLocked(false)
+                .disabled(false)
+                .build();
+    }
+}
+```
+`UserDetailsService`接口包含了一个默认方法`loadUserByUsername(String username)`，我们可以提供自己的实现，根据命名可以知道这是一个根据username加载User的方法。
+
+`JwtAuthenticationFilter`用于过滤请求
+```java
+@Component
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
+    @Resource
+    private UserDetailsService userDetailsService;
+    @Resource
+    private JwtTokenHandler jwtTokenHandler;
+
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
+                                    FilterChain filterChain) throws ServletException, IOException {
+        String jwt = request.getHeader("token");
+        if (!StringUtils.isEmpty(jwt) && Objects.isNull(SecurityContextHolder.getContext().getAuthentication())) {
+            UserDetails userDetails = userDetailsService.loadUserByUsername(jwtTokenHandler.getUsernameByToken(jwt));
+            if (jwtTokenHandler.validateToken(jwt, userDetails)) {
+                Authentication auth = new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+                SecurityContextHolder.getContext().setAuthentication(auth);
+            }
+        }
+
+        filterChain.doFilter(request, response);
+    }
+}
+```
+`JwtTokenHandler.java`用于生成和验证JWT，这里使用了JWT官网推荐的Java类库[jjwt](https://github.com/jwtk/jjwt)。
+```java
+@Component
+public class JwtTokenHandler {
+    @Value("${jwt.secret}")
+    private String secret;
+    @Value("${jwt.expire}")
+    private Long expire;
+
+    /**
+     * 生成JWT
+     * @param userDetails
+     * @return
+     */
+    public String generateToken(UserDetails userDetails) {
+        return Jwts.builder()
+                .setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date())
+                .setExpiration(generateExpirationDate())
+                .signWith(SignatureAlgorithm.HS256, secret)
+                .compact();
+    }
+
+    /**
+     * 验证JWT是否合法
+     * @param token
+     * @param user
+     * @return
+     */
+    public boolean validateToken(String token, UserDetails user) {
+        try {
+            String username = getUsernameByToken(token);
+
+            return username.equals(user.getUsername())
+                    && !isTokenExpired(token);
+        } catch (JwtException e) {
+            throw new BusinessException("Expired or invalid JWT token", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * 刷新JWT
+     * @param userDetails
+     * @return
+     */
+    public String refreshToken(UserDetails userDetails) {
+
+        return generateToken(userDetails);
+    }
+
+    public String getUsernameByToken(String token) {
+        return getClaimsFromToken(token).getSubject();
+    }
+
+    private boolean isTokenExpired(String token) {
+        Date expiredDate = getExpiredDateFromToken(token);
+
+        return expiredDate.before(new Date());
+    }
+
+    private Claims getClaimsFromToken(String token) {
+        Claims claims = null;
+        try {
+            claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+        } catch (JwtException e) {
+            log.error(e.getMessage(), e);
+        }
+        return claims;
+    }
+   ...
+}
+```
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#### memo
 - GrantedAuthority  所有的Authentication实现类都保存了一个GrantedAuthority列表，其表示用户所具有的权限。
 - UserDetailsService
 - AuthenticationManager 
