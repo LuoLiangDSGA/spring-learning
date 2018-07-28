@@ -80,7 +80,7 @@ Spring Security是Spring提供的一个功能强大，可以高度自定义的�
 
 ### 开始
 
-使用[Spring Initializr](https://start.spring.io/) 新建一个SpringBoot工程，在pom.xml中加入基础依赖。
+> 使用[Spring Initializr](https://start.spring.io/) 新建一个SpringBoot工程，在pom.xml中加入基础依赖。
 ```java
   <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -120,9 +120,8 @@ Spring Security是Spring提供的一个功能强大，可以高度自定义的�
         </dependency>
 ```
 
-项目中需要使用数据库存储用户相关信息，所以需要进行一些数据库相关的配置：
+> 项目中需要使用数据库存储用户相关信息，所以需要在`application.yml`进行一些数据库相关的配置：
 
-application.yml
 ```
 ...
 spring:
@@ -158,7 +157,7 @@ jwt:
 | - | :-: 
 | 1 | 1
 
-有了一个简单的数据模型之后，就可以开始编码了，编写一个User.java类：
+> 有了一个简单的数据模型之后，就可以开始编码了，编写一个User.java类：
 ```java
 
 @Entity
@@ -180,9 +179,9 @@ public class User {
     private List<Role> roles;
 }
 ```
-这里使用了lombok提供的@Data注解自动生成Getter，Settter。以及spring-data-jpa的注解来做实体和数据库的映射。
+ 这里使用了lombok提供的@Data注解自动生成Getter，Settter。以及spring-data-jpa的注解来做实体和数据库的映射。
 
-再编写一个Role.java类，定义两个角色：
+> 再编写一个Role.java类，定义两个角色：
 ```java
 public enum Role implements GrantedAuthority {
     /**
@@ -201,7 +200,7 @@ public enum Role implements GrantedAuthority {
 }
 ```
 
-使用Java Config配置Spring Security，定义WebSecurityConfig.java类，继承WebSecurityConfigurerAdapter
+> 使用Java Config配置Spring Security，定义WebSecurityConfig.java类，继承WebSecurityConfigurerAdapter
 
 ```java
 @EnableWebSecurity
@@ -246,7 +245,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 ```
 
-编写`JwtUserDetailsServiceImpl.java`实现`UserDetailsService`类
+> 编写`JwtUserDetailsServiceImpl.java`实现`UserDetailsService`类
 ```java
 @Service
 public class JwtUserDetailsServiceImpl implements UserDetailsService {
@@ -275,7 +274,7 @@ public class JwtUserDetailsServiceImpl implements UserDetailsService {
 ```
 `UserDetailsService`接口包含了一个默认方法`loadUserByUsername(String username)`，我们可以提供自己的实现，根据命名可以知道这是一个根据username加载User的方法。
 
-`JwtAuthenticationFilter`用于过滤请求
+> `JwtAuthenticationFilter`用于过滤请求
 ```java
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -300,7 +299,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 }
 ```
-`JwtTokenHandler.java`用于生成和验证JWT，这里使用了JWT官网推荐的Java类库[jjwt](https://github.com/jwtk/jjwt)。
+> `JwtTokenHandler.java`用于生成和验证JWT，这里使用了JWT官网推荐的Java类库[jjwt](https://github.com/jwtk/jjwt)。
 ```java
 @Component
 public class JwtTokenHandler {
@@ -373,7 +372,139 @@ public class JwtTokenHandler {
 }
 ```
 
+> 现在可以开始编写用户的业务逻辑了，编写一个接口`UserService.java`，定义了三个基本的方法
+```java
+public interface UserService {
+    /**
+     * 注册
+     *
+     * @param user
+     * @return
+     */
+    User register(User user);
 
+    /**
+     * 登录
+     *
+     * @param username
+     * @param password
+     * @return
+     */
+    String login(String username, String password);
+
+    /**
+     * 刷新jwt
+     *
+     * @param oldToken
+     * @return
+     */
+    String refresh(String oldToken);
+}
+```
+> 为接口提供实现`UserServiceImpl.java`
+```java
+@Service
+public class UserServiceImpl implements UserService {
+    @Resource
+    private UserRepository userRepository;
+    @Resource
+    private AuthenticationManager authenticationManager;
+    @Resource
+    private UserDetailsService userDetailsService;
+    @Resource
+    private JwtTokenHandler jwtTokenHandler;
+
+    @Override
+    public User register(User user) {
+        if (Objects.nonNull(userRepository.findUserByUsername(user.getUsername()))) {
+            throw new BusinessException("用户已存在，注册失败", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+        user.setRoles(Collections.singletonList(Role.ROLE_USER));
+
+        return userRepository.save(user);
+    }
+
+    @Override
+    public String login(String username, String password) {
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
+        Authentication authentication = authenticationManager.authenticate(authenticationToken);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+        return jwtTokenHandler.generateToken(userDetails);
+    }
+
+    @Override
+    public String refresh(String oldToken) {
+        //从token中拿到username
+        String username = jwtTokenHandler.getUsernameByToken(oldToken);
+        //获取UserDetails
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+        //验证
+        if (jwtTokenHandler.validateToken(oldToken, userDetails)) {
+            return jwtTokenHandler.refreshToken(userDetails);
+        }
+
+        return null;
+    }
+}
+```
+
+> 授权API`AuthController.java`编写
+```java
+@RestController
+@RequestMapping("/auth")
+public class AuthController {
+    @Resource
+    private UserService userService;
+
+    @PostMapping("login")
+    public ResponseEntity<String> authLogin(String username, String password) {
+        String token = userService.login(username, password);
+
+        return ResponseEntity.ok(token);
+    }
+
+    @PostMapping("register")
+    public ResponseEntity<User> userRegister(@RequestBody User addUser) {
+        User user = userService.register(addUser);
+
+        return ResponseEntity.ok(user);
+    }
+
+    @GetMapping("refresh")
+    public ResponseEntity<String> refreshAndGetAuthenticationToken(HttpServletRequest request) {
+        String oldToken = request.getHeader("token");
+        String refreshToken = userService.refresh(oldToken);
+
+        return ResponseEntity.ok(refreshToken);
+    }
+}
+```
+
+> UserController.java
+```java
+@RestController
+@RequestMapping("/users")
+public class UserController {
+    @Resource
+    private UserRepository userRepository;
+
+    @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<User>> getUsers() {
+        return ResponseEntity.ok(userRepository.findAll());
+    }
+
+    @PostAuthorize("returnObject.username == principal.username or hasRole('ROLE_ADMIN')")
+    @GetMapping("/{username}")
+    public User getUserByUsername(@PathVariable String username) {
+        return userRepository.findUserByUsername(username);
+    }
+}
+
+```
 #### memo
 - GrantedAuthority  所有的Authentication实现类都保存了一个GrantedAuthority列表，其表示用户所具有的权限。
 - UserDetailsService
