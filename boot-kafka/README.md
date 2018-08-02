@@ -42,4 +42,20 @@ public class KafkaProviderServiceImpl implements KafkaProviderService {
     }
 }
 ```
-`KafkaTemplate`是一个发送消息的模版，避免我们书写过多的重复代码，常用的发送消息操作在`KafkaTemplate`中都已经提供。
+`KafkaTemplate`是一个发送消息的模版类，提供了常用的发送消息操作，避免我们书写过多的重复代码。
+
+> 接收消息
+```java
+@Component
+public class KafkaConsumerService {
+    private static Logger logger = LoggerFactory.getLogger(KafkaConsumerService.class);
+
+    @KafkaListener(topics = "myKafka")
+    public void receiveMsg(ConsumerRecord<?, ?> cr) {
+        logger.info("收到一条消息...");
+        logger.info("{} : {}", cr.topic(), cr.value());
+        logger.info("---------------------------------");
+    }
+}
+```
+`@KafkaListener`注解表示接收指定topic的消息
