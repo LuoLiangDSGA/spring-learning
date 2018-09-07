@@ -12,8 +12,8 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
 import javax.annotation.Resource;
-import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -35,6 +35,12 @@ public class HelloWorldHandler {
                 .body(BodyInserters.fromObject("Hello, World"));
     }
 
+    /**
+     * 登录
+     *
+     * @param request
+     * @return
+     */
     public Mono<ServerResponse> login(ServerRequest request) {
         Mono<Map> body = request.bodyToMono(Map.class);
         return body.flatMap(map -> {
@@ -45,13 +51,9 @@ public class HelloWorldHandler {
                     .flatMap(byteBuffer -> {
                         byte[] bytes = new byte[byteBuffer.remaining()];
                         byteBuffer.get(bytes, 0, bytes.length);
-                        String pwd = null;
-                        try {
-                            pwd = new String(bytes, "UTF-8");
-                        } catch (UnsupportedEncodingException e) {
-                            log.error(e.getMessage(), e);
-                        }
-                        Map<String, String> result = new HashMap<>();
+                        String pwd;
+                        pwd = new String(bytes, StandardCharsets.UTF_8);
+                        Map<String, String> result = new HashMap<>(4);
                         if (Objects.isNull(pwd) || !pwd.equals(password)) {
                             result.put("message", "账号或密码错误");
                             return ServerResponse.status(HttpStatus.UNAUTHORIZED)
@@ -63,6 +65,19 @@ public class HelloWorldHandler {
                                     .contentType(MediaType.APPLICATION_JSON_UTF8)
                                     .body(BodyInserters.fromObject(result));
                         }
+                    });
+        });
+    }
+
+    public Mono<ServerResponse> register(ServerRequest request) {
+        Mono<Map> body = request.bodyToMono(Map.class);
+        return body.flatMap(map -> {
+            String username = (String) map.get("username");
+            String password = (String) map.get("password");
+            return connection.stringCommands().set(
+                    ByteBuffer.wrap(username.getBytes()))
+                    .flatMap(byteBuffer -> {
+
                     });
         });
     }

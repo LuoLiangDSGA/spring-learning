@@ -20,6 +20,8 @@ public class Router {
 
     @Bean
     public RouterFunction<?> routerFunction() {
-        return RouterFunctions.route(RequestPredicates.GET("/hello"), helloWorldHandler::hello);
+        return RouterFunctions.route(RequestPredicates.GET("/hello"), helloWorldHandler::hello)
+                .andRoute(RequestPredicates.POST("/login"), helloWorldHandler::login)
+                .andRoute(RequestPredicates.POST("/register"), helloWorldHandler::register);
     }
 }
