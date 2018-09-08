@@ -69,16 +69,16 @@ public class HelloWorldHandler {
         });
     }
 
-    public Mono<ServerResponse> register(ServerRequest request) {
-        Mono<Map> body = request.bodyToMono(Map.class);
-        return body.flatMap(map -> {
-            String username = (String) map.get("username");
-            String password = (String) map.get("password");
-            return connection.stringCommands().set(
-                    ByteBuffer.wrap(username.getBytes()))
-                    .flatMap(byteBuffer -> {
-
-                    });
-        });
-    }
+//    public Mono<ServerResponse> register(ServerRequest request) {
+//        Mono<Map> body = request.bodyToMono(Map.class);
+//        return body.flatMap(map -> {
+//            String username = (String) map.get("username");
+//            String password = (String) map.get("password");
+//            return connection.stringCommands().set(
+//                    ByteBuffer.wrap(username.getBytes()))
+//                    .flatMap(byteBuffer -> {
+//
+//                    });
+//        });
+//    }
 }
