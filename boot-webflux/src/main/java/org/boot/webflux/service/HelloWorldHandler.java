@@ -53,7 +53,7 @@ public class HelloWorldHandler {
                         byteBuffer.get(bytes, 0, bytes.length);
                         String pwd;
                         pwd = new String(bytes, StandardCharsets.UTF_8);
-                        Map<String, String> result = new HashMap<>(4);
+                        Map<String, String> result = new HashMap<>(2);
                         if (Objects.isNull(pwd) || !pwd.equals(password)) {
                             result.put("message", "账号或密码错误");
                             return ServerResponse.status(HttpStatus.UNAUTHORIZED)
