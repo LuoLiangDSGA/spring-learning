@@ -10,7 +10,7 @@ import reactor.core.publisher.Mono;
  * @date 2018/9/8
  */
 public interface UserService {
-    Mono<User> register(String id, String username);
+    Mono<Boolean> register(String id, String username);
 
     Mono<ServerResponse> login(String username, String password);
 
