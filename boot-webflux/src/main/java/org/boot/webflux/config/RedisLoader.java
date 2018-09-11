@@ -26,7 +26,7 @@ public class RedisLoader {
     public void loadData() {
         factory.getReactiveConnection().serverCommands().flushAll()
                 .thenMany(Flux.just("Thor", "Hulk", "Tony")
-                        .map(name -> new User(UUID.randomUUID().toString(), name, "123456"))
+                        .map(name -> new User(UUID.randomUUID().toString().substring(0, 5), name, "123456"))
                         .flatMap(user -> redisOperations.opsForValue().set(user.getId(), user))
                 ).thenMany(redisOperations.keys("*")
                 .flatMap(redisOperations.opsForValue()::get))

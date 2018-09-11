@@ -18,10 +18,11 @@ public class Router {
     @Resource
     private HelloWorldHandler helloWorldHandler;
 
-    @Bean
-    public RouterFunction<?> routerFunction() {
-        return RouterFunctions.route(RequestPredicates.GET("/hello"), helloWorldHandler::hello)
-                .andRoute(RequestPredicates.POST("/login"), helloWorldHandler::login);
+//    @Bean
+//    public RouterFunction<?> routerFunction() {
+//        return RouterFunctions.route(RequestPredicates.GET("/hello"), helloWorldHandler::hello)
+//                .andRoute(RequestPredicates.POST("/login"), helloWorldHandler::login);
 //                .andRoute(RequestPredicates.POST("/register"), helloWorldHandler::register);
-    }
+//        return null;
+//    }
 }
