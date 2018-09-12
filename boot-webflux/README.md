@@ -22,6 +22,38 @@ RxJava 库是 JVM 上反应式编程的先驱，也是反应式流规范的基�
 
 Flux 和 Mono 是 Reactor 中的两个基本概念。Flux 表示的是包含 0 到 N 个元素的异步序列。在该序列中可以包含三种不同类型的消息通知：正常的包含元素的消息、序列结束的消息和序列出错的消息。当消息通知产生时，订阅者中对应的方法 onNext(), onComplete()和 onError()会被调用。Mono 表示的是包含 0 或者 1 个元素的异步序列。该序列中同样可以包含与 Flux 相同的三种类型的消息通知。Flux 和 Mono 之间可以进行转换。对一个 Flux 序列进行计数操作，得到的结果是一个 Mono<Long>对象。把两个 Mono 序列合并在一起，得到的是一个 Flux 对象。
 
+- 创建Flux
+  - just()：可以指定序列中包含的全部元素。创建出来的 Flux 序列在发布这些元素之后会自动结束。
+  - fromArray()，fromIterable()和 fromStream()：可以从一个数组、Iterable 对象或 Stream 对象中创建 Flux 对象。
+  - empty()：创建一个不包含任何元素，只发布结束消息的序列。
+  - error(Throwable error)：创建一个只包含错误消息的序列。
+  - never()：创建一个不包含任何消息通知的序列。
+  - range(int start, int count)：创建包含从 start 起始的 count 个数量的 Integer 对象的序列。
+  - interval(Duration period)和 interval(Duration delay, Duration period)：创建一个包含了从 0 开始递增的 Long 对象的序列。其中包含的元素按照指定的间隔来发布。除了间隔时间之外，还可以指定起始元素发布之前的延迟时间。
+  - intervalMillis(long period)和 intervalMillis(long delay, long period)：与 interval()方法的作用相同，只不过该方法通过毫秒数来指定时间间隔和延迟时间。
+- 代码实例如下：
+```java
+Flux.just("Hello", "World").subscribe(System.out::println);
+Flux.fromArray(new Integer[] {1, 2, 3}).subscribe(System.out::println);
+Flux.empty().subscribe(System.out::println);
+Flux.range(1, 10).subscribe(System.out::println);
+Flux.interval(Duration.of(10, ChronoUnit.SECONDS)).subscribe(System.out::println);
+Flux.intervalMillis(1000).subscribe(System.out::println);
+```
+
+- 创建Mono
+    - fromCallable()、fromCompletionStage()、fromFuture()、fromRunnable()和 fromSupplier()：分别从 Callable、CompletionStage、CompletableFuture、Runnable 和 Supplier 中创建 Mono。
+    - delay(Duration duration)和 delayMillis(long duration)：创建一个 Mono 序列，在指定的延迟时间之后，产生数字 0 作为唯一值。
+    - ignoreElements(Publisher<T> source)：创建一个 Mono 序列，忽略作为源的 Publisher 中的所有元素，只产生结束消息。
+    - justOrEmpty(Optional<? extends T> data)和 justOrEmpty(T data)：从一个 Optional 对象或可能为 null 的对象中创建 Mono。只有 Optional 对象中包含值或对象不为 null 时，Mono 序列才产生对应的元素。
+
+还可以通过 create()方法来使用 MonoSink 来创建 Mono。
+```java
+Mono.fromSupplier(() -> "Hello").subscribe(System.out::println);
+Mono.justOrEmpty(Optional.of("Hello")).subscribe(System.out::println);
+Mono.create(sink -> sink.success("Hello")).subscribe(System.out::println);
+```
+
 ### WebFlux的使用
 
 首先，需要创建一个SpringBoot2的项目工程，并且引入WebFlux和其他需要的依赖
@@ -41,7 +73,7 @@ Flux 和 Mono 是 Reactor 中的两个基本概念。Flux 表示的是包含 0 �
     <groupId>io.projectreactor</groupId>
     <artifactId>reactor-test</artifactId>
     <scope>test</scope>
-</dependency>
+</dependency> 
 
 <dependency>
     <groupId>org.springframework.boot</groupId>
