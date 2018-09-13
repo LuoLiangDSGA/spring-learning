@@ -23,8 +23,8 @@ import java.util.Objects;
  * @date 2018/9/4
  */
 @Service
-public class HelloWorldHandler {
-    private final static Logger log = LoggerFactory.getLogger(HelloWorldHandler.class);
+public class UserHandler {
+    private final static Logger log = LoggerFactory.getLogger(UserHandler.class);
     @Resource
     private ReactiveRedisConnection connection;
 

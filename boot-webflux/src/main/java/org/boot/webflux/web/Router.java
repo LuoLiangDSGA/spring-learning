@@ -1,6 +1,6 @@
 package org.boot.webflux.web;
 
-import org.boot.webflux.service.HelloWorldHandler;
+import org.boot.webflux.service.UserHandler;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.reactive.function.server.RequestPredicates;
@@ -16,13 +16,11 @@ import javax.annotation.Resource;
 @SpringBootConfiguration
 public class Router {
     @Resource
-    private HelloWorldHandler helloWorldHandler;
+    private UserHandler userHandler;
 
-//    @Bean
-//    public RouterFunction<?> routerFunction() {
-//        return RouterFunctions.route(RequestPredicates.GET("/hello"), helloWorldHandler::hello)
-//                .andRoute(RequestPredicates.POST("/login"), helloWorldHandler::login);
-//                .andRoute(RequestPredicates.POST("/register"), helloWorldHandler::register);
-//        return null;
-//    }
+    @Bean
+    public RouterFunction<?> routerFunction() {
+        return RouterFunctions.route(RequestPredicates.GET("/hello"), userHandler::hello)
+                .andRoute(RequestPredicates.POST("/login"), userHandler::login);
+    }
 }
