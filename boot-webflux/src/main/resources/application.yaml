@@ -1,2 +1,5 @@
 server:
   port: 8090
+logging:
+  level:
+    org.boot.webflux: debug

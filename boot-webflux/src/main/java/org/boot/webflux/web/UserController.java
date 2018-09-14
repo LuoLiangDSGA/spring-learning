@@ -32,7 +32,7 @@ public class UserController {
     }
 
     @PostMapping("/find")
-    public Mono login(@RequestBody User user) {
+    public Mono find(@RequestBody User user) {
         return userService.find(user.getName(), user.getPassword());
     }
 }
