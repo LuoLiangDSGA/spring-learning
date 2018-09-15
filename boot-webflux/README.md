@@ -56,7 +56,7 @@ Mono.create(sink -> sink.success("Hello")).subscribe(System.out::println);
 
 ### WebFlux的使用
 
-首先，需要创建一个SpringBoot2的项目工程，并且引入WebFlux和其他需要的依赖
+> 首先，需要创建一个SpringBoot2的项目工程，并且引入WebFlux和其他需要的依赖
 ```xml
 <dependency>
     <groupId>org.springframework.boot</groupId>
@@ -84,6 +84,20 @@ Mono.create(sink -> sink.success("Hello")).subscribe(System.out::println);
     <groupId>org.projectlombok</groupId>
     <artifactId>lombok</artifactId>
 </dependency>
+```
+
+> 创建一个简单的User.java类，作为用户数据模型
+```java
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class User {
+    private String id;
+
+    private String name;
+
+    private String password;
+}
 ```
 
 
