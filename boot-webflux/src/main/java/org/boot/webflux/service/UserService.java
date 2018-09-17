@@ -35,6 +35,4 @@ public interface UserService {
     Flux<User> getAll();
 
     Mono<Boolean> remove(String id);
-
-
 }

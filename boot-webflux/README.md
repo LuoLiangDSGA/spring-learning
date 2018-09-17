@@ -32,6 +32,7 @@ Flux 和 Mono 是 Reactor 中的两个基本概念。Flux 表示的是包含 0 �
   - interval(Duration period)和 interval(Duration delay, Duration period)：创建一个包含了从 0 开始递增的 Long 对象的序列。其中包含的元素按照指定的间隔来发布。除了间隔时间之外，还可以指定起始元素发布之前的延迟时间。
   - intervalMillis(long period)和 intervalMillis(long delay, long period)：与 interval()方法的作用相同，只不过该方法通过毫秒数来指定时间间隔和延迟时间。
 - 代码实例如下：
+  
 ```java
 Flux.just("Hello", "World").subscribe(System.out::println);
 Flux.fromArray(new Integer[] {1, 2, 3}).subscribe(System.out::println);
@@ -42,6 +43,7 @@ Flux.intervalMillis(1000).subscribe(System.out::println);
 ```
 
 - 创建Mono
+
     - fromCallable()、fromCompletionStage()、fromFuture()、fromRunnable()和 fromSupplier()：分别从 Callable、CompletionStage、CompletableFuture、Runnable 和 Supplier 中创建 Mono。
     - delay(Duration duration)和 delayMillis(long duration)：创建一个 Mono 序列，在指定的延迟时间之后，产生数字 0 作为唯一值。
     - ignoreElements(Publisher<T> source)：创建一个 Mono 序列，忽略作为源的 Publisher 中的所有元素，只产生结束消息。
@@ -86,6 +88,63 @@ Mono.create(sink -> sink.success("Hello")).subscribe(System.out::println);
 </dependency>
 ```
 
+> 配置Reactive Redis
+
+```java
+@SpringBootConfiguration
+public class RedisConfig {
+    @Resource
+    private RedisConnectionFactory factory;
+
+    @Bean
+    public ReactiveRedisTemplate<String, String> reactiveRedisTemplate(ReactiveRedisConnectionFactory connectionFactory) {
+        return new ReactiveRedisTemplate<>(connectionFactory, RedisSerializationContext.string());
+    }
+
+    @Bean
+    public ReactiveRedisConnection connection(ReactiveRedisConnectionFactory connectionFactory) {
+        return connectionFactory.getReactiveConnection();
+    }
+
+    @Bean
+    ReactiveRedisOperations<String, Object> redisOperations(ReactiveRedisConnectionFactory factory) {
+        Jackson2JsonRedisSerializer<Object> serializer = new Jackson2JsonRedisSerializer<>(Object.class);
+        RedisSerializationContext.RedisSerializationContextBuilder<String, Object> builder = RedisSerializationContext
+                .newSerializationContext(new StringRedisSerializer());
+        RedisSerializationContext<String, Object> context = builder.value(serializer).build();
+
+        return new ReactiveRedisTemplate<>(factory, context);
+    }
+
+    public @PreDestroy
+    void flushDb() {
+        factory.getConnection().flushDb();
+    }
+}
+```
+
+> 编写一个`RedisLoader.java`类，在项目启动的时候初始化数据
+```java
+@Component
+public class RedisLoader {
+    @Resource
+    private ReactiveRedisConnectionFactory factory;
+    @Resource
+    private ReactiveRedisOperations<String, Object> redisOperations;
+
+    @PostConstruct
+    public void loadData() {
+        factory.getReactiveConnection().serverCommands().flushAll()
+                .thenMany(Flux.just("Thor", "Hulk", "Tony")
+                        .map(name -> new User(UUID.randomUUID().toString().substring(0, 5), name, "123456"))
+                        .flatMap(user -> redisOperations.opsForValue().set(user.getId(), user))
+                ).thenMany(redisOperations.keys("*")
+                .flatMap(redisOperations.opsForValue()::get))
+                .subscribe(System.out::println);
+    }
+}
+```
+
 > 创建一个简单的User.java类，作为用户数据模型
 ```java
 @Data
@@ -100,7 +159,72 @@ public class User {
 }
 ```
 
+> 定义用户数据操作接口`UserService.java`
+```java
+public interface UserService {
+    /**
+     * 用户注册
+     *
+     * @param id
+     * @param username
+     * @return
+     */
+    Mono<Boolean> add(String id, String username);
 
+    /**
+     * 用户登录
+     *
+     * @param username
+     * @param password
+     * @return
+     */
+    Mono<User> find(String username, String password);
+
+    /**
+     * 获取所有用户
+     *
+     * @return
+     */
+    Flux<User> getAll();
+
+    Mono<Boolean> remove(String id);
+}
+```
+
+> 定义接口实现类`UserServiceImpl.java`
+```java
+@Service
+@Slf4j
+public class UserServiceImpl implements UserService {
+    @Resource
+    private ReactiveRedisOperations<String, User> redisOperations;
+
+    @Override
+    public Mono<Boolean> add(String id, String username) {
+        User user = new User();
+        user.setId(id);
+        user.setName(username);
+        user.setPassword("123456");
+        return redisOperations.opsForValue().set(id, user);
+    }
+
+    @Override
+    public Mono<User> find(String username, String password) {
+        return redisOperations.opsForValue().get(username);
+    }
+
+    @Override
+    public Flux<User> getAll() {
+        return redisOperations.keys("*")
+                .flatMap(redisOperations.opsForValue()::get);
+    }
+
+    @Override
+    public Mono<Boolean> remove(String id) {
+        return redisOperations.opsForValue().delete(id);
+    }
+}
+```
 
 ### 参考
 - https://www.ibm.com/developerworks/cn/java/j-cn-with-reactor-response-encode/index.html
