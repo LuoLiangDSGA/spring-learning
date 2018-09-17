@@ -44,17 +44,14 @@ public class UserHandler {
      * @return
      */
     public Mono<ServerResponse> login(ServerRequest request) {
-        log.debug("==============>enter");
         Mono<Map> body = request.bodyToMono(Map.class);
         return body.flatMap(map -> {
-            log.debug("==============>1eeeee");
             String username = (String) map.get("username");
             String password = (String) map.get("password");
             log.debug("username:{},password:{}", username, password);
             return connection.stringCommands().get(
                     ByteBuffer.wrap(username.getBytes()))
                     .flatMap(byteBuffer -> {
-                        log.debug("==============>2eeeee");
                         byte[] bytes = new byte[byteBuffer.remaining()];
                         byteBuffer.get(bytes, 0, bytes.length);
                         String userStr;
@@ -78,5 +75,4 @@ public class UserHandler {
                     });
         });
     }
-
 }

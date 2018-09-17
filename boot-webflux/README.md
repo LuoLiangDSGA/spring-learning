@@ -226,5 +226,101 @@ public class UserServiceImpl implements UserService {
 }
 ```
 
+> 创建基于`SpringMVC`的`REST API`
+```java
+@RestController
+public class UserController {
+    @Resource
+    private UserService userService;
+
+    @GetMapping("/users")
+    public Flux<User> all() {
+        return userService.getAll();
+    }
+
+    @PostMapping("/add")
+    public Mono<Boolean> register(@RequestBody User user) {
+        return userService.add(user.getId(), user.getName());
+    }
+
+    @PostMapping("/find")
+    public Mono find(@RequestBody User user) {
+        return userService.find(user.getName(), user.getPassword());
+    }
+}
+```
+
+> 基于 Functional 函数式路由实现 RESTful API
+```java
+@SpringBootConfiguration
+public class Router {
+    @Resource
+    private UserHandler userHandler;
+
+    @Bean
+    public RouterFunction<?> routerFunction() {
+        return RouterFunctions.route(RequestPredicates.GET("/hello"), userHandler::hello)
+                .andRoute(RequestPredicates.POST("/login"), userHandler::login);
+    }
+}
+```
+
+> `UserHandler.java`
+
+```java
+@Service
+public class UserHandler {
+    private final static Logger log = LoggerFactory.getLogger(UserHandler.class);
+    @Resource
+    private ReactiveRedisConnection connection;
+
+    public Mono<ServerResponse> hello(ServerRequest request) {
+        return ServerResponse
+                .ok()
+                .contentType(MediaType.TEXT_PLAIN)
+                .body(BodyInserters.fromObject("Hello, World"));
+    }
+
+    /**
+     * 登录
+     *
+     * @param request
+     * @return
+     */
+    public Mono<ServerResponse> login(ServerRequest request) {
+        Mono<Map> body = request.bodyToMono(Map.class);
+        return body.flatMap(map -> {
+            String username = (String) map.get("username");
+            String password = (String) map.get("password");
+            log.debug("username:{},password:{}", username, password);
+            return connection.stringCommands().get(
+                    ByteBuffer.wrap(username.getBytes()))
+                    .flatMap(byteBuffer -> {
+                        byte[] bytes = new byte[byteBuffer.remaining()];
+                        byteBuffer.get(bytes, 0, bytes.length);
+                        String userStr;
+                        userStr = new String(bytes, StandardCharsets.UTF_8);
+                        log.debug(userStr);
+                        User user = JSON.parseObject(userStr, User.class);
+                        Map<String, String> result = new HashMap<>(2);
+                        if (Objects.isNull(user.getPassword()) || !user.getPassword().equals(password)) {
+                            result.put("message", "账号或密码错误");
+                            log.debug("账号或密码错误");
+                            return ServerResponse.status(HttpStatus.UNAUTHORIZED)
+                                    .contentType(MediaType.APPLICATION_JSON_UTF8)
+                                    .body(BodyInserters.fromObject(result));
+                        } else {
+                            result.put("message", "登录成功");
+                            log.debug("登录成功");
+                            return ServerResponse.ok()
+                                    .contentType(MediaType.APPLICATION_JSON_UTF8)
+                                    .body(BodyInserters.fromObject(result));
+                        }
+                    });
+        });
+    }
+}
+```
+
 ### 参考
 - https://www.ibm.com/developerworks/cn/java/j-cn-with-reactor-response-encode/index.html
