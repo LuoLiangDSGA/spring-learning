@@ -2,7 +2,7 @@
 
 ### Docker创建MongoDB
 ```jshelllanguage
-docker run -d -p 27017:27017 -v --name mongo mongo
+docker run -d -p 27017:27017 --name mongo mongo --auth
 ```
 
 ### 创建一个SpringBoot项目
