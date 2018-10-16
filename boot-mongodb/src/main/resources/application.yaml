@@ -5,3 +5,9 @@ spring:
   data:
     mongodb:
       uri: mongodb://root:root@localhost:27017/test
+      username: root
+      authentication-database: root
+
+logging:
+  level:
+    org.boot: debug
