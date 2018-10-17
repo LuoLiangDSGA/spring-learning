@@ -23,3 +23,19 @@ docker run -d -p 27017:27017 --name mongo mongo --auth
  </dependencies>
 ```
 
+> yaml配置
+```yaml
+server:
+  port: 8081
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb://root:root@localhost:27017/test
+      username: root
+      authentication-database: root
+
+logging:
+  level:
+    org.boot: debug
+```
