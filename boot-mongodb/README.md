@@ -1,6 +1,6 @@
 ## SpringBoot MongoDB
 
-### Docker创建MongoDB
+### 使用Docker运行MongoDB
 ```jshelllanguage
 docker run -d -p 27017:27017 --name mongo mongo --auth
 ```
@@ -24,6 +24,8 @@ docker run -d -p 27017:27017 --name mongo mongo --auth
 ```
 
 > yaml配置
+
+`pom.xml`中引入了`spring-boot-starter-data-mongodb`之后，只需要在yaml中进行简单的配置，就可以轻松地操作MongoDB
 ```yaml
 server:
   port: 8081
@@ -39,3 +41,4 @@ logging:
   level:
     org.boot: debug
 ```
+
