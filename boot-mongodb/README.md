@@ -43,7 +43,7 @@ logging:
     org.boot: debug
 ```
 
-> 编写`User.java`类
+> 编写`User.java`类，包含了用户的基本属性
 ```java
 @Data
 public class User implements Serializable {
@@ -57,7 +57,7 @@ public class User implements Serializable {
 }
 ```
 
-> 编写一个基础CRUD接口`UserService.java`
+> 编写一个基础CRUD接口`UserService.java`，提供基础的用户CRUD方法
 
 ```java
 public interface UserService {
@@ -130,6 +130,7 @@ public class UserServiceImpl implements UserService {
 ```
 
 > 测试功能
+
 ```java
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -168,3 +169,5 @@ public class UserServiceTest {
     }
 }
 ```
+
+经测试，基本的CRUD操作都能够正常使用。
