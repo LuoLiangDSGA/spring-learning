@@ -44,6 +44,7 @@ logging:
 ```
 
 > 编写`User.java`类，包含了用户的基本属性
+
 ```java
 @Data
 public class User implements Serializable {
@@ -129,7 +130,7 @@ public class UserServiceImpl implements UserService {
 }
 ```
 
-> 测试功能
+> 编写单元测试，测试CRUD功能
 
 ```java
 @RunWith(SpringRunner.class)
@@ -171,3 +172,4 @@ public class UserServiceTest {
 ```
 
 经测试，基本的CRUD操作都能够正常使用。
+
