@@ -1,0 +1,4 @@
+config:
+  zk:
+    address: localhost:2181
+    timeout: 6000
