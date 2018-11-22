@@ -4,8 +4,6 @@ import org.apache.zookeeper.*;
 import org.apache.zookeeper.data.Stat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.List;
@@ -110,6 +108,14 @@ public class ZookeeperDistributedLock {
     }
 
     public void unlock() {
-
+        try {
+            LOGGER.debug(Thread.currentThread().getName() + "-------" + nodeId.get() + " unlock");
+            if (Objects.nonNull(nodeId)) {
+                zk.delete(nodeId.get(), -1);
+            }
+            nodeId.remove();
+        } catch (InterruptedException | KeeperException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
     }
 }
