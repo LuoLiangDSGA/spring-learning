@@ -3,6 +3,7 @@ package org.boot.distributedlock.lock;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
+import java.util.Collections;
 import java.util.Objects;
 
 /**
@@ -42,11 +43,42 @@ public class RedisDistributedLock {
         return false;
     }
 
-    public void lock() {
-
+    /**
+     * @param jedisPool
+     * @param lockKey
+     * @param requestId
+     * @param expireTime
+     */
+    public void lock(JedisPool jedisPool, String lockKey, String requestId, int expireTime) {
+        for (; ; ) {
+            if (tryLock(jedisPool, lockKey, requestId, expireTime)) {
+                return;
+            }
+        }
     }
 
-    public void unLock() {
+    /**
+     * @param jedisPool
+     * @param lockKey
+     * @param requestId
+     */
+    public boolean unLock(JedisPool jedisPool, String lockKey, String requestId) {
+        String luaScript = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+            Object result = jedis.eval(luaScript, Collections.singletonList(lockKey), Collections.singletonList(requestId));
+            if (RELEASE_SUCCESS.equals(result)) {
+                return true;
+            }
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            if (null != jedis) {
+                jedis.close();
+            }
+        }
 
+        return false;
     }
 }
