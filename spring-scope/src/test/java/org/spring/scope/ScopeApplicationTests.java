@@ -29,6 +29,9 @@ public class ScopeApplicationTests {
 
     @Test
     public void prototypeScopeTest() {
+        ApplicationContext applicationContext = new AnnotationConfigApplicationContext(BeanConfig.class);
 
+        Person personA = (Person) applicationContext.getBean("personPrototype");
+        Person personB = (Person) applicationContext.getBean("personPrototype");
     }
 }
