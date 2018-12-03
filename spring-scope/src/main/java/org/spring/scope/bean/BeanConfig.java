@@ -16,12 +16,12 @@ public class BeanConfig {
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
     public Person personSingleton() {
-        return new Person();
+        return new Person("Thor");
     }
 
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public Person personPrototype() {
-        return new Person();
+        return new Person("Thor");
     }
 }

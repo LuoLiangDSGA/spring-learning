@@ -23,7 +23,6 @@ public class ScopeApplicationTests {
         Person personA = (Person) applicationContext.getBean("personSingleton");
         Person personB = (Person) applicationContext.getBean("personSingleton");
 
-        personA.setName("luoliang");
         Assert.assertEquals(personA, personB);
     }
 
@@ -33,5 +32,12 @@ public class ScopeApplicationTests {
 
         Person personA = (Person) applicationContext.getBean("personPrototype");
         Person personB = (Person) applicationContext.getBean("personPrototype");
+
+//        personA.setName("Thor");
+//        personB.setName("Loki");
+
+//        Assert.assertEquals("Thor", personA.getName());
+//        Assert.assertEquals("Loki", personB.getName());
+        Assert.assertEquals(personA, personB);
     }
 }

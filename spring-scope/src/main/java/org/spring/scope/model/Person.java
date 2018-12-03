@@ -1,5 +1,6 @@
 package org.spring.scope.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -9,6 +10,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode
+@AllArgsConstructor
 public class Person {
     private String name;
 }
