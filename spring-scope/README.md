@@ -13,5 +13,7 @@ Spring框架中提供了多种不同类型的Bean scope，这些Scope定义了be
 
 ### example
 > singleton scope
+定义成singleton的bean会被限制在每一个Spring IOC容器中只有一个实例
 
 > prototype scope
+定义成prototype的bean，在每次都会新建一个实例，同时不限制数量
