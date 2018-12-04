@@ -13,11 +13,11 @@ Spring框架中提供了多种不同类型的Bean scope，这些Scope定义了be
 - request
 > Web项目中，给每一个http request新建一个Bean实例
 - session
-> Web项目中，给每一个http session新建一个Bean实例
+> Web项目中，给每一个http session新建一个Bean实例 
 - application
 > Web项目中，会在整个ServletContext的生命周期中新建一个Bean实例
 - websocket
-> Web项目中，
+> 首次访问时，会新建一个Bean实例存储在WebScoket会话属性中，每当在WebScoket会话期间访问Bean时，都会返回该Bean的相同实例
 
 ### example
 > singleton scope
