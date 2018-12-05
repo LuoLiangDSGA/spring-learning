@@ -23,8 +23,14 @@ Spring框架中提供了多种不同类型的Bean scope，这些Scope定义了be
 > singleton scope
 定义成singleton的bean会被限制在每一个Spring IOC容器中只有一个实例，Spring默认配置即为singleton
 
+```java
+
+```
+
 > prototype scope
 定义成prototype的bean，在每次都会新建一个实例
 
+```java
 
+```
 
