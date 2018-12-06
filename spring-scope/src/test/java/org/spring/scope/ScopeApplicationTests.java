@@ -33,7 +33,7 @@ public class ScopeApplicationTests {
         Person personB = (Person) applicationContext.getBean("personPrototype");
 
 //        personA.setName("Thor");
-//        personB.setName("Loki");
+//        personB.setName("Thor");
 
 //        Assert.assertEquals("Thor", personA.getName());
 //        Assert.assertEquals("Loki", personB.getName());

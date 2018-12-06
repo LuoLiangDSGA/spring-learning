@@ -70,9 +70,26 @@ public void singletonScopeTest() {
 运行测试用例通过，说明即使改变其中一个对象的状态，两个对象仍然引用同一个Bean实例
 
 > prototype scope
-定义成prototype的bean，在每次都会新建一个实例
+定义成prototype的bean，在每次都会新建一个实例，只需要把`@Scope`注解的value值设置为Prototype
 
 ```java
-
+@Bean
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+public Person personPrototype() {
+    return new Person();
+}
 ```
 
+同样，编写一个测试用例来进行测试
+```java
+@Test
+public void prototypeScopeTest() {
+    ApplicationContext applicationContext = new AnnotationConfigApplicationContext(BeanConfig.class);
+
+    Person personA = (Person) applicationContext.getBean("personPrototype");
+    Person personB = (Person) applicationContext.getBean("personPrototype");
+
+    Assert.assertEquals(personA, personB);
+}
+```
+运行测试，可以看到两个对象没有引用同一个Bean
