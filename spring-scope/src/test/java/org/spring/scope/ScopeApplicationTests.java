@@ -20,6 +20,7 @@ public class ScopeApplicationTests {
 
         Person personA = (Person) applicationContext.getBean("personSingleton");
         Person personB = (Person) applicationContext.getBean("personSingleton");
+        personA.setName("Thor");
 
         Assert.assertEquals(personA, personB);
     }
