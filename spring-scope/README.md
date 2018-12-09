@@ -186,6 +186,6 @@ currentMessage：Good Afternoon!
 previousMessage：Good Afternoon!
 currentMessage：Good Afternoon!
 ```
-可以看到，在第一次访问的时候message为null，当第二次返回时，message的值已经改变，说明在
+可以看到，在第一次访问的时候message为null，当第二次返回时，message的值已经改变，说明在同一个Session当中的值被保留了下来，整个会话中都返回了相同的Bean实例
 
 > application scope 
