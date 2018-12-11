@@ -145,10 +145,10 @@ public class ScopesController {
 
 使用Chrome访问`localhost:8081/scopes/request`两次，可以看到，每次输出的日志如下
 ```java
-previousMessage：null
-currentMessage：Good Morning!
-previousMessage：null
-currentMessage：Good Morning!
+previousMessage:null
+currentMessage:Good Morning!
+previousMessage:null
+currentMessage:Good Morning!
 ```
 说明Spring为每一个请求都创建了一个Bean实例
 
@@ -181,10 +181,10 @@ public String getSessionScopeMessage() {
 ```
 使用Chrome访问两次这个接口，观察message的变化
 ```java
-previousMessage：null
-currentMessage：Good Afternoon!
-previousMessage：Good Afternoon!
-currentMessage：Good Afternoon!
+previousMessage:null
+currentMessage:Good Afternoon!
+previousMessage:Good Afternoon!
+currentMessage:Good Afternoon!
 ```
 可以看到，在第一次访问的时候message为null，当第二次返回时，message的值已经改变，说明在同一个Session当中的值被保留了下来，整个会话中都返回了相同的Bean实例
 
