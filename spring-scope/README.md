@@ -199,5 +199,6 @@ public HelloMessageGenerator applicationScopedBean() {
 ```
 后续代码和上面一样，在此处省略，可以使用多个不同的浏览器进行访问，测试是否在整个ServletContext的生命周期都是同一个Bean实例，这其实有点类似于单例模式，但是两者有一个非常重要的区别。当scope为application时，Bean的相同实例会在同一个ServletContext中运行的多个基于Servlet的应用程序之间共享，而scope为singleton仅作用于单个应用程序上下文。
 
+
 ### 结束
 本篇学习记录到此结束，如有问题请指出，代码在[github](https://github.com/LuoLiangDSGA/spring-learning/tree/master/spring-scope)上
