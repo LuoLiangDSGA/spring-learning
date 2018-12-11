@@ -94,7 +94,7 @@ public void prototypeScopeTest() {
 ```
 运行测试，可以看到两个对象没有引用同一个Bean
 
-前面提到，有四种只能在web应用程序中使用的scope
+前面提到，有四种只能在web应用程序中使用的scope，WebSocket的用得较少，所以只列出前三种
 > request scope
 
 在request scope下，每一个http请求都会创建一个bean实例
@@ -189,3 +189,15 @@ currentMessage：Good Afternoon!
 可以看到，在第一次访问的时候message为null，当第二次返回时，message的值已经改变，说明在同一个Session当中的值被保留了下来，整个会话中都返回了相同的Bean实例
 
 > application scope 
+
+```java
+@Bean
+@Scope(value = WebApplicationContext.SCOPE_APPLICATION, proxyMode = ScopedProxyMode.TARGET_CLASS)
+public HelloMessageGenerator applicationScopedBean() {
+    return new HelloMessageGenerator();
+}
+```
+后续代码和上面一样，在此处省略，可以使用多个不同的浏览器进行访问，测试是否在整个ServletContext的生命周期都是同一个Bean实例，这其实有点类似于单例模式，但是两者有一个非常重要的区别。当scope为application时，Bean的相同实例会在同一个ServletContext中运行的多个基于Servlet的应用程序之间共享，而scope为singleton仅作用于单个应用程序上下文。
+
+### 结束
+本篇学习记录到此结束，代码在[github](https://github.com/LuoLiangDSGA/spring-learning/tree/master/spring-scope)上
