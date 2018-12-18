@@ -145,10 +145,10 @@ public class ScopesController {
 
 使用Chrome访问`localhost:8081/scopes/request`两次，可以看到，每次输出的日志如下
 ```java
-previousMessage：null
-currentMessage：Good Morning!
-previousMessage：null
-currentMessage：Good Morning!
+previousMessage:null
+currentMessage:Good Morning!
+previousMessage:null
+currentMessage:Good Morning!
 ```
 说明Spring为每一个请求都创建了一个Bean实例
 
@@ -181,10 +181,10 @@ public String getSessionScopeMessage() {
 ```
 使用Chrome访问两次这个接口，观察message的变化
 ```java
-previousMessage：null
-currentMessage：Good Afternoon!
-previousMessage：Good Afternoon!
-currentMessage：Good Afternoon!
+previousMessage:null
+currentMessage:Good Afternoon!
+previousMessage:Good Afternoon!
+currentMessage:Good Afternoon!
 ```
 可以看到，在第一次访问的时候message为null，当第二次返回时，message的值已经改变，说明在同一个Session当中的值被保留了下来，整个会话中都返回了相同的Bean实例
 
@@ -198,6 +198,7 @@ public HelloMessageGenerator applicationScopedBean() {
 }
 ```
 后续代码和上面一样，在此处省略，可以使用多个不同的浏览器进行访问，测试是否在整个ServletContext的生命周期都是同一个Bean实例，这其实有点类似于单例模式，但是两者有一个非常重要的区别。当scope为application时，Bean的相同实例会在同一个ServletContext中运行的多个基于Servlet的应用程序之间共享，而scope为singleton仅作用于单个应用程序上下文。
+
 
 ### 结束
 本篇学习记录到此结束，如有问题请指出，代码在[github](https://github.com/LuoLiangDSGA/spring-learning/tree/master/spring-scope)上
