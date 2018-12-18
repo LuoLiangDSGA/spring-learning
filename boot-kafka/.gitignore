@@ -1,8 +1,5 @@
-target/
+/target/
 !.mvn/wrapper/maven-wrapper.jar
-logs/
-.DS_Store
-output/
 
 ### STS ###
 .apt_generated
@@ -11,6 +8,7 @@ output/
 .project
 .settings
 .springBeans
+.sts4-cache
 
 ### IntelliJ IDEA ###
 .idea
@@ -19,9 +17,9 @@ output/
 *.ipr
 
 ### NetBeans ###
-nbproject/private/
-build/
-nbbuild/
-dist/
-nbdist/
-.nb-gradle/
+/nbproject/private/
+/build/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/

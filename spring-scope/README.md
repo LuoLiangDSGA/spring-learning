@@ -1,5 +1,5 @@
-## Spring中的Scope
-Scope用于描述Spring容器如何新建Bean实例
+## 浅尝Spring中的Scope
+> Scope顾名思义是作用域的意思，用于描述Spring容器如何新建Bean实例。
 
 ### 概述
 Spring框架中提供了多种不同类型的Bean scope，这些Scope定义了bean在其使用的上下文中的生命周期和可见性。当前版本的Spring中定义了如下6种不同类型的Scope:
@@ -19,7 +19,7 @@ Spring框架中提供了多种不同类型的Bean scope，这些Scope定义了be
 - websocket
 > 首次访问时，会新建一个Bean实例存储在WebSocket会话属性中，每当在WebSocket会话期间访问Bean时，都会返回该Bean的相同实例
 
-### example
+### 举个栗子
 > singleton scope
 定义成singleton的bean会被限制在每一个Spring IOC容器中只有一个实例，Spring默认配置即为singleton
 
