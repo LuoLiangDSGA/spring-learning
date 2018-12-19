@@ -1,0 +1,7 @@
+mybatis:
+  type-aliases-package: org.boot.mybatis.model
+  type-handlers-package: org.boot.mybatis.typehandler
+  configuration:
+    map-underscore-to-camel-case: true
+    default-fetch-size: 100
+    default-statement-timeout: 30
