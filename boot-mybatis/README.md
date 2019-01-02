@@ -4,7 +4,7 @@
 
 ### 起步
 
-SpringBoot可以通过`MyBatis-Spring-Boot-Starter`，快速集成Mybatis，只需在maven中引入依赖
+> SpringBoot可以通过`MyBatis-Spring-Boot-Starter`，快速集成Mybatis，只需在maven中引入依赖
 
 ```java
 <dependency>
@@ -18,3 +18,21 @@ SpringBoot可以通过`MyBatis-Spring-Boot-Starter`，快速集成Mybatis，只�
 - 创建并注册SQLSessionFactory的实例，该实例使用SqlSessionFactoryBean将该数据源作为输入
 - 创建并注册在SqlSessionFactory中获取的SqlSessionTemplate实例
 - 自动扫描Mapper并链接到SqlSessionTemplate，并将它们注册到Spring上下文中，这样它们就能在Bean中被注入
+
+> 引入依赖之后，还需要在配置文件中添加JDBC基本的配置
+
+```yaml
+mybatis:
+  type-aliases-package: org.boot.mybatis.model
+  type-handlers-package: org.boot.mybatis.typehandler
+  configuration:
+    map-underscore-to-camel-case: true
+    default-fetch-size: 100
+    default-statement-timeout: 30
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: root
+    username: root
+    url: jdbc:mysql://localhost:3306/test
+```
