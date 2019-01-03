@@ -18,7 +18,7 @@
 - 创建并注册SQLSessionFactory的实例，该实例使用SqlSessionFactoryBean将该数据源作为输入
 - 创建并注册在SqlSessionFactory中获取的SqlSessionTemplate实例
 - 自动扫描Mapper并链接到SqlSessionTemplate，并将它们注册到Spring上下文中，这样它们就能在Bean中被注入
-
+<!-- more -->
 > 引入依赖之后，还需要在配置文件中添加JDBC基本的配置
 
 ```yaml
@@ -35,4 +35,49 @@ spring:
     password: root
     username: root
     url: jdbc:mysql://localhost:3306/test
+```
+
+> 配置完成之后，编写数据访问层(DAO)，也就是`Mybatis`文档上写的`Mapper`，提供对`User`表的`CRUD`操作
+
+```java
+@Mapper
+public interface UserMapper {
+    /**
+     * 根据ID查询用户
+     *
+     * @param id
+     * @return
+     */
+    @Select("select * from user where id = #{id}")
+    User findById(Integer id);
+
+    /**
+     * 添加一条用户数据
+     *
+     * @param user
+     */
+    @Insert("insert into user(name, password, state, address, email) values (#{name}, #{password}, #{state}, #{address}, #{email})")
+    void insert(User user);
+
+    /**
+     * 更新用户数据
+     *
+     * @param user
+     */
+    @Update("update user set name=#{name},password=#{password},state=#{state},address=#{address},email=#{email} where id=#{id}")
+    void update(User user);
+
+    @Delete("delete from user where id = #{id}")
+    void delete(Integer id);
+
+    /**
+     * 查询指定状态的用户列表
+     *
+     * @param state
+     * @return
+     */
+    @Select("select * from user where id = #{state}")
+    List<User> selectList(Integer state);
+}
+
 ```
