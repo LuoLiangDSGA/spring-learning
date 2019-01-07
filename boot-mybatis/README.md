@@ -37,7 +37,7 @@ spring:
     url: jdbc:mysql://localhost:3306/test
 ```
 
-> 配置完成之后，编写数据访问层(DAO)，也就是`Mybatis`文档上写的`Mapper`，提供对`User`表的`CRUD`操作
+> 配置完成之后，编写数据访问层(DAO)，也就是`Mybatis`文档上写的`Mapper`，提供对`User`表的`CRUD`操作，这里使用的是注解的方式，需要在类名上添加`@Mapper`注解
 
 ```java
 @Mapper
@@ -81,3 +81,56 @@ public interface UserMapper {
 }
 
 ```
+
+编写测试方法对Mapper进行简单的测试
+
+```java
+public class UserTest extends BootMybatisApplicationTests {
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserTest.class);
+    @Resource
+    private UserMapper userMapper;
+
+    @Test
+    public void testInsertUser() {
+        User user = new User();
+        user.setName("thor");
+        user.setPassword("1234");
+        user.setAddress("Cheng Du");
+        user.setEmail("1234@gmail.com");
+        user.setState(1);
+        userMapper.insert(user);
+    }
+
+    @Test
+    public void testUpdateUser() {
+        User user = new User();
+        user.setId(1);
+        user.setName("thor");
+        user.setPassword("123456");
+        user.setAddress("Cheng Du");
+        user.setEmail("1234@gmail.com");
+        user.setState(1);
+        userMapper.update(user);
+    }
+
+    @Test
+    public void testFindById() {
+        User user = userMapper.findById(1);
+        Assert.assertNotEquals(user, null);
+        LOGGER.info(user.toString());
+    }
+
+    @Test
+    public void testDeleteUser() {
+        userMapper.delete(2);
+    }
+
+    @Test
+    public void testSelectList() {
+        List<User> list = userMapper.selectList(1);
+        LOGGER.info(list.toString());
+    }
+}
+
+```
+
