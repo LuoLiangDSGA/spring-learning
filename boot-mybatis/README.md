@@ -37,6 +37,8 @@ spring:
     url: jdbc:mysql://localhost:3306/test
 ```
 
+这里使用了MySQL作为数据源，但是请注意这里的`driver-class-name`和以前的已经不一样了， `com.mysql.cj.jdbc.Driver`是mysql-connector-java6中的新驱动名称，如果使用老版本的mysql-connector-java，名称还是`com.mysql.jdbc.Driver`
+
 > 配置完成之后，编写数据访问层(DAO)，也就是`Mybatis`文档上写的`Mapper`，提供对`User`表的`CRUD`操作，这里使用的是注解的方式，需要在类名上添加`@Mapper`注解
 
 ```java
@@ -134,3 +136,5 @@ public class UserTest extends BootMybatisApplicationTests {
 
 ```
 
+### End
+本文使用SpringBoot集成了Mybatis，但只简单的使用了Mybatis，编写了一个单表的栗子，使用的也是Annotation的形式，在日常开发中还是xml+interface的形式更方便编码。实际上Mybatis的功能非常强大，本文没有写出来，感兴趣请查阅官方文档。
