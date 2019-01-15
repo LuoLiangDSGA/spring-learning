@@ -507,7 +507,5 @@ public class UserController {
 ```
 `@PreAuthorize`注解用于权限控制，配合Spring EL表达式，`hasRole([role])`表示当前用于是否拥有某个角色，如果返回true则授权通过。
 
-#### memo
-- GrantedAuthority  所有的Authentication实现类都保存了一个GrantedAuthority列表，其表示用户所具有的权限。
-- UserDetailsService
-- AuthenticationManager 
+#### end
+  本文为学习笔记，由于能力有限，会有出错的地方，如有问题望指出，谢谢！
