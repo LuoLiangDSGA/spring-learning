@@ -17,7 +17,7 @@
 ***持续更新中...***
 
 - [Vue+SpringBoot前后端分离上传文件](https://luoliangdsga.github.io/2018/04/18/Vue-SpringBoot实现前后端分离的文件上传/)
-- [SpringBoot+kafka](https://github.com/LuoLiangDSGA/SpringBoot-Learning/tree/master/boot-kafka)
+- [SpringBoot整合kafka](https://github.com/LuoLiangDSGA/SpringBoot-Learning/tree/master/boot-kafka)
 - [SpringBoot+Dubbo2.5.10 使用官方最新spring-boot-starter](https://github.com/LuoLiangDSGA/SpringBoot-Learning/tree/master/boot-dubbo)
 - [Spring AOP其实很简单，AOP的总结，基础和使用](https://luoliangdsga.github.io/2018/04/24/Spring-AOP其实很简单/)
 - [SpringBoot使用quartz实现定时任务的动态增、删、改](https://github.com/LuoLiangDSGA/SpringBoot-Learning/tree/master/boot-quartz)
