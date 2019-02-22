@@ -6,12 +6,11 @@
         <groupId>org.boot</groupId>
         <artifactId>mystarter</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
     <artifactId>custom-starter</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>starter</name>
+    <name>custom-starter</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
@@ -22,12 +21,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 
