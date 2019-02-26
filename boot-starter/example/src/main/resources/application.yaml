@@ -1,0 +1,6 @@
+mylog:
+  exclude: test,test1
+
+logging:
+  level:
+    org.boot: debug
