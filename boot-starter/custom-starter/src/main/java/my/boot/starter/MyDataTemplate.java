@@ -19,7 +19,7 @@ public class MyDataTemplate {
         this.type = type;
     }
 
-    private Object getData() {
+    public Object getData() {
         logger.info("=========get data from: ({}), type=({})", url, type);
 
         return url + System.currentTimeMillis() + type;

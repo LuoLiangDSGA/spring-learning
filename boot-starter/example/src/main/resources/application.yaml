@@ -1,5 +1,7 @@
-mylog:
-  exclude: test,test1
+data:
+  enabled: true
+  url: localhost:3306
+  type: mysql
 
 logging:
   level:

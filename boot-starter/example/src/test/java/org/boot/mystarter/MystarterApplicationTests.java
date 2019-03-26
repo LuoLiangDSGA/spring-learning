@@ -1,6 +1,6 @@
 package org.boot.mystarter;
 
-import org.boot.mystarter.service.ExampleService;
+import my.boot.starter.MyDataTemplate;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,7 +12,7 @@ import javax.annotation.Resource;
 @SpringBootTest
 public class MystarterApplicationTests {
     @Resource
-    private ExampleService exampleService;
+    private MyDataTemplate myDataTemplate;
 
     @Test
     public void contextLoads() {
@@ -20,7 +20,7 @@ public class MystarterApplicationTests {
 
     @Test
     public void test() {
-        exampleService.core();
+        myDataTemplate.getData();
     }
 }
 
