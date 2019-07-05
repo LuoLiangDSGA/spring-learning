@@ -3,6 +3,9 @@ package my.boot.starter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 /**
  * @author luoliang
  * @date 2019/2/26
@@ -19,9 +22,9 @@ public class MyDataTemplate {
         this.type = type;
     }
 
-    public Object getData() {
-        logger.info("=========get data from: ({}), type=({})", url, type);
+    public String getData() {
+        logger.info("=========> get data from: ({}), type=({})", url, type);
 
-        return url + System.currentTimeMillis() + type;
+        return String.format("%s-%s(time：%s)", url, type, LocalDateTime.now());
     }
 }
