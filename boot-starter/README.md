@@ -17,7 +17,7 @@ tags:
 > 先把`pom.xml`配置加上，如下
 
 ```xml
-<dependencies>
+    <dependencies>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -156,7 +156,7 @@ my.boot.starter.MyDataTemplateAutoConfiguration
     <version>0.0.1</version>
 </dependency>
 ```
-    这里的命名并没有遵循SpringBoot的规范，只是为了学习，SpringBoot官方的命名是`spring-boot-starter-xxx`，比如`spring-boot-starter-data-mongodb`，非官方`Starter`命名应遵循`xxx-spring-boot-starter`的格式
+    这里的命名并没有遵循SpringBoot的规范，只是为了学习，SpringBoot官方的命名是spring-boot-starter-xxx，比如spring-boot-starter-data-mongodb，非官方Starter命名应遵循xxx-spring-boot-starter的格式
 
 > 按照上面starter的写法，我们可以直接使用DataTemplate，因为他已经自动配置并且加入到Spring容器中
 
@@ -187,7 +187,7 @@ data:
 ```
 2019-07-25 16:05:31.974  INFO 39174 --- [           main] o.b.mystarter.MyStarterApplicationTests  : get data result：localhost:3306-mysql(time：2019-07-25T16:05:31.974)
 ```
-    可以看到当前打印的结果是我们在`DataProperties.java`中写的默认值
+    可以看到当前打印的结果是我们在DataProperties.java中写的默认值
     
 > 添加其他配置
 
