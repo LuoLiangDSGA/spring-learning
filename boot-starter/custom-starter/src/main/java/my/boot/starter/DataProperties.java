@@ -8,20 +8,31 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  */
 @ConfigurationProperties(prefix = "data")
 public class DataProperties {
-    private String url;
-
+    public static final String DEFAULT_URI = "localhost:3306";
+    public static final String DEFAULT_TYPE = "mysql";
+    public static final boolean DEFAULT_ENABLED = false;
+    private Boolean enabled;
+    private String uri;
     private String type;
 
-    public String getUrl() {
-        return url;
+    public boolean getEnabled() {
+        return this.enabled != null ? this.enabled : DEFAULT_ENABLED;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public String getUri() {
+        return this.uri != null ? this.uri : DEFAULT_URI;
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
     }
 
     public String getType() {
-        return type;
+        return this.type != null ? this.type : DEFAULT_TYPE;
     }
 
     public void setType(String type) {

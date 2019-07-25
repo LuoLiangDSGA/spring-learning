@@ -12,8 +12,8 @@ import javax.annotation.Resource;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class MystarterApplicationTests {
-    private final Logger logger = LoggerFactory.getLogger(MystarterApplicationTests.class);
+public class MyStarterApplicationTests {
+    private final Logger logger = LoggerFactory.getLogger(MyStarterApplicationTests.class);
     @Resource
     private MyDataTemplate myDataTemplate;
 

@@ -24,6 +24,6 @@ public class MyDataTemplateAutoConfiguration {
     @ConditionalOnMissingBean
     @ConditionalOnProperty(prefix = "data", value = "enabled", havingValue = "true")
     public MyDataTemplate myDataTemplate() {
-        return new MyDataTemplate(properties.getUrl(), properties.getType());
+        return new MyDataTemplate(properties.getUri(), properties.getType());
     }
 }
