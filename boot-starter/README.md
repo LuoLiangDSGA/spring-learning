@@ -205,4 +205,10 @@ data:
     此时可以看到，打印的结果是我们配置的属性值了
     
 ### End
-文章到这里就结束了，个人能力有限，文中可能会存在错误的地方，如果有问题，可以在issue中指出，我会及时修正，以免误人子弟
+> 总结
+
+- SpringBoot在启动时扫描项目所依赖的jar包，寻找包含spring.factories文件的jar包
+- 根据spring.factories配置加载AutoConfiguration类
+- 根据@Conditional注解的条件，进行自动配置并将Bean注入Spring容器中
+
+**文章到这里就结束了，个人能力有限，文中可能会存在错误的地方，如果有问题，可以在issue中指出，我会及时修正，以免误人子弟。**
