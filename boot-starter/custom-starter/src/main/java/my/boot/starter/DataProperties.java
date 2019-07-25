@@ -10,7 +10,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class DataProperties {
     public static final String DEFAULT_URI = "localhost:3306";
     public static final String DEFAULT_TYPE = "mysql";
-    public static final boolean DEFAULT_ENABLED = false;
+    public static final boolean DEFAULT_ENABLED = true;
     private Boolean enabled;
     private String uri;
     private String type;

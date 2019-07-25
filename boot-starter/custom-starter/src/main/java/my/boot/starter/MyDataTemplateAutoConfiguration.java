@@ -1,13 +1,12 @@
 package my.boot.starter;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import javax.annotation.Resource;
 
 /**
  * @author luoliang
@@ -17,7 +16,7 @@ import javax.annotation.Resource;
 @ConditionalOnClass(MyDataTemplate.class)
 @EnableConfigurationProperties(DataProperties.class)
 public class MyDataTemplateAutoConfiguration {
-    @Resource
+    @Autowired
     private DataProperties properties;
 
     @Bean

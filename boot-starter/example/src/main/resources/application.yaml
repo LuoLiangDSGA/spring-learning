@@ -1,6 +1,6 @@
 data:
   enabled: true
-  uri: localhost:3306
+  uri: 172.31.31.189:3306
   type: mysql
 
 logging:
