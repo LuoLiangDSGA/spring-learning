@@ -10,7 +10,8 @@ tags:
 
 > 如今越来越多的Java应用都开始使用SpringBoot进行构建了，SpringBoot的一大特性就是它的约定大于配置，只需在`pom.xml`中加入对应的starter依赖，即可完成自动配置。比如在传统`Spring`项目中，要集成`SpringMVC`，则需要手动添加前端控制器`DispatcherServlet`，处理器映射器`BeanNameUrlHandlerMapping`，视图解析器`InternalResourceViewResolver`等配置，对于初学者来说并不友好，SpringBoot解决了这些问题，其内部是怎样实现自动配置的，通过自己写一个starter来学习。
 
-### 起步
+<!-- more-->
+### 开始编写starter
 > 为了便于理解，我们假设要实现一个能自动配置数据库的starter，我开始表演了
 
 - 首先，我们要新建一个`Maven`项目，我直接用`Spring Initializr`生成了，你们随意
@@ -145,7 +146,7 @@ my.boot.starter.MyDataTemplateAutoConfiguration
     到这里，一个starter就已经开发完成了，这时候只需要mvn:package打包就行了
     
     
-- 测试功能
+### 测试功能
 
 > 我们在其他项目中引入我们编写的starter
 
