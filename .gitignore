@@ -31,10 +31,3 @@
 **/target
 **/dist
 **/build
-
-### develop
-.mvn
-package.json
-package-lock.json
-log/
-node_modules
