@@ -14,5 +14,6 @@ public class NotifyEventListener implements ApplicationListener<NotifyEvent> {
     @Override
     public void onApplicationEvent(NotifyEvent event) {
         System.out.println("Received notify event - " + event.getMessage());
+        System.out.println("process finished.");
     }
 }

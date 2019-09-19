@@ -1,204 +1,368 @@
-## 浅尝Spring中的Scope
-> Scope顾名思义是作用域的意思，用于描述Spring容器如何新建Bean实例。
+## Spring中的Event实战
+
+> 这篇文章用于介绍event在Spring中的使用，同时也是一篇偏实践性的文章。event在Spring中容易被忽略，但是这是一个非常有用的功能。与Spring中的许多其他功能一样，event也是ApplicationContext提供的功能之一。
 
 ### 概述
-Spring框架中提供了多种不同类型的Bean scope，这些Scope定义了bean在其使用的上下文中的生命周期和可见性。当前版本的Spring中定义了如下6种不同类型的Scope:
-- singleton
-> bean会被限制在每一个Spring IOC容器中只有一个实例，Spring默认配置即为singleton
-- prototype
-> 每次调用都会新建一个Bean实例
+使用Event很简单，只需要注意几点：
+- 自定义的event类需要继承`ApplicationEvent`类
+- 事件发布者需要注入`ApplicationEventPublisher`对象
+- 事件监听器需要实现`ApplicationListener`接口
 
-下面四种类型只能在web应用程序中使用
+### 定义事件
 
-- request
-> Web项目中，给每一个http request新建一个Bean实例
-- session
-> Web项目中，给每一个http session新建一个Bean实例 
-- application
-> Web项目中，会在整个ServletContext的生命周期中新建一个Bean实例
-- websocket
-> 首次访问时，会新建一个Bean实例存储在WebSocket会话属性中，每当在WebSocket会话期间访问Bean时，都会返回该Bean的相同实例
+创建一个简单的事件类，用于在应用间传递消息
 
-### 举个栗子
-> singleton scope
-定义成singleton的bean会被限制在每一个Spring IOC容器中只有一个实例，Spring默认配置即为singleton
+> NotifyEvent.java
 
-创建一个`Person`实体，来验证作用域的功能
 ```java
-public class Person {
-    private String name;
+public class NotifyEvent extends ApplicationEvent {
+    private String message;
 
-    public Person() {
+    public NotifyEvent(Object source, String message) {
+        super(source);
+        this.message = message;
     }
-
-    public Person(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-}
-```
-
-使用`@Scope`注解来标识Bean的作用域
-```java
-@Bean
-@Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
-public Person personSingleton() {
-    return new Person();
-}
-```
-
-编写一个单元测试，来测试引用同一个Bean的两个对象是否相同
-```java
-@Test
-public void singletonScopeTest() {
-    ApplicationContext applicationContext = new AnnotationConfigApplicationContext(BeanConfig.class);
-
-    Person personA = (Person) applicationContext.getBean("personSingleton");
-    Person personB = (Person) applicationContext.getBean("personSingleton");
-    personA.setName("Thor");
-
-    Assert.assertEquals(personA, personB);
-}
-```
-运行测试用例通过，说明即使改变其中一个对象的状态，两个对象仍然引用同一个Bean实例
-
-> prototype scope
-定义成prototype的bean，在每次都会新建一个实例，只需要把`@Scope`注解的value值设置为Prototype
-
-```java
-@Bean
-@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public Person personPrototype() {
-    return new Person();
-}
-```
-
-同样，编写一个测试用例来进行测试
-```java
-@Test
-public void prototypeScopeTest() {
-    ApplicationContext applicationContext = new AnnotationConfigApplicationContext(BeanConfig.class);
-
-    Person personA = (Person) applicationContext.getBean("personPrototype");
-    Person personB = (Person) applicationContext.getBean("personPrototype");
-
-    Assert.assertEquals(personA, personB);
-}
-```
-运行测试，可以看到两个对象没有引用同一个Bean
-
-前面提到，有四种只能在web应用程序中使用的scope，WebSocket的用得较少，所以只列出前三种
-> request scope
-
-在request scope下，每一个http请求都会创建一个bean实例
-
-编写一个`HelloMessageGenerator`类用于实例化bean
-```java
-public class HelloMessageGenerator {
-    public String message;
 
     public String getMessage() {
         return message;
     }
+}
+```
+此类继承了`ApplicationEvent`
 
-    public void setMessage(String message) {
+### 监听器
+监听器需要实现`ApplicationListener`接口，这是一个泛型接口，泛型代表事件类型，所以实现此接口的类可以监听指定的事件。
+
+> `NotifyEventListener.java`
+
+```java
+@Component
+public class NotifyEventListener implements ApplicationListener<NotifyEvent> {
+
+    @Override
+    public void onApplicationEvent(NotifyEvent event) {
+        System.out.println("Received notify event - " + event.getMessage());
+        System.out.println("process finished.");
+    }
+}
+```
+这里创建了`NotifyEventListener`并且对刚才定义的事件进行了监听。
+
+### 事件发布者
+在事件发布者中构造事件对象，然后把事件发送给所有监听了此事件的监听器。在这里发布事件只需要注入`ApplicationEventPublisher`即可。
+
+```java
+public class SpringEventApplication implements CommandLineRunner {
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
+
+    @Override
+    public void run(String... args) throws Exception {
+        String message = "start publish application event. ";
+        System.out.println(message);
+        applicationEventPublisher.publishEvent(new AnnotationDrivenNotifyEvent(this, message));
+        System.out.println("publish finished.");
+    }
+}
+...
+```
+**这里需要说明的是，Spring默认发送事件是同步的，在某些场景下执行某些耗时但不关心结果的处理，用同步处理是不如异步的，Spring是支持异步事件的**
+
+### 异步事件
+1. 在这里定义一个异步事件，和前面的`NotifyEvent`类构造其实是一样的。
+
+> `AsynchronousNotifyEvent.java`
+
+```java
+public class AsynchronousNotifyEvent extends ApplicationEvent {
+    private String message;
+
+    public AsynchronousNotifyEvent(Object source, String message) {
+        super(source);
         this.message = message;
     }
-}
-```
-接下来，在`@Scope`注解中，把value值声明为request，代码如下
 
-```java
-@Bean
-@Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
-public HelloMessageGenerator requestScopedBean() {
-    return new HelloMessageGenerator();
-}
-```
-`@Scope`注解中声明proxyMode属性是非常有必要的，因为在web应用程序上下文初始化的过程中，这时候没有有效的请求，声明为`TARGET_CLASS`，Spring将会创建一个代理作为依赖注入，在请求的时候实例化Bean
-
-编写一个controller，注入`requestScopedBean`，用于测试Bean的scope
-```java
-@RestController
-public class ScopesController {
-    private static final Logger logger = LoggerFactory.getLogger(ScopesController.class);
-    @Resource(name = "requestScopedBean")
-    private HelloMessageGenerator requestScopedBean;
-
-    @RequestMapping("/scopes/request")
-    public String getRequestScopeMessage() {
-        logger.debug("previousMessage：{}", requestScopedBean.getMessage());
-        requestScopedBean.setMessage("Good Morning!");
-        logger.debug("currentMessage：{}", requestScopedBean.getMessage());
-
-        return "scopesExample";
+    public String getMessage() {
+        return message;
     }
 }
 ```
+1. 增加异步配置
 
-使用Chrome访问`localhost:8081/scopes/request`两次，可以看到，每次输出的日志如下
 ```java
-previousMessage:null
-currentMessage:Good Morning!
-previousMessage:null
-currentMessage:Good Morning!
-```
-说明Spring为每一个请求都创建了一个Bean实例
+@SpringBootConfiguration
+public class AsynchronousSpringEventConfig {
 
-> session scope
+    @Bean(name = "applicationEventMulticaster")
+    public ApplicationEventMulticaster simpleApplicationEventMulticaster() {
+        SimpleApplicationEventMulticaster eventMulticaster = new SimpleApplicationEventMulticaster();
+        eventMulticaster.setTaskExecutor(new SimpleAsyncTaskExecutor());
 
-在`@Scope`注解中，把value值声明为session，Spring会为每一个http session实例化一个Bean
-```java
-@Bean
-@Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
-public HelloMessageGenerator sessionScopedBean() {
-    return new HelloMessageGenerator();
+        return eventMulticaster;
+    }
 }
 ```
+`ApplicationEventMulticaster`是Spring的事件广播器，`SimpleApplicationEventMulticaster`是它的一个实现。增加这个配置之后，发送事件就变成异步的了。
 
-同样地，在Controller中注入`sessionScopedBean`
-```java
-...
-@Resource(name = "sessionScopedBean")
-private HelloMessageGenerator sessionScopedBean;
+1. 可以定义一个异步监听器，用于测试是否异步
 
-@RequestMapping("/scopes/session")
-public String getSessionScopeMessage() {
-    logger.debug("previousMessage：{}", sessionScopedBean.getMessage());
-    sessionScopedBean.setMessage("Good Afternoon!");
-    logger.debug("currentMessage：{}", sessionScopedBean.getMessage());
-
-    return "scopesExample";
-}
-...
-```
-使用Chrome访问两次这个接口，观察message的变化
-```java
-previousMessage:null
-currentMessage:Good Afternoon!
-previousMessage:Good Afternoon!
-currentMessage:Good Afternoon!
-```
-可以看到，在第一次访问的时候message为null，当第二次返回时，message的值已经改变，说明在同一个Session当中的值被保留了下来，整个会话中都返回了相同的Bean实例
-
-> application scope 
+> `AsynchronousNotifyEventListener.java`
 
 ```java
-@Bean
-@Scope(value = WebApplicationContext.SCOPE_APPLICATION, proxyMode = ScopedProxyMode.TARGET_CLASS)
-public HelloMessageGenerator applicationScopedBean() {
-    return new HelloMessageGenerator();
+@Component
+public class AsynchronousNotifyEventListener implements ApplicationListener<AsynchronousNotifyEvent> {
+
+    @Override
+    public void onApplicationEvent(AsynchronousNotifyEvent event) {
+        System.out.println("Received notify event - " + event.getMessage());
+        try {
+            for (int i = 0; i < 5; i++) {
+                System.out.println("process " + i + " 条数据");
+                Thread.sleep(1000);
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("process finished.");
+    }
 }
 ```
-后续代码和上面一样，在此处省略，可以使用多个不同的浏览器进行访问，测试是否在整个ServletContext的生命周期都是同一个Bean实例，这其实有点类似于单例模式，但是两者有一个非常重要的区别。当scope为application时，Bean的相同实例会在同一个ServletContext中运行的多个基于Servlet的应用程序之间共享，而scope为singleton仅作用于单个应用程序上下文。
+发布者此时构造发送`AsynchronousNotifyEvent`对象即可看到，在事件发送完成之后，listener中还在对数据进行处理。
 
+### 注解驱动的异步事件
 
-### 结束
-本篇学习记录到此结束，如有问题请指出，代码在[github](https://github.com/LuoLiangDSGA/spring-learning/tree/master/spring-scope)上
+Spring4.2之后，实现自己的监听器不用实现`ApplicationListener`接口，可以使用`@EventListener`注解，代码变得更加简洁。
+
+> 代码改造后如下
+
+```java
+@Component
+public class AnnotationDrivenNotifyEventListener {
+
+    @Async
+    @EventListener
+    public void receive(AnnotationDrivenNotifyEvent event) {
+        System.out.println("Received notify event - " + event.getMessage());
+        try {
+            for (int i = 0; i < 5; i++) {
+                System.out.println("process " + i + " 条数据");
+                Thread.sleep(1000);
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("process finished.");
+    }
+}
+```
+这里就可以看到，使用了`@Async`和`@EventListener`接口来实现监听，并且异步的功能，这比上面通过配置全局广播器的方式更加灵活，同时，使用`@Async`注解别忘了加上`@EnableAsync`。
+
+### Spring事件原理
+首先可以看到`ApplicationEventPublisher`的`publishEvent`方法，这个方法在`AbstractApplicationContext`中
+
+```java
+	protected void publishEvent(Object event, @Nullable ResolvableType eventType) {
+		Assert.notNull(event, "Event must not be null");
+
+		// Decorate event as an ApplicationEvent if necessary
+		ApplicationEvent applicationEvent;
+		if (event instanceof ApplicationEvent) {
+			applicationEvent = (ApplicationEvent) event;
+		}
+		else {
+			applicationEvent = new PayloadApplicationEvent<>(this, event);
+			if (eventType == null) {
+				eventType = ((PayloadApplicationEvent<?>) applicationEvent).getResolvableType();
+			}
+		}
+
+		// Multicast right now if possible - or lazily once the multicaster is initialized
+		if (this.earlyApplicationEvents != null) {
+			this.earlyApplicationEvents.add(applicationEvent);
+		}
+		else {
+			// 获取ApplicationEventMulticaster，调用`multicastEvent`方法广播事件
+			getApplicationEventMulticaster().multicastEvent(applicationEvent, eventType);
+		}
+
+		// Publish event via parent context as well...
+		if (this.parent != null) {
+			if (this.parent instanceof AbstractApplicationContext) {
+				((AbstractApplicationContext) this.parent).publishEvent(event, eventType);
+			}
+			else {
+				this.parent.publishEvent(event);
+			}
+		}
+	}
+
+	/**
+	 * 获取ApplicationEventMulticaster
+	 */
+	ApplicationEventMulticaster getApplicationEventMulticaster() throws IllegalStateException {
+		if (this.applicationEventMulticaster == null) {
+			throw new IllegalStateException("ApplicationEventMulticaster not initialized - " +
+					"call 'refresh' before multicasting events via the context: " + this);
+		}
+		return this.applicationEventMulticaster;
+	}
+```
+这里的源码就可以解释上面我们配置的`ApplicationEventMulticaster`,同时，在`AbstractApplicationContext`中可以看到Spring的初始化核心方法`refresh()`的代码如下：
+
+```java
+@Override
+public void refresh() throws BeansException, IllegalStateException {
+	synchronized (this.startupShutdownMonitor) {
+		// Prepare this context for refreshing.
+		prepareRefresh();
+
+		// Tell the subclass to refresh the internal bean factory.
+		ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
+
+		// Prepare the bean factory for use in this context.
+		prepareBeanFactory(beanFactory);
+
+		try {
+			// Allows post-processing of the bean factory in context subclasses.
+			postProcessBeanFactory(beanFactory);
+
+			// Invoke factory processors registered as beans in the context.
+			invokeBeanFactoryPostProcessors(beanFactory);
+
+			// Register bean processors that intercept bean creation.
+			registerBeanPostProcessors(beanFactory);
+
+			// Initialize message source for this context.
+			initMessageSource();
+
+			// Initialize event multicaster for this context.
+			initApplicationEventMulticaster();
+
+			// Initialize other special beans in specific context subclasses.
+			onRefresh();
+
+			// Check for listener beans and register them.
+			registerListeners();
+
+			// Instantiate all remaining (non-lazy-init) singletons.
+			finishBeanFactoryInitialization(beanFactory);
+
+			// Last step: publish corresponding event.
+			finishRefresh();
+		}
+
+		catch (BeansException ex) {
+			if (logger.isWarnEnabled()) {
+				logger.warn("Exception encountered during context initialization - " +
+						"cancelling refresh attempt: " + ex);
+			}
+
+			// Destroy already created singletons to avoid dangling resources.
+			destroyBeans();
+
+			// Reset 'active' flag.
+			cancelRefresh(ex);
+
+			// Propagate exception to caller.
+			throw ex;
+		}
+
+		finally {
+			// Reset common introspection caches in Spring's core, since we
+			// might not ever need metadata for singleton beans anymore...
+			resetCommonCaches();
+		}
+	}
+}
+```
+可以看到第27行的`initApplicationEventMulticaster()`方法，在这里对上下文的事件广播器进行初始化，33行的`registerListeners()`方法注册监听器，这两个方法的代码如下：
+
+> `initApplicationEventMulticaster`
+
+```java
+protected void initApplicationEventMulticaster() {
+		ConfigurableListableBeanFactory beanFactory = getBeanFactory();
+		// 如果用户手动新建了一个名为applicationEventMulticaster类型为ApplicationEventMulticaster的bean，则将这个bean作为事件广播器
+		if (beanFactory.containsLocalBean(APPLICATION_EVENT_MULTICASTER_BEAN_NAME)) {
+			this.applicationEventMulticaster =
+					beanFactory.getBean(APPLICATION_EVENT_MULTICASTER_BEAN_NAME, ApplicationEventMulticaster.class);
+			if (logger.isTraceEnabled()) {
+				logger.trace("Using ApplicationEventMulticaster [" + this.applicationEventMulticaster + "]");
+			}
+		}
+        // 否则新建一个SimpleApplicationEventMulticaster作为默认的事件广播器
+		else {
+			this.applicationEventMulticaster = new SimpleApplicationEventMulticaster(beanFactory);
+			beanFactory.registerSingleton(APPLICATION_EVENT_MULTICASTER_BEAN_NAME, this.applicationEventMulticaster);
+			if (logger.isTraceEnabled()) {
+				logger.trace("No '" + APPLICATION_EVENT_MULTICASTER_BEAN_NAME + "' bean, using " +
+						"[" + this.applicationEventMulticaster.getClass().getSimpleName() + "]");
+			}
+		}
+	}
+```
+
+> `registerListeners`，作用是listener添加到`ApplicationEventMulticaster`中
+
+```java
+protected void registerListeners() {
+	// Register statically specified listeners first.
+	for (ApplicationListener<?> listener : getApplicationListeners()) {
+		getApplicationEventMulticaster().addApplicationListener(listener);
+	}
+
+	// Do not initialize FactoryBeans here: We need to leave all regular beans
+	// uninitialized to let post-processors apply to them!
+	String[] listenerBeanNames = getBeanNamesForType(ApplicationListener.class, true, false);
+	for (String listenerBeanName : listenerBeanNames) {
+		getApplicationEventMulticaster().addApplicationListenerBean(listenerBeanName);
+	}
+
+	// Publish early application events now that we finally have a multicaster...
+	Set<ApplicationEvent> earlyEventsToProcess = this.earlyApplicationEvents;
+	this.earlyApplicationEvents = null;
+	if (earlyEventsToProcess != null) {
+		for (ApplicationEvent earlyEvent : earlyEventsToProcess) {
+			getApplicationEventMulticaster().multicastEvent(earlyEvent);
+		}
+	}
+}
+```
+通过前面的代码，知道了`ApplicationEventMulticaster`是如何被构建的，那么现在可以看看它是怎么广播事件的。
+
+```java
+@Override
+public void multicastEvent(final ApplicationEvent event, @Nullable ResolvableType eventType) {
+	ResolvableType type = (eventType != null ? eventType : resolveDefaultEventType(event));
+	// 获取SimpleApplicationEventMulticaster中的线程执行器，
+	// 如果存在线程执行器则在新线程中异步执行，否则直接同步执行监听器中的方法
+	Executor executor = getTaskExecutor();
+	for (ApplicationListener<?> listener : getApplicationListeners(event, type)) {
+		if (executor != null) {
+			executor.execute(() -> invokeListener(listener, event));
+		}
+		else {
+			invokeListener(listener, event);
+		}
+	}
+}
+
+protected void invokeListener(ApplicationListener<?> listener, ApplicationEvent event) {
+	ErrorHandler errorHandler = getErrorHandler();
+	if (errorHandler != null) {
+		try {
+			doInvokeListener(listener, event);
+		}
+		catch (Throwable err) {
+			errorHandler.handleError(err);
+		}
+	}
+	else {
+		doInvokeListener(listener, event);
+	}
+}
+```
+这里可以解释前面我们通过配置设置线程池之后，事件发送变成了异步，但是通过这种方式有一个问题，就是所有的事件发送都变成异步了，所以还是建议使用@Async的方式进行异步。
+
+### 总结
+本篇文章介绍了Event在Spring中的使用方法，并且对Spring事件机制进行了简单的梳理，代码在[github](https://github.com/LuoLiangDSGA/spring-learning/tree/master/spring-event)上
