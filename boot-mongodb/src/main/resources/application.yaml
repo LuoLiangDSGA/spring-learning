@@ -1,10 +1,13 @@
 server:
   port: 8081
 
+#mongodb
+# 单机模式 mongodb://name:pass@ip:port/database
+# 集群模式 mongodb://user:pwd@ip1:port1,ip2:port2/database
 spring:
   data:
     mongodb:
-      uri: mongodb://root:root@localhost:27017/test
+      uri: mongodb://root:root@118.24.147.38:27017/test
       username: root
       authentication-database: root
 
