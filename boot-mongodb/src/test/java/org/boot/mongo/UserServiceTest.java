@@ -7,6 +7,9 @@ import org.boot.mongo.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
@@ -24,6 +27,8 @@ public class UserServiceTest {
     private UserService userService;
     @Resource
     private UserRepository userRepository;
+    @Resource
+    private MongoTemplate mongoTemplate;
 
     @Test
     public void saveUser() {
@@ -56,6 +61,9 @@ public class UserServiceTest {
 
     @Test
     public void deleteUserById() {
-        userService.deleteUserById(123456L);
+        User user = mongoTemplate.findAndRemove(Query.query(Criteria.where("id").is("5d906c945067a10b7b286a10")),
+                User.class);
+        log.info(user.toString());
+//        userService.deleteUserById("5d89ecce6df3be6a5672d899");
     }
 }

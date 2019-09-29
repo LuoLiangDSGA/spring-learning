@@ -1,5 +1,6 @@
 package org.boot.mongo.service.impl;
 
+import com.mongodb.client.result.DeleteResult;
 import org.boot.mongo.entity.User;
 import org.boot.mongo.service.UserService;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -45,9 +46,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUserById(Long id) {
+    public void deleteUserById(String id) {
         Criteria criteria = Criteria.where("id").is(id);
         Query query = new Query(criteria);
-        mongoTemplate.remove(query);
+        mongoTemplate.remove(query, User.class);
     }
 }
