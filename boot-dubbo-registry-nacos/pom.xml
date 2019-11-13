@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.1.9.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>dubbo-spring-boot-registry-nacos</artifactId>
+    <groupId>org.boot.dubbo</groupId>
+    <name>Apache Dubbo Spring Boot :: Samples : Registry Nacos</name>
+    <description>Apache Dubbo Spring Boot Registry Nacos Samples</description>
+    <version>${revision}</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>provider-sample</module>
+        <module>consumer-sample</module>
+        <module>sample-api</module>
+    </modules>
+
+    <properties>
+        <java.version>1.8</java.version>
+        <revision>2.7.3</revision>
+        <spring-boot.version>2.1.9.RELEASE</spring-boot.version>
+    </properties>
+</project>
