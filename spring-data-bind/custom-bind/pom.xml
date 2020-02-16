@@ -6,7 +6,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.1.9.RELEASE</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/> <!-- lookup parent from repository a-->
     </parent>
     <groupId>org.spring</groupId>
     <artifactId>custom-bind</artifactId>
