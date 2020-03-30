@@ -1,0 +1,6 @@
+DROP TABLE IF EXISTS billionaires;
+ 
+CREATE TABLE t_user (
+  id INT AUTO_INCREMENT  PRIMARY KEY,
+  name VARCHAR(250) NOT NULL
+);
