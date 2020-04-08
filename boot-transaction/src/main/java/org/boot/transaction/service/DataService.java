@@ -1,6 +1,5 @@
 package org.boot.transaction.service;
 
-import java.util.List;
 import org.boot.transaction.dao.UserRepository;
 import org.boot.transaction.entity.User;
 import org.slf4j.Logger;
@@ -78,6 +77,7 @@ public class DataService {
 
     public void invokeWithAop(String user) {
         try {
+            // 需要把@EnableAspectJAutoProxy注解中的(exposeProxy = true)
             ((DataService) AopContext.currentProxy()).saveAndRollback(user);
         } catch (RuntimeException e) {
             logger.warn("catch an exception in invokeWithAop()");
