@@ -10,7 +10,7 @@
 记录平时学习的Spring项目，其中既有工作过程中解决问题的方法，也有基础知识的复习，以及对一些新技术的折腾，欢迎star❤️，一起交流学习。
 
 <p align="center">                        
- <img src="https://ws4.sinaimg.cn/large/006tKfTcgy1frp4r8pdl3j31kw0g07bp.jpg">
+ <img src="https://tva1.sinaimg.cn/large/00831rSTgy1gdmhow3fsvj31cc0awmxt.jpg">
  <br/>
 <p>
 
