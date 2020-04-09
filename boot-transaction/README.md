@@ -291,7 +291,7 @@ dataService.findAll();
 
 ### 小结
 
-在 Spring 的 AOP 代理下，只有目标方法由外部调用，目标方法才由 Spring 生成的代理对象来管理，这会造成自调用问题。若同一类中的其他没有@Transactional 注解的方法内部调用有@Transactional 注解的方法，有@Transactional 注解的方法的事务被忽略，不会发生回滚。解决方法上面已经列出，并且放在了github上。所以平时在内部调用带有事务的方法时，要小心一点。
+在 Spring 的 AOP 代理下，只有目标方法由外部调用，目标方法才由 Spring 生成的代理对象来管理，这会造成自调用问题。若同一类中的其他没有@Transactional 注解的方法内部调用有@Transactional 注解的方法，有@Transactional 注解的方法的事务被忽略，不会发生回滚。解决方法上面已经列出，并且放在了![github](https://github.com/LuoLiangDSGA/spring-learning/tree/master/boot-transaction)上。所以平时在内部调用带有事务的方法时，要小心一点。
 
 > 还有以下常见场景事务也会失效
 
