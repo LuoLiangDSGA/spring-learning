@@ -3,6 +3,7 @@ package org.boot.domain;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import org.boot.config.annotation.StartWithValidation;
 import org.boot.config.valid.QueryAction;
 import org.boot.config.valid.UpdateAction;
 
@@ -20,6 +21,9 @@ public class User {
     @NotNull(message = "年龄不能为空", groups = UpdateAction.class)
     @Min(value = 1, message = "请输入合法年龄", groups = UpdateAction.class)
     private Integer age;
+
+    @StartWithValidation(start = "中国", groups = UpdateAction.class)
+    private String address;
 
     public Long getId() {
         return id;
@@ -45,12 +49,21 @@ public class User {
         this.age = age;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", age=" + age +
+                ", address='" + address + '\'' +
                 '}';
     }
 }

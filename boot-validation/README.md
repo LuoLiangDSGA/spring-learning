@@ -190,3 +190,49 @@ public class User {
     private Action action;
 }
 ```
+
+#### 自定义校验
+
+在业务中还会有一些特殊场景, 需要对某些字段增加自定义的校验逻辑, 比如想校验地址是否以`中国`开头, 这时候需要自定义注解, 并且实现`ConstraintValidator`接口自定义校验逻辑
+
+```java
+@Documented
+@Constraint(validatedBy = StartWithValidator.class)
+@Target({METHOD, FIELD})
+@Retention(RUNTIME)
+public @interface StartWithValidation {
+
+    String message() default "不符合要求的初始值";
+
+    String start() default "";
+
+    Class<?>[] groups() default {};
+
+    Class<? extends Payload>[] payload() default {};
+
+}
+
+public class StartWithValidator implements ConstraintValidator<StartWithValidation, String> {
+
+    private String start;
+
+    @Override
+    public void initialize(StartWithValidation constraintAnnotation) {
+        start = constraintAnnotation.start();
+    }
+
+    @Override
+    public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
+        if (!StringUtils.isEmpty(s)) {
+            return s.startsWith(start);
+        }
+        return false;
+    }
+}
+```
+
+这时候只需要在需要验证的字段上加上我们自定义的`@StartWithValidation`即可
+
+### 总结
+
+本篇文章到此over, 代码
