@@ -19,10 +19,10 @@
 > 引入starter
 
 ```
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-validation</artifactId>
-		</dependency>
+<dependency>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-starter-validation</artifactId>
+</dependency>
 
 ```
 
@@ -43,7 +43,7 @@ public class User {
     @Min(value = 1, message = "请输入合法年龄")
     private Integer age;
 
-... Getter Setter toString省略
+    ... Getter Setter toString省略
 }
 
 ```
