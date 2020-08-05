@@ -34,7 +34,7 @@
 - [在SpringBoot中操作MongoDB](https://github.com/LuoLiangDSGA/spring-learning/tree/master/boot-mongodb)
 - [SpringMvc数据绑定-自定义注解](https://luoliangdsga.github.io/2019/10/09/SpringMvc%E6%95%B0%E6%8D%AE%E7%BB%91%E5%AE%9A-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B3%A8%E8%A7%A3/)
 - [在SpringMVC中优雅的拼接URL](https://luoliangdsga.github.io/2020/02/14/%E5%9C%A8SpringMVC%E4%B8%AD%E4%BC%98%E9%9B%85%E7%9A%84%E6%8B%BC%E6%8E%A5URL/)
-
+- [SpringBoot中的参数校验](https://luoliangdsga.github.io/2020/08/04/SpringBoot%E4%B8%AD%E7%9A%84%E5%8F%82%E6%95%B0%E6%A0%A1%E9%AA%8C/)
 
 ## Others
 
