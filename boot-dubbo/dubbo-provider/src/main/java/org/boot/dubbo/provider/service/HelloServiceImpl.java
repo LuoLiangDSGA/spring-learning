@@ -2,6 +2,7 @@ package org.boot.dubbo.provider.service;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.dubbo.config.annotation.DubboService;
 import org.boot.dubbo.api.service.HelloService;
 
 import java.io.InputStream;
@@ -12,7 +13,7 @@ import java.io.InputStream;
  * @author luoliang
  * @date 2018/1/8
  **/
-@Service(version = "1.0.0",
+@DubboService(version = "1.0.0",
         application = "${dubbo.application.id}",
         protocol = "${dubbo.protocol.id}",
         registry = "${dubbo.registry.id}")
