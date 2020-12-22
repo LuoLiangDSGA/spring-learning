@@ -17,7 +17,6 @@ dubbo:
     id: dubbo
     name: dubbo
     port: 20880
-    serialization: kryo
 management:
   endpoints:
     dubbo:

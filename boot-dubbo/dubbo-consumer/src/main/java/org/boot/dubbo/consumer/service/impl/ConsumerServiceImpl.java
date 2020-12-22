@@ -16,8 +16,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class ConsumerServiceImpl implements ConsumerService {
-    @DubboReference(version = "1.0.0",
-            application = "${dubbo.application.id}")
+    @DubboReference(version = "1.0.0", application = "${dubbo.application.id}")
     private HelloService helloService;
 
     @Override
