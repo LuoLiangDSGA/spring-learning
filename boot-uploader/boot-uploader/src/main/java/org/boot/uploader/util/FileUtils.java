@@ -6,8 +6,10 @@ import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.stream.Stream;
 
 /**
  * @author luoliang
@@ -44,8 +46,11 @@ public class FileUtils {
     public static void merge(String targetFile, String folder, String filename) {
         try {
             Files.createFile(Paths.get(targetFile));
-            Files.list(Paths.get(folder))
-                    .filter(path -> !path.getFileName().toString().equals(filename))
+        } catch (IOException e) {
+            log.error(e.getMessage(), e);
+        }
+        try (Stream<Path> stream = Files.list(Paths.get(folder))) {
+            stream.filter(path -> !path.getFileName().toString().equals(filename))
                     .sorted((o1, o2) -> {
                         String p1 = o1.getFileName().toString();
                         String p2 = o2.getFileName().toString();
