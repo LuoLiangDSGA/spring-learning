@@ -16,7 +16,9 @@
 
 > 字节跳动长期内推，感兴趣的大佬可以和我交流，提供简历优化、面试攻略，欢迎各位大佬一起来做浪漫而又充满挑战的事情。
 
-<img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gowir59b8lj30qo193khd.jpg" width="30%" height="30%" align="center">
+<div align="center">
+<img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gowir59b8lj30qo193khd.jpg" width="30%" height="30%">
+</div>
 
 ## Knowledge list
 > 持续更新中...
