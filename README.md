@@ -14,6 +14,9 @@
  <br/>
 <p>
 
+> 字节跳动长期内推，感兴趣的大佬可以和我交流，提供简历优化、面试攻略，欢迎各位大佬一起来做浪漫而又充满挑战的事情。
+![](https://tva1.sinaimg.cn/large/008eGmZEgy1gowir59b8lj30qo193khd.jpg)
+
 ## Knowledge list
 > 持续更新中...
 
