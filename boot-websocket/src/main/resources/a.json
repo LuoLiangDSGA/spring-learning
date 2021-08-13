@@ -1,0 +1,69 @@
+{
+  "Response": [
+    {
+      "email": "888888@admin.test.bytedance.com",
+      "id": 6991664932714447019,
+      "name_py": "zheng chang zu hu gu yuan 0"
+    },
+    {
+      "email": "232646005@okwatlgxvbqn.test.bytedance.com",
+      "id": 6991664937852469419,
+      "name_py": "zheng chang zu hu gu yuan 2"
+    },
+    {
+      "email": "787562253@ncbkodft.test.bytedance.com",
+      "id": 6991664937852485803,
+      "name_py": "zheng chang zu hu gu yuan 3"
+    },
+    {
+      "email": "99530142@dppikeeipqkrw.test.bytedance.com",
+      "id": 6991664937852502187,
+      "name_py": "zheng chang zu hu gu yuan 1"
+    },
+    {
+      "email": "626240769@xcakmrzkahz.test.bytedance.com",
+      "id": 6991664952087937194,
+      "name_py": "zheng chang zu hu gu yuan 6"
+    },
+    {
+      "email": "146095070@zzbdildpsuzo.test.bytedance.com",
+      "id": 6991664952087953578,
+      "name_py": "zheng chang zu hu gu yuan 4"
+    },
+    {
+      "email": "176597054@vgiedbytz.test.bytedance.com",
+      "id": 6991664952092131498,
+      "name_py": "zheng chang zu hu gu yuan 5"
+    },
+    {
+      "email": "767896217@ebevnmhz.test.bytedance.com",
+      "id": 6991664965476155562,
+      "name_py": "zheng chang zu hu gu yuan 9"
+    },
+    {
+      "email": "258850641@dygvgecyhqm.test.bytedance.com",
+      "id": 6991664965476171946,
+      "name_py": "zheng chang zu hu gu yuan 8"
+    },
+    {
+      "email": "626546163@gcojkxhmwmg.test.bytedance.com",
+      "id": 6991664965484544170,
+      "name_py": "zheng chang zu hu gu yuan 7"
+    },
+    {
+      "email": "608007325@clakudwfwg.test.bytedance.com",
+      "id": 6991664979262832811,
+      "name_py": "zheng chang zu hu gu yuan 10"
+    },
+    {
+      "email": "",
+      "id": 6991664913550672042,
+      "name_py": "systemmodule_admin"
+    }
+  ],
+  "ResponseMetadata": {
+    "Action": "QueryDB",
+    "PSM": "toutiao.mysql.lark_passport_read",
+    "ReadUser": "lark_passport_r"
+  }
+}
