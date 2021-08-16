@@ -1,34 +1,6 @@
 var url = "http://localhost:8080/websocket"
-var socket = new SockJS(url);
-var stompClient = Stomp.over(socket);
-
-var user = $("#user").val()
-console.log($("#user").val())
-var headers = {
-    username: user,
-    password: user
-};
-
-console.log("start connect server...")
-stompClient.connect(headers, function (frame) {
-    console.log("connect success !!!")
-    setConnected(true);
-    console.log('Connected: ' + frame);
-    stompClient.subscribe('/topic/greetings', function (message) {
-        showGreeting(JSON.parse(message.body).content);
-    });
-    stompClient.subscribe("/topic/subscribe", function (message) {
-        console.log(message.body)
-        $("#datetime").text(message.body)
-    });
-    stompClient.subscribe("/user/queue/notify", function (message) {
-        showGreeting(JSON.parse(message.body).content);
-    });
-    stompClient.subscribe("/user/queue/errors", function (message) {
-        alert("Error " + message.body);
-    });
-
-});
+var socket = null;
+var stompClient = null;
 
 function setConnected(connected) {
     $("#connect").prop("disabled", connected);
@@ -42,12 +14,34 @@ function setConnected(connected) {
 }
 
 function connect() {
-    stompClient.connect({}, function (frame) {
+    var user = $("#user").val();
+    var headers = {
+        username: user,
+        password: user
+    };
+    console.log('aaa:' + user);
+    socket = new SockJS(url);
+    stompClient = Stomp.over(socket);
+    console.log("start connect server...");
+    stompClient.connect(headers, function (frame) {
+        console.log("connect success !!!")
         setConnected(true);
         console.log('Connected: ' + frame);
-        stompClient.subscribe('/topic/greetings', function (greeting) {
-            showGreeting(JSON.parse(greeting.body).content);
+        stompClient.subscribe('/topic/greetings', function (message) {
+            showGreeting(JSON.parse(message.body).content);
         });
+        stompClient.subscribe("/topic/subscribe", function (message) {
+            console.log(message.body)
+            $("#datetime").text(message.body)
+        });
+        stompClient.subscribe("/user/queue/notify", function (message) {
+            showGreeting(JSON.parse(message.body).content);
+        });
+        stompClient.subscribe("/user/queue/errors", function (message) {
+            alert("Error " + message.body);
+        });
+    }, function (err) {
+        console.log("error：" + err)
     });
 }
 

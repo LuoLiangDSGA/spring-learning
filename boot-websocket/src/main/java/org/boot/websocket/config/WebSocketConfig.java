@@ -41,7 +41,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 if (StompCommand.CONNECT.equals(accessor.getCommand())) {
                     String username = accessor.getNativeHeader("username").get(0);
                     String password = accessor.getNativeHeader("password").get(0);
-                    if ("admin".equals(username) && "admin".equals(password)) {
+                    if (username.startsWith("admin") && password.startsWith("admin")) {
                         Principal principal = () -> username;
                         accessor.setUser(principal);
                         return message;
